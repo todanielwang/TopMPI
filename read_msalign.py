@@ -118,3 +118,23 @@ def read_spec_file(filename):
     spec.header.file_name = filename
     spec_list.append(spec)
   return spec_list
+
+def write_spec_file(filename, spec_list):
+  with open(filename + "_modified", "w") as outputfile:
+    for spectrum in spec_list:
+      outputfile.write("BEGIN IONS\n")
+      outputfile.write("ID=" + str(spectrum.header.spec_id) + "\n")
+      outputfile.write("FRACTION_ID=0\nFILE_NAME=/home/daniel/Desktop/datafiles/RealData/yeast/study4/20220718_Yeast_DIA_720-800_75cmCapil_300nL_30kV_01.mzML\n")
+      outputfile.write("SCANS=" + str(spectrum.header.spec_scan) + "\n")
+      outputfile.write("RETENTION_TIME=" + str(spectrum.header.retention_time) + "\n")
+      outputfile.write("LEVEL=2\n")
+      outputfile.write("ACTIVATION=" + str(spectrum.header.activation) + "\n")
+      outputfile.write("MS_ONE_ID=" + str(spectrum.header.ms_one_id) + "\n")
+      outputfile.write("MS_ONE_SCAN=" + str(spectrum.header.ms_one_scan) + "\n")
+      outputfile.write("PRECURSOR_MZ=" + str(spectrum.header.mono_mz) + "\n")
+      outputfile.write("PRECURSOR_CHARGE=" + str(spectrum.header.charge) + "\n")
+      outputfile.write("PRECURSOR_MASS=" + str(spectrum.header.mono_mass) + "\n")
+      outputfile.write("PRECURSOR_INTENSITY=" + str(spectrum.header.inte) + "\n")
+      for peak in spectrum.peak_list:
+        outputfile.write(str(peak.mass) + "\t" + str(peak.intensity) + "\t" + str(peak.charge) + "\n")
+      outputfile.write("END IONS\n\n")
