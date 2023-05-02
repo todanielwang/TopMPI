@@ -64,7 +64,7 @@ def _read_peaks(spec_lines):
   end_line = "END IONS"
   peak_list = []
   i = 0
-  while(exp_line not in spec_lines[i]): 
+  while(exp_line not in spec_lines[i]):
     i = i + 1
   i = i + 1
   while(spec_lines[i] != end_line): 
@@ -82,6 +82,12 @@ def _parse_spectrum(spec_lines):
   peak_list = _read_peaks(spec_lines)
   spec = Spectrum.get_spec(header, peak_list)
   return spec
+
+def _get_begin_index(all_lines, begin_idx):
+  idx = begin_idx
+  while (idx < len(all_lines) and "BEGIN IONS" not in all_lines[idx]):
+    idx = idx + 1
+  return idx
 
 def _get_end_index(all_lines, begin_idx):
   idx = begin_idx
@@ -103,7 +109,7 @@ def read_spec_file(filename):
   ## Assign file name to header
   filename = os.path.basename(filename)
   spec_list = []
-  begin_idx = 21
+  begin_idx = _get_begin_index(all_lines, 0)
   while (begin_idx < len(all_lines)):
     end_idx = _get_end_index(all_lines, begin_idx)
     spec_lines = all_lines[begin_idx:end_idx +1]

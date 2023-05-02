@@ -1,3 +1,5 @@
+#Map the scans with second feature
+
 import read_msalign
 import sys
 import re
@@ -50,6 +52,10 @@ def main():
         spec_list[idx].header.mono_mass = secMax['MonoMass']
         spec_list[idx].header.inte = secMax['Abundance']
 
+
+
+    #peak removal
+    """
     curr_spec = 0
     count = 0
     for x in sorted(os.listdir(args[3]), key=numericalSort):
@@ -74,9 +80,9 @@ def main():
                     if "matched_ions" in peak_list[idx]:
                         del spec_list[curr_spec].peak_list[idx]
                 count += 1
-
-    
     print(count)
+    """
+    
     read_msalign.write_spec_file(args[0], spec_list)   
     
     

@@ -1,3 +1,5 @@
+#Map the scans with first feature
+
 import read_msalign
 import sys
 import pandas as pd
@@ -19,7 +21,6 @@ def main():
     feature_file = pd.read_csv(args[1], sep="\t")
 
 
-    count = 0
     for idx in range(len(spec_list) - 1, -1, -1):
         isolationWindow = (spec_list[idx].header.spec_scan - 1) % 21
         lowerbound = startRatio + (isolationWindow - 1) * mzwindow 
@@ -30,8 +31,6 @@ def main():
                              & (feature_file['MinElutionTime'] < rt) & (feature_file['MaxElutionTime'] > rt)]
         
         if (query.empty):
-            if (len(spec_list[idx].peak_list) > 5):
-                count += 1
             del spec_list[idx]
             continue
         
@@ -43,8 +42,6 @@ def main():
         spec_list[idx].header.mono_mass = maxMatch['MonoMass']
         spec_list[idx].header.inte = maxMatch['Abundance']
 
-
-    print(count)
 
     read_msalign.write_spec_file(args[0], spec_list)
 

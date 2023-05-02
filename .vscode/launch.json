@@ -1,0 +1,19 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "args": ["/home/daniel/Desktop/datafiles/RealData/yeast/study4/part2/960-1040/modified_20220718_Yeast_DIA_960-1040_75cmCapil_300nL_30kV_01_ms2.msalign", "/home/daniel/Desktop/datafiles/RealData/yeast/study4/part2/960-1040/Yeast_DIA_960-1040_ms1.csv", "960", "/home/daniel/Desktop/datafiles/RealData/yeast/study4/part2/960-1040/modified_20220718_Yeast_DIA_960-1040_75cmCapil_300nL_30kV_01_html/toppic_prsm_cutoff/data_js/prsms/"], 
+            "purpose": ["debug-in-terminal"]
+        }
+    ]
+}
