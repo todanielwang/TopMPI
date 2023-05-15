@@ -35,8 +35,8 @@ def main():
             continue
         
         maxMatch = query.loc[query['Abundance'].idxmax()]
-        spec_list[idx].header.ms_one_id = int(maxMatch['FeatureID'])
-        spec_list[idx].header.ms_one_scan = int((spec_list[idx].header.spec_scan - 1) / 21)
+        spec_list[idx].header.ms_one_id = int((spec_list[idx].header.spec_scan - 1) / 21)
+        spec_list[idx].header.ms_one_scan = int(maxMatch['FeatureID']) 
         spec_list[idx].header.mono_mz = maxMatch['RepMz']
         spec_list[idx].header.charge = int(maxMatch['MinCharge'])
         spec_list[idx].header.mono_mass = maxMatch['MonoMass']

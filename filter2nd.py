@@ -45,8 +45,8 @@ def main():
         temp = query.drop([query['Abundance'].idxmax()])
         secMax = temp.loc[temp['Abundance'].idxmax()]
 
-        spec_list[idx].header.ms_one_id = int(secMax['FeatureID'])
-        spec_list[idx].header.ms_one_scan = int((spec_list[idx].header.spec_scan - 1) / 21)
+        spec_list[idx].header.ms_one_id = int((spec_list[idx].header.spec_scan - 1) / 21)
+        spec_list[idx].header.ms_one_scan = int(secMax['FeatureID']) 
         spec_list[idx].header.mono_mz = secMax['RepMz']
         spec_list[idx].header.charge = int(secMax['MinCharge'])
         spec_list[idx].header.mono_mass = secMax['MonoMass']
