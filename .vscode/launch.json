@@ -12,7 +12,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["/home/daniel/Desktop/datafiles/RealData/yeast/study4/newFeature/960-1040/20220718_Yeast_DIA_960-1040_75cmCapil_300nL_30kV_01_ms2.msalign", "/home/daniel/Desktop/datafiles/RealData/yeast/study4/newFeature/960-1040/Yeast_DIA_960-1040_frac_ms1.mzrt.csv", "960"], 
+            "args": ["/home/daniel/Desktop/datafiles/RealData/yeast/study4/newenvelopeIntensity/720-800/20220718_Yeast_DIA_720-800_75cmCapil_300nL_30kV_01_ms2.msalign", "/home/daniel/Desktop/datafiles/RealData/yeast/study4/newenvelopeIntensity/720-800/20220718_Yeast_DIA_720-800_75cmCapil_300nL_30kV_01_frac.mzrt.csv", "720"], 
             "purpose": ["debug-in-terminal"]
         }
     ]

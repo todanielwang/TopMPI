@@ -30,7 +30,7 @@ def main():
 
     startRatio = int(args[2])
 
-    feature_file = pd.read_csv(args[1], sep=",", converters={'XIC': lambda string: list(map(float, string[:].split(';')))})
+    feature_file = pd.read_csv(args[1], sep=",", index_col=False, converters={'XIC': lambda string: list(map(float, string[:].split(';')))})
 
     for idx in range(len(spec_list) - 1, -1, -1):
         ms_one_id = int((spec_list[idx].header.spec_scan - 1) / 21)
