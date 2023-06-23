@@ -102,6 +102,7 @@ def _get_level_one(all_lines, begin_idx, end_idx):
   return False
 
 def read_spec_file(filename):
+  print("DO NOTE THAT THIS VERSION SKIPS THE MS1 SCANS")
   file = open(filename)
   all_lines = file.readlines()
   all_lines = [x.strip() for x in all_lines] 

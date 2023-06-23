@@ -11,8 +11,8 @@ def main():
 
 
     r1 = pd.read_csv(args[0], sep="\t")
-    r2 = pd.read_csv(args[1], sep="\t")
-
+    r2 = pd.read_csv(args[1], sep=",")
+    
     new = r2[r2.Proteoform.isin(r1.Proteoform) == False]
     new.sort_values("E-value", inplace=True)
 

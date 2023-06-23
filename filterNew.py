@@ -26,7 +26,7 @@ def main():
     
     spec_list = read_msalign.read_spec_file(args[0])
 
-    mzwindow = 4
+    mzwindow = 1
 
     startRatio = int(args[2])
 
