@@ -7,6 +7,7 @@ import pandas as pd
 import os
 import math
 import json
+import pymzml
  
 def numericalSort(value):
     numbers = re.compile(r'(\d+)')
@@ -22,24 +23,36 @@ def main():
     args = sys.argv[1:]
     if (len(args) != 4):
         raise Exception(
-            "Please pass in the ms.align file, the feature file, the start ratio, and the js file directory")
+            "Please pass in the ms.align file, the feature file, the mzml file, and the js file directory")
     
+    mzml = pymzml.run.Reader(
+        args[2] ,
+        MS1_Precision = 5e-6 ,
+        MSn_Precision = 20e-6
+    )
+
+
+    mzdict = {}
+    for spec in mzml:
+        if spec.ms_level == 2:
+            id = spec.ID
+            targetmz = spec.__getitem__("MS:1000827")
+            loweroffset = spec.__getitem__("MS:1000828")
+            upperoffset = spec.__getitem__("MS:1000829")
+            mzdict[id] = (targetmz, loweroffset, upperoffset)
+
     spec_list = read_msalign.read_spec_file(args[0])
-
-    mzwindow = 1
-
-    startRatio = int(args[2])
 
     feature_file = pd.read_csv(args[1], sep=",", index_col=False, converters={'XIC': lambda string: list(map(float, string[:].split(';')))})
 
     for idx in range(len(spec_list) - 1, -1, -1):
-        ms_one_id = int((spec_list[idx].header.spec_scan - 1) / 21)
-        isolationWindow = (spec_list[idx].header.spec_scan - 1) % 21
-        lowerbound = startRatio + (isolationWindow - 1) * mzwindow 
-        upperbound = startRatio + (isolationWindow) * mzwindow
+        scan = spec_list[idx].header.spec_scan
+        ms1round = int((spec_list[idx].header.ms_one_scan - 1) / 7)
+        lowerbound = mzdict[scan][0] - mzdict[scan][1]
+        upperbound = mzdict[scan][0] + mzdict[scan][2]
         rt = spec_list[idx].header.retention_time / 60
 
-        query = feature_file[(feature_file.XIC.apply(lambda x: not math.isnan(x[ms_one_id]) and x[ms_one_id] > 1)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound) \
+        query = feature_file[(feature_file.XIC.apply(lambda x: not math.isnan(x[ms1round]) and x[ms1round] > 1)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound) \
                              & (feature_file['rtLo'] < rt) & (feature_file['rtHi'] > rt)]
     
         if (len(query) <= 1):
@@ -47,27 +60,26 @@ def main():
             continue
         
         
-        query = query.drop([query['XIC'].apply(lambda x : x[ms_one_id]).idxmax()])
+        query = query.drop([query['XIC'].apply(lambda x : x[ms1round]).idxmax()])
 
-        secMax = query.loc[query['XIC'].apply(lambda x : x[ms_one_id]).idxmax()]
+        secMax = query.loc[query['XIC'].apply(lambda x : x[ms1round]).idxmax()]
 
         condition = False
         while (overlap(lowerbound, upperbound, secMax["mzLo"], secMax["mzHi"]) / (upperbound - lowerbound) < 0.2):
-            query = query.drop([query['XIC'].apply(lambda x : x[ms_one_id]).idxmax()])
+            query = query.drop([query['XIC'].apply(lambda x : x[ms1round]).idxmax()])
             if (query.empty):
                 condition = True
                 break
-            secMax = query.loc[query['XIC'].apply(lambda x : x[ms_one_id]).idxmax()]
+            secMax = query.loc[query['XIC'].apply(lambda x : x[ms1round]).idxmax()]
 
         if (condition):
             continue
 
-        spec_list[idx].header.ms_one_id = ms_one_id
-        spec_list[idx].header.ms_one_scan = int(secMax['ID']) 
+        spec_list[idx].header.ms_one_id = int(secMax['ID']) 
         spec_list[idx].header.mono_mz = secMax['MonoMz']
         spec_list[idx].header.charge = int(secMax['Charge'])
         spec_list[idx].header.mono_mass = secMax['Mass']
-        spec_list[idx].header.inte = secMax['XIC'][ms_one_id]
+        spec_list[idx].header.inte = secMax['XIC'][ms1round]
 
 
 

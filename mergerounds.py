@@ -9,11 +9,9 @@ def main():
 
     r1 = pd.read_csv(args[0], sep="\t")
     r2 = pd.read_csv(args[1], sep="\t")
-    r3 = pd.read_csv(args[2], sep="\t")
-    r4 = pd.read_csv(args[3], sep="\t")
     
     
-    combined = pd.concat([r1, r2, r3, r4], ignore_index=True)
+    combined = pd.concat([r1, r2], ignore_index=True)
     Proteoform = combined.drop_duplicates(subset=["Proteoform"])
     Protein = combined.drop_duplicates(subset=["Protein accession"])
     Proteoform.to_csv("Proteoform.csv", sep="\t")
