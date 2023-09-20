@@ -15,24 +15,31 @@
 #!/usr/bin/python3
 
 class SpecHeader:
-  def __init__(self, spec_id, spec_scan, retention_time, 
-               activation, ms_one_id, ms_one_scan, mono_mz, 
-               charge, mono_mass, inte):
+  def __init__(self, frac_id, file_name, spec_id, title, spec_scan, retention_time, 
+               level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
+               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id):
+    self.frac_id = frac_id
+    self.file_name = file_name
     self.spec_id = spec_id
+    self.title = title
     self.spec_scan = spec_scan
     self.retention_time = retention_time
-    self.activation = activation
+    self.level = level
     self.ms_one_id = ms_one_id
     self.ms_one_scan = ms_one_scan
-    self.mono_mz = mono_mz
-    self.charge = charge
-    self.mono_mass = mono_mass
-    self.inte = inte
+    self.pre_window_begin = pre_window_begin
+    self.pre_window_end = pre_window_end
+    self.activation = activation
+    self.pre_mz = pre_mz
+    self.pre_charge = pre_charge
+    self.pre_mass = pre_mass
+    self.pre_inte = pre_inte
+    self.pre_feature_id = pre_feature_id
   
   @classmethod
-  def get_header(cls, spec_id, spec_scan, retention_time, 
-               activation, ms_one_id, ms_one_scan, mono_mz, 
-               charge, mono_mass, inte):
-    return cls(spec_id, spec_scan, retention_time, 
-               activation, ms_one_id, ms_one_scan, mono_mz, 
-               charge, mono_mass, inte)
+  def get_header(cls, frac_id, file_name, spec_id, title, spec_scan, retention_time, 
+               level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
+               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id):
+    return cls(frac_id, file_name, spec_id, title, spec_scan, retention_time, 
+               level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
+               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id)

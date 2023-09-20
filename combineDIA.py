@@ -26,10 +26,8 @@ def main():
         isolationWindow = (spec_list[idx].header.spec_scan - 1) % 21
         lowerbound = startRatio + (isolationWindow - 1) * mzwindow 
         upperbound = startRatio + (isolationWindow) * mzwindow
-        rt = spec_list[idx].header.retention_time / 60
 
-        query = feature_file[(feature_file.XIC.apply(lambda x: not math.isnan(x[ms1round]) and x[ms1round] > 1)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound) \
-                             & (feature_file['rtLo'] < rt) & (feature_file['rtHi'] > rt)]
+        query = feature_file[(feature_file.XIC.apply(lambda x: x[ms1round] > 0)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound)]
         
         if (query.empty):
             del spec_list[idx]

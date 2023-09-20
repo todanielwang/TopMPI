@@ -12,7 +12,7 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true,
-            "args": ["/home/daniel/Desktop/datafiles/RealData/yeast/study4/newenvelopeIntensity/720-800/20220718_Yeast_DIA_720-800_75cmCapil_300nL_30kV_01_ms2.msalign", "/home/daniel/Desktop/datafiles/RealData/yeast/study4/newenvelopeIntensity/720-800/20220718_Yeast_DIA_720-800_75cmCapil_300nL_30kV_01_frac.mzrt.csv", "720"], 
+            "args": ["/home/daniel/Desktop/datafiles/RealData/ovarian_cancer/TopMultiplex/round1/modified_CPTAC_Intact_rep1_15Jan15_Bane_C2-14-08-02RZ_ms2.msalign", "/home/daniel/Desktop/datafiles/RealData/ovarian_cancer/TopMultiplex/round1/CPTAC_Intact_rep1_15Jan15_Bane_C2-14-08-02RZ_frac.mzrt.csv", "/home/daniel/Desktop/datafiles/RealData/ovarian_cancer/CPTAC_Intact_rep1_15Jan15_Bane_C2-14-08-02RZ.mzML", "/home/daniel/Desktop/datafiles/RealData/ovarian_cancer/TopMultiplex/round1/modified_CPTAC_Intact_rep1_15Jan15_Bane_C2-14-08-02RZ_html/toppic_prsm_cutoff/data_js/prsms/"], 
             "purpose": ["debug-in-terminal"]
         }
     ]

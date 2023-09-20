@@ -20,47 +20,78 @@ from spec_peak import SpecPeak
 from spectrum import Spectrum
 
 def _read_header(spec_lines):
+  frac_id = -1
+  file_name = ""
   spec_id = -1
+  title = ""
   spec_scan = -1
   retention_time = -1
-  activation = -1
+  level = -1
   ms_one_id = -1
   ms_one_scan = -1
-  mono_mz = -1
-  charge = -1
-  mono_mass = -1
-  inte = -1
+  pre_window_begin = -1
+  pre_window_end = -1
+  activation = -1
+  pre_mz = -1
+  pre_charge = -1
+  pre_mass = -1
+  pre_inte = -1
+  pre_feature_id = -1
 
   for i in range(len(spec_lines)):
     line = spec_lines[i]
     mono = line.split('=')
-    if("ID" == line[0:2]):
+    if("FRACTION_ID" in line):
+      frac_id = int(mono[1])
+    if("FILE_NAME" in line):
+      file_name = mono[1]
+    if("SPECTRUM_ID" in line):
       spec_id = int(mono[1])
+    if("TITLE" in line):
+      title = mono[1]
     if("SCANS" in line):
       spec_scan = int(mono[1])
     if("RETENTION_TIME" in line):
       retention_time = float(mono[1])
-    if("ACTIVATION" in line):
-      activation = mono[1]
+    if ("LEVEL" in line):
+      level = int(mono[1])
     if("MS_ONE_ID" in line):
       ms_one_id = int(mono[1])
     if("MS_ONE_SCAN" in line):
       ms_one_scan = int(mono[1])
+    if ("PRECURSOR_WINDOW_BEGIN" in line):
+      pre_window_begin = float(mono[1])
+    if ("PRECURSOR_WINDOW_END" in line):
+      pre_window_end = float(mono[1])
+    if("ACTIVATION" in line):
+      activation = mono[1]
     if("PRECURSOR_MZ" in line):
-      mono_mz = float(mono[1])
+      pre_mz_list = mono[1].split(":")
+      if (len(pre_mz_list) > 1):
+        pre_mz = float(pre_mz_list[1])
     if("PRECURSOR_CHARGE" in line):
-      charge = int(mono[1])
+      pre_charge_list = mono[1].split(":")
+      if (len(pre_charge_list) > 1):
+        pre_charge = float(pre_charge_list[1])
     if("PRECURSOR_MASS" in line):
-      mono_mass = float(mono[1])
+      pre_mass_list = mono[1].split(":")
+      if (len(pre_mass_list) > 1):
+        pre_mass = float(pre_mass_list[1])
     if("PRECURSOR_INTENSITY" in line):
-      inte = float(mono[1])
-  header = SpecHeader.get_header(spec_id, spec_scan, retention_time, 
-               activation, ms_one_id, ms_one_scan, mono_mz, 
-               charge, mono_mass, inte)
+      pre_inte_list = mono[1].split(":")
+      if (len(pre_inte_list) > 1):
+        pre_inte = float(pre_inte_list[1])
+    if("PRECURSOR_FEATURE_ID" in line):
+      pre_id_list = mono[1].split(":")
+      if (len(pre_id_list) > 1):
+        pre_inte = int(pre_id_list[1])
+  header = SpecHeader.get_header(frac_id, file_name, spec_id, title, spec_scan, retention_time, 
+               level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
+               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id)
   return header
 
 def _read_peaks(spec_lines):
-  exp_line = "PRECURSOR_INTENSITY"
+  exp_line = "PRECURSOR_FEATURE_ID"
   end_line = "END IONS"
   peak_list = []
   i = 0
@@ -72,7 +103,8 @@ def _read_peaks(spec_lines):
     mass = float(mono[0])
     intensity = float(mono[1])
     charge = int(mono[2])
-    peak = SpecPeak(mass, intensity, charge)
+    ecscore = float(mono[3])
+    peak = SpecPeak(mass, intensity, charge, ecscore)
     peak_list.append(peak)
     i = i + 1
   return peak_list
@@ -102,7 +134,6 @@ def _get_level_one(all_lines, begin_idx, end_idx):
   return False
 
 def read_spec_file(filename):
-  print("DO NOTE THAT THIS VERSION SKIPS THE MS1 SCANS")
   file = open(filename)
   all_lines = file.readlines()
   all_lines = [x.strip() for x in all_lines] 
@@ -120,8 +151,10 @@ def read_spec_file(filename):
     begin_idx = end_idx + 1
     if begin_idx >= len(all_lines):
       break
-    
     spec = _parse_spectrum(spec_lines)
+    if (spec.header.pre_mz == -1):
+      del spec
+      continue
     spec.header.file_name = filename
     spec_list.append(spec)
   return spec_list
@@ -130,18 +163,23 @@ def write_spec_file(filename, spec_list):
   with open(filename + "_modified", "w") as outputfile:
     for spectrum in spec_list:
       outputfile.write("BEGIN IONS\n")
-      outputfile.write("ID=" + str(spectrum.header.spec_id) + "\n")
-      outputfile.write("FRACTION_ID=0\nFILE_NAME=/home/daniel/Desktop/datafiles/RealData/yeast/study4/20220718_Yeast_DIA_720-800_75cmCapil_300nL_30kV_01.mzML\n")
+      outputfile.write("FRACTION_ID=" + str(spectrum.header.frac_id) + "\n")
+      outputfile.write("FILE_NAME=" + spectrum.header.file_name + "\n")
+      outputfile.write("SPECTRUM_ID=" + str(spectrum.header.spec_id) + "\n")
+      outputfile.write("TITLE=" + spectrum.header.title + "\n")
       outputfile.write("SCANS=" + str(spectrum.header.spec_scan) + "\n")
       outputfile.write("RETENTION_TIME=" + str(spectrum.header.retention_time) + "\n")
-      outputfile.write("LEVEL=2\n")
-      outputfile.write("ACTIVATION=" + str(spectrum.header.activation) + "\n")
+      outputfile.write("LEVEL=" + str(spectrum.header.level) + "\n")
       outputfile.write("MS_ONE_ID=" + str(spectrum.header.ms_one_id) + "\n")
       outputfile.write("MS_ONE_SCAN=" + str(spectrum.header.ms_one_scan) + "\n")
-      outputfile.write("PRECURSOR_MZ=" + str(spectrum.header.mono_mz) + "\n")
-      outputfile.write("PRECURSOR_CHARGE=" + str(spectrum.header.charge) + "\n")
-      outputfile.write("PRECURSOR_MASS=" + str(spectrum.header.mono_mass) + "\n")
-      outputfile.write("PRECURSOR_INTENSITY=" + str(spectrum.header.inte) + "\n")
+      outputfile.write("PRECURSOR_WINDOW_BEGIN=" + str(spectrum.header.pre_window_begin) + "\n")
+      outputfile.write("PRECURSOR_WINDOW_END=" + str(spectrum.header.pre_window_end) + "\n")
+      outputfile.write("ACTIVATION=" + str(spectrum.header.activation) + "\n")
+      outputfile.write("PRECURSOR_MZ=" + str(spectrum.header.pre_mz) + "\n")
+      outputfile.write("PRECURSOR_CHARGE=" + str(spectrum.header.pre_charge) + "\n")
+      outputfile.write("PRECURSOR_MASS=" + str(spectrum.header.pre_mass) + "\n")
+      outputfile.write("PRECURSOR_INTENSITY=" + str(spectrum.header.pre_inte) + "\n")
+      outputfile.write("PRECURSOR_FEATURE_ID=" + str(spectrum.header.pre_feature_id) + "\n")
       for peak in spectrum.peak_list:
-        outputfile.write(str(peak.mass) + "\t" + str(peak.intensity) + "\t" + str(peak.charge) + "\n")
+        outputfile.write(str(peak.mass) + "\t" + str(peak.intensity) + "\t" + str(peak.charge) + "\t" + str(peak.ecscore) + "\n")
       outputfile.write("END IONS\n\n")

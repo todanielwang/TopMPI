@@ -33,24 +33,22 @@ def main():
 
     for idx in range(len(spec_list) - 1, -1, -1):
         scan = spec_list[idx].header.spec_scan
-        ms1round = int((spec_list[idx].header.ms_one_scan - 1) / 7)
+        ms1id = spec_list[idx].header.ms_one_id
         lowerbound = mzdict[scan][0] - mzdict[scan][1]
         upperbound = mzdict[scan][0] + mzdict[scan][2]
-        rt = spec_list[idx].header.retention_time / 60
 
-        query = feature_file[(feature_file.XIC.apply(lambda x: not math.isnan(x[ms1round]) and x[ms1round] > 1)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound) \
-                             & (feature_file['rtLo'] < rt) & (feature_file['rtHi'] > rt)]
+        query = feature_file[(feature_file.XIC.apply(lambda x: x[ms1id] > 0)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound)]
         
         if (query.empty):
             del spec_list[idx]
             continue
 
-        maxMatch = query.loc[query['XIC'].apply(lambda x : x[ms1round]).idxmax()]
-        spec_list[idx].header.ms_one_id = int(maxMatch['ID']) 
+        maxMatch = query.loc[query['XIC'].apply(lambda x : x[ms1id]).idxmax()]
+
         spec_list[idx].header.mono_mz = maxMatch['MonoMz']
         spec_list[idx].header.charge = int(maxMatch['Charge'])
         spec_list[idx].header.mono_mass = maxMatch['Mass']
-        spec_list[idx].header.inte = maxMatch['XIC'][ms1round]
+        spec_list[idx].header.inte = maxMatch['XIC'][ms1id]
 
 
     read_msalign.write_spec_file(args[0], spec_list)

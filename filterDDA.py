@@ -47,39 +47,36 @@ def main():
 
     for idx in range(len(spec_list) - 1, -1, -1):
         scan = spec_list[idx].header.spec_scan
-        ms1round = int((spec_list[idx].header.ms_one_scan - 1) / 7)
+        ms1id = spec_list[idx].header.ms_one_id
         lowerbound = mzdict[scan][0] - mzdict[scan][1]
         upperbound = mzdict[scan][0] + mzdict[scan][2]
-        rt = spec_list[idx].header.retention_time / 60
 
-        query = feature_file[(feature_file.XIC.apply(lambda x: not math.isnan(x[ms1round]) and x[ms1round] > 1)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound) \
-                             & (feature_file['rtLo'] < rt) & (feature_file['rtHi'] > rt)]
+        query = feature_file[(feature_file.XIC.apply(lambda x: x[ms1id] > 0)) & (feature_file['MonoMz'] > lowerbound) & (feature_file['MonoMz'] < upperbound)]
     
         if (len(query) <= 1):
             del spec_list[idx]
             continue
         
         
-        query = query.drop([query['XIC'].apply(lambda x : x[ms1round]).idxmax()])
+        query = query.drop([query['XIC'].apply(lambda x : x[ms1id]).idxmax()])
 
-        secMax = query.loc[query['XIC'].apply(lambda x : x[ms1round]).idxmax()]
+        secMax = query.loc[query['XIC'].apply(lambda x : x[ms1id]).idxmax()]
 
         condition = False
         while (overlap(lowerbound, upperbound, secMax["mzLo"], secMax["mzHi"]) / (upperbound - lowerbound) < 0.2):
-            query = query.drop([query['XIC'].apply(lambda x : x[ms1round]).idxmax()])
+            query = query.drop([query['XIC'].apply(lambda x : x[ms1id]).idxmax()])
             if (query.empty):
                 condition = True
                 break
-            secMax = query.loc[query['XIC'].apply(lambda x : x[ms1round]).idxmax()]
+            secMax = query.loc[query['XIC'].apply(lambda x : x[ms1id]).idxmax()]
 
         if (condition):
             continue
 
-        spec_list[idx].header.ms_one_id = int(secMax['ID']) 
         spec_list[idx].header.mono_mz = secMax['MonoMz']
         spec_list[idx].header.charge = int(secMax['Charge'])
         spec_list[idx].header.mono_mass = secMax['Mass']
-        spec_list[idx].header.inte = secMax['XIC'][ms1round]
+        spec_list[idx].header.inte = secMax['XIC'][ms1id]
 
 
 
@@ -102,6 +99,8 @@ def main():
                         if (filescan > toppicscan):
                             deleted = True
                         break
+                if (curr_spec >= len(spec_list)):
+                    break
                 if (deleted):
                     continue
                 peak_list = toppic["prsm"]["ms"]["peaks"]["peak"]

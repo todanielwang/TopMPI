@@ -15,7 +15,8 @@
 #!/usr/bin/python3
 
 class SpecPeak:
-  def __init__(self, mass, intensity, charge):
+  def __init__(self, mass, intensity, charge, ecscore):
     self.mass = mass
     self.intensity = intensity
     self.charge = charge
+    self.ecscore = ecscore

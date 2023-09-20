@@ -19,6 +19,10 @@ class Spectrum:
     self.header = header
     self.peak_list = peak_list
 
+  def __del__(self):
+    del self.header
+    del self.peak_list
+
   @classmethod
   def get_spec(cls, header, peak_list):
     return cls(header, peak_list)
