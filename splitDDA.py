@@ -18,6 +18,15 @@ def main():
     
     spec_list = read_msalign.read_spec_file(args[0])
 
+    spec_list = [spec for spec in spec_list if len(spec.header.pre_mz_list) > 1]
+
+    for spec in spec_list:
+        spec.header.pre_mz_list = spec.header.pre_mz_list[1:]
+        spec.header.pre_charge_list = spec.header.pre_charge_list[1:]
+        spec.header.pre_mass_list = spec.header.pre_mass_list[1:]
+        spec.header.pre_inte_list = spec.header.pre_inte_list[1:]
+        spec.header.pre_id_list = spec.header.pre_id_list[1:]
+
     curr_spec = 0
     count = 0
     for x in sorted(os.listdir(args[1]), key=numericalSort):

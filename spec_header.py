@@ -17,7 +17,7 @@
 class SpecHeader:
   def __init__(self, frac_id, file_name, spec_id, title, spec_scan, retention_time, 
                level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
-               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id):
+               activation, pre_mz_list, pre_charge_list, pre_mass_list, pre_inte_list, pre_id_list):
     self.frac_id = frac_id
     self.file_name = file_name
     self.spec_id = spec_id
@@ -30,16 +30,16 @@ class SpecHeader:
     self.pre_window_begin = pre_window_begin
     self.pre_window_end = pre_window_end
     self.activation = activation
-    self.pre_mz = pre_mz
-    self.pre_charge = pre_charge
-    self.pre_mass = pre_mass
-    self.pre_inte = pre_inte
-    self.pre_feature_id = pre_feature_id
+    self.pre_mz_list = pre_mz_list
+    self.pre_charge_list = pre_charge_list
+    self.pre_mass_list = pre_mass_list
+    self.pre_inte_list = pre_inte_list
+    self.pre_id_list = pre_id_list
   
   @classmethod
   def get_header(cls, frac_id, file_name, spec_id, title, spec_scan, retention_time, 
                level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
-               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id):
+               activation, pre_mz_list, pre_charge_list, pre_mass_list, pre_inte_list, pre_id_list):
     return cls(frac_id, file_name, spec_id, title, spec_scan, retention_time, 
                level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
-               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id)
+               activation, pre_mz_list, pre_charge_list, pre_mass_list, pre_inte_list, pre_id_list)

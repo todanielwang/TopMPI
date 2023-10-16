@@ -32,11 +32,11 @@ def _read_header(spec_lines):
   pre_window_begin = -1
   pre_window_end = -1
   activation = -1
-  pre_mz = -1
-  pre_charge = -1
-  pre_mass = -1
-  pre_inte = -1
-  pre_feature_id = -1
+  pre_mz_list = -1
+  pre_charge_list = -1
+  pre_mass_list = -1
+  pre_inte_list = -1
+  pre_id_list = -1
 
   for i in range(len(spec_lines)):
     line = spec_lines[i]
@@ -67,27 +67,17 @@ def _read_header(spec_lines):
       activation = mono[1]
     if("PRECURSOR_MZ" in line):
       pre_mz_list = mono[1].split(":")
-      if (len(pre_mz_list) > 1):
-        pre_mz = float(pre_mz_list[1])
     if("PRECURSOR_CHARGE" in line):
       pre_charge_list = mono[1].split(":")
-      if (len(pre_charge_list) > 1):
-        pre_charge = float(pre_charge_list[1])
     if("PRECURSOR_MASS" in line):
       pre_mass_list = mono[1].split(":")
-      if (len(pre_mass_list) > 1):
-        pre_mass = float(pre_mass_list[1])
     if("PRECURSOR_INTENSITY" in line):
       pre_inte_list = mono[1].split(":")
-      if (len(pre_inte_list) > 1):
-        pre_inte = float(pre_inte_list[1])
     if("PRECURSOR_FEATURE_ID" in line):
       pre_id_list = mono[1].split(":")
-      if (len(pre_id_list) > 1):
-        pre_inte = int(pre_id_list[1])
   header = SpecHeader.get_header(frac_id, file_name, spec_id, title, spec_scan, retention_time, 
                level, ms_one_id, ms_one_scan, pre_window_begin, pre_window_end, 
-               activation, pre_mz, pre_charge, pre_mass, pre_inte, pre_feature_id)
+               activation, pre_mz_list, pre_charge_list, pre_mass_list, pre_inte_list, pre_id_list)
   return header
 
 def _read_peaks(spec_lines):
@@ -152,9 +142,6 @@ def read_spec_file(filename):
     if begin_idx >= len(all_lines):
       break
     spec = _parse_spectrum(spec_lines)
-    if (spec.header.pre_mz == -1):
-      del spec
-      continue
     spec.header.file_name = filename
     spec_list.append(spec)
   return spec_list
@@ -175,11 +162,11 @@ def write_spec_file(filename, spec_list):
       outputfile.write("PRECURSOR_WINDOW_BEGIN=" + str(spectrum.header.pre_window_begin) + "\n")
       outputfile.write("PRECURSOR_WINDOW_END=" + str(spectrum.header.pre_window_end) + "\n")
       outputfile.write("ACTIVATION=" + str(spectrum.header.activation) + "\n")
-      outputfile.write("PRECURSOR_MZ=" + str(spectrum.header.pre_mz) + "\n")
-      outputfile.write("PRECURSOR_CHARGE=" + str(spectrum.header.pre_charge) + "\n")
-      outputfile.write("PRECURSOR_MASS=" + str(spectrum.header.pre_mass) + "\n")
-      outputfile.write("PRECURSOR_INTENSITY=" + str(spectrum.header.pre_inte) + "\n")
-      outputfile.write("PRECURSOR_FEATURE_ID=" + str(spectrum.header.pre_feature_id) + "\n")
+      outputfile.write("PRECURSOR_MZ=" + ":".join(spectrum.header.pre_mz_list) + "\n")
+      outputfile.write("PRECURSOR_CHARGE=" + ":".join(spectrum.header.pre_charge_list) + "\n")
+      outputfile.write("PRECURSOR_MASS=" + ":".join(spectrum.header.pre_mass_list) + "\n")
+      outputfile.write("PRECURSOR_INTENSITY=" + ":".join(spectrum.header.pre_inte_list) + "\n")
+      outputfile.write("PRECURSOR_FEATURE_ID=" + ":".join(spectrum.header.pre_id_list) + "\n")
       for peak in spectrum.peak_list:
         outputfile.write(str(peak.mass) + "\t" + str(peak.intensity) + "\t" + str(peak.charge) + "\t" + str(peak.ecscore) + "\n")
       outputfile.write("END IONS\n\n")
