@@ -22,18 +22,25 @@ def main():
             for row in csv.DictReader(f, skipinitialspace=True, delimiter="\t")]
         
     print(len(left))
-    
-
-    for left_row in reversed(left):
-        for right_row in right:
-            if left_row["Protein accession"] == right_row["Protein accession"] and \
-                abs(float(left_row["Proteoform mass"]) - float(right_row["Proteoform mass"])) < 5:
-                left.remove(left_row)
-                break
+        
+    left_counter = 0
+    right_counter = 0
+    while left_counter < len(left):            
+        if (left[left_counter]["Scan(s)"]) < right[right_counter]["Scan(s)"]:
+            left_counter += 1
+        elif (left[left_counter]["Scan(s)"] > right[right_counter]["Scan(s)"]):
+            right_counter += 1
+        else:
+            if (left[left_counter]["Protein accession"] != right[right_counter]["Protein accession"] or \
+                abs(float(left[left_counter]["Proteoform mass"]) - float(right[right_counter]["Proteoform mass"])) > 1):
+                del left[left_counter]
+                left_counter -= 1
+            left_counter += 1
+            right_counter += 1
 
     print(len(left))
 
-    with open('left.tsv', 'w', newline='\n') as output_file:
+    with open('prsm_result.tsv', 'w', newline='\n') as output_file:
         dict_writer = csv.DictWriter(output_file, left[0].keys(), delimiter="\t")
         dict_writer.writeheader()
         dict_writer.writerows(left)

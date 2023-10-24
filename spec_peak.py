@@ -20,3 +20,10 @@ class SpecPeak:
     self.intensity = intensity
     self.charge = charge
     self.ecscore = ecscore
+
+  def __eq__(self, __value: object) -> bool:
+    if isinstance(__value, self.__class__):
+      if self.mass == __value.mass and self.charge == __value.charge and self.ecscore == __value.ecscore:
+          return True
+    return False
+  
