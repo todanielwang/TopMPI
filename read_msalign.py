@@ -129,7 +129,6 @@ def read_spec_file(filename):
   all_lines = [x.strip() for x in all_lines] 
   file.close()
   ## Assign file name to header
-  filename = os.path.basename(filename)
   spec_list = []
   begin_idx = _get_begin_index(all_lines, 0)
   while (begin_idx < len(all_lines)):
@@ -142,7 +141,6 @@ def read_spec_file(filename):
     if begin_idx >= len(all_lines):
       break
     spec = _parse_spectrum(spec_lines)
-    spec.header.file_name = filename
     spec_list.append(spec)
   return spec_list
 
@@ -170,3 +168,25 @@ def write_spec_file(filename, spec_list):
       for peak in spectrum.peak_list:
         outputfile.write(str(peak.mass) + "\t" + str(peak.intensity) + "\t" + str(peak.charge) + "\t" + str(peak.ecscore) + "\n")
       outputfile.write("END IONS\n\n")
+
+def switchPrecursors(spec_list):
+  for spec in spec_list:
+    if len(spec.header.pre_charge_list) < 2:
+      continue
+    pre_mz_list = spec.header.pre_mz_list
+    pre_charge_list = spec.header.pre_charge_list
+    pre_mass_list = spec.header.pre_mass_list
+    pre_inte_list = spec.header.pre_inte_list
+    pre_id_list = spec.header.pre_id_list
+
+    pre_mz_list[0], pre_mz_list[1] = pre_mz_list[1], pre_mz_list[0]
+    pre_charge_list[0], pre_charge_list[1] = pre_charge_list[1], pre_charge_list[0]
+    pre_mass_list[0], pre_mass_list[1] = pre_mass_list[1], pre_mass_list[0]
+    pre_inte_list[0], pre_inte_list[1] = pre_inte_list[1], pre_inte_list[0]
+    pre_id_list[0], pre_id_list[1] = pre_id_list[1], pre_id_list[0]
+
+    spec.header.pre_mz_list = pre_mz_list
+    spec.header.pre_charge_list = pre_charge_list
+    spec.header.pre_mass_list = pre_mass_list
+    spec.header.pre_inte_list = pre_inte_list
+    spec.header.pre_id_list = pre_id_list
