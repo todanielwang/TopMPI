@@ -14,10 +14,10 @@
 
 #!/usr/bin/python3
 
-import os 
 from spec_header import SpecHeader
 from spec_peak import SpecPeak
 from spectrum import Spectrum
+import copy
 
 def _read_header(spec_lines):
   frac_id = -1
@@ -85,7 +85,7 @@ def _read_peaks(spec_lines):
   end_line = "END IONS"
   peak_list = []
   i = 0
-  while(exp_line not in spec_lines[i]):
+  while(i < len(spec_lines) and exp_line not in spec_lines[i]):
     i = i + 1
   i = i + 1
   while(spec_lines[i] != end_line): 
@@ -134,18 +134,19 @@ def read_spec_file(filename):
   while (begin_idx < len(all_lines)):
     end_idx = _get_end_index(all_lines, begin_idx)
     spec_lines = all_lines[begin_idx:end_idx +1]
+    if (len(spec_lines) < 5):
+      break
     if (_get_level_one(all_lines, begin_idx, end_idx)):
       begin_idx = end_idx + 1
       continue
-    begin_idx = end_idx + 1
-    if begin_idx >= len(all_lines):
-      break
     spec = _parse_spectrum(spec_lines)
     spec_list.append(spec)
+    begin_idx = end_idx + 1
   return spec_list
 
 def write_spec_file(filename, spec_list):
-  with open(filename + "_modified", "w") as outputfile:
+  filenamelist = filename.split(".")
+  with open(filenamelist[0] + "_modified." + filenamelist[1], "w") as outputfile:
     for spectrum in spec_list:
       outputfile.write("BEGIN IONS\n")
       outputfile.write("FRACTION_ID=" + str(spectrum.header.frac_id) + "\n")
@@ -190,3 +191,17 @@ def switchPrecursors(spec_list):
     spec.header.pre_mass_list = pre_mass_list
     spec.header.pre_inte_list = pre_inte_list
     spec.header.pre_id_list = pre_id_list
+
+def sortScans(spec_list):
+    sort_dict = {}
+    for spec in spec_list:
+      scan = spec.header.spec_scan % 100000
+      temp_spec = copy.deepcopy(spec)
+      while (scan in sort_dict.keys()):
+        scan += 100000
+        temp_spec.header.spec_id = scan
+      temp_spec.header.spec_scan = scan
+      temp_spec.header.spec_id = scan
+      sort_dict[scan] = temp_spec
+
+    return dict(sorted(sort_dict.items())).values()
