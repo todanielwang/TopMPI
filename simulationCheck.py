@@ -1,18 +1,24 @@
+import sys
 import pandas as pd
 import read_msalign
 
 def main():
+    args = sys.argv[1:]
+    if (len(args) != 1):
+        raise Exception(
+            "Please pass in the directory")
+    
     verifier = pd.read_csv("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/20231215_ecoli_400ng_daniel_1_ms2_toppic_prsm_single.tsv", delimiter="\t")
 
-    result_a = pd.read_csv("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/A_ms2_toppic_prsm_single.tsv", delimiter="\t")
-    result_ab = pd.read_csv("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/AB_ms2_toppic_prsm_single.tsv", delimiter="\t")
-    result_b = pd.read_csv("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/B_ms2_toppic_prsm_single.tsv", delimiter="\t")
-    result_ba = pd.read_csv("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/BA_ms2_toppic_prsm_single.tsv", delimiter="\t")
+    result_a = pd.read_csv(args[0] + "A_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ab = pd.read_csv(args[0] + "AB_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_b = pd.read_csv(args[0] + "B_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
 
-    spec_list_a = read_msalign.read_spec_file("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/A_ms2.msalign")
-    spec_list_ab = read_msalign.read_spec_file("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/AB_ms2.msalign")
-    spec_list_b = read_msalign.read_spec_file("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/B_ms2.msalign")
-    spec_list_ba = read_msalign.read_spec_file("/home/daniel/Desktop/datafiles/RealData/ecoli/DDA/20231215_ecoli_400ng/Simulation4/FDR/BA_ms2.msalign")
+    spec_list_a = read_msalign.read_spec_file(args[0] + "A_ms2.msalign")
+    spec_list_ab = read_msalign.read_spec_file(args[0] + "AB_ms2.msalign")
+    spec_list_b = read_msalign.read_spec_file(args[0] + "B_ms2.msalign")
+    spec_list_ba = read_msalign.read_spec_file(args[0] + "BA_ms2.msalign")
 
 
     spec_dict_a = {}
@@ -88,10 +94,10 @@ def main():
     finalResult_ba.drop(columns=["Scan_true"], inplace=True)
 
 
-    finalResult_a.to_csv("A_SimulationResult.csv", sep="\t")
-    finalResult_ab.to_csv("AB_SimulationResult.csv", sep="\t")
-    finalResult_b.to_csv("B_SimulationResult.csv", sep="\t")
-    finalResult_ba.to_csv("BA_SimulationResult.csv", sep="\t")
+    finalResult_a.to_csv(args[0] + "A_SimulationResult.csv", sep="\t")
+    finalResult_ab.to_csv(args[0] + "AB_SimulationResult.csv", sep="\t")
+    finalResult_b.to_csv(args[0] + "B_SimulationResult.csv", sep="\t")
+    finalResult_ba.to_csv(args[0] + "BA_SimulationResult.csv", sep="\t")
         
     pairs = []
     for spec in spec_list_a:
@@ -138,6 +144,8 @@ def main():
     def checkCondition(prsm):
         if prsm.empty:
             return "-"
+        elif "DECOY" == str(prsm.iloc[0].at["Protein accession"]).split("_")[0]:
+            return "DECOY"
         elif prsm.iloc[0].at["Verified_ProteinA"]:
             return "A"
         elif prsm.iloc[0].at["Verified_ProteinB"]:
@@ -176,7 +184,7 @@ def main():
 
     outputdf = pd.DataFrame(output_dict)
 
-    outputdf.to_csv("Result.tsv", sep="\t")
+    outputdf.to_csv(args[0] + "Result.tsv", sep="\t")
 
 if __name__ == "__main__":
     main()

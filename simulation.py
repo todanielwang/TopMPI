@@ -16,13 +16,13 @@ def main():
     pairs = set()
 
     for idx, prsm in list(enumerate(prsms))[:-1]:
-        for idxother, prsmother in list(enumerate(prsms))[:]:
+        for idxother, prsmother in list(enumerate(prsms))[idx:]:
             if abs(float(prsmother["m/z"]) - float(prsm["m/z"])) < 1.5:
-                if ((~(int(prsmother["Charge"]) == int(prsm["Charge"]))) & (prsmother["Protein accession"] != prsm["Protein accession"])):
-                    if (int(prsm["#matched peaks"]) > int(prsmother["#matched peaks"])):
-                        pairs.add(frozenset([prsm["Scan(s)"], prsmother["Scan(s)"]]))
+                if (((int(prsmother["Charge"]) != int(prsm["Charge"]))) & (prsmother["Protein accession"] != prsm["Protein accession"])):
+                    if (int(prsm["#matched peaks"]) >= int(prsmother["#matched peaks"])):
+                        pairs.add(tuple([prsm["Scan(s)"], prsmother["Scan(s)"]]))
                     else:
-                        pairs.add(frozenset([prsmother["Scan(s)"], prsm["Scan(s)"]]))
+                        pairs.add(tuple([prsmother["Scan(s)"], prsm["Scan(s)"]]))
 
     spec_list = read_msalign.read_spec_file(args[1])
 
