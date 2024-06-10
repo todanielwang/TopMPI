@@ -19,9 +19,9 @@ def main():
             for row in csv.DictReader(f, skipinitialspace=True, delimiter="\t")]
             
     signal = 0
-    for rowNew in right:
+    for index, rowNew in enumerate(right):
         for rowOld in left:
-            if rowNew["Protein accession"] == rowOld["Protein accession"] and abs(float(rowNew["Proteoform mass"]) - float(rowOld["Proteoform mass"])) < 1:
+            if (rowNew["Protein accession"] == rowOld["Protein accession"]) and (abs(float(rowNew["Proteoform mass"]) - float(rowOld["Proteoform mass"])) < 1):
                 signal = 1
                 break
         if signal == 0:

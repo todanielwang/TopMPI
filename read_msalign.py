@@ -145,7 +145,7 @@ def read_spec_file(filename):
   return spec_list
 
 def write_spec_file(filename, spec_list):
-  filenamelist = filename.split(".")
+  filenamelist = filename.rsplit(".", 1)
   with open(filenamelist[0] + "_modified." + filenamelist[1], "w") as outputfile:
     for spectrum in spec_list:
       outputfile.write("BEGIN IONS\n")
@@ -171,6 +171,7 @@ def write_spec_file(filename, spec_list):
       outputfile.write("END IONS\n\n")
 
 def switchPrecursors(spec_list):
+  outputlist = []
   for spec in spec_list:
     if len(spec.header.pre_charge_list) < 2:
       continue
@@ -191,6 +192,8 @@ def switchPrecursors(spec_list):
     spec.header.pre_mass_list = pre_mass_list
     spec.header.pre_inte_list = pre_inte_list
     spec.header.pre_id_list = pre_id_list
+    outputlist.append(spec)
+  return outputlist
 
 def sortScans(spec_list):
     sort_dict = {}

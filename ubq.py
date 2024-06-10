@@ -205,11 +205,11 @@ def main():
     parser = argparse.ArgumentParser(description="This program will take five positional inputs")
 
     # Add positional arguments
-    parser.add_argument('directory', help='The directory of the ms2.msalign files')
+    parser.add_argument('file', help='The ms2.msalign file')
     parser.add_argument('protein', help='The protein accession as a string, in the form "protein"')
     parser.add_argument('rtbegin', help='The begining of the rt range in minutes')
     parser.add_argument('rtend', help='The end of the rt range in minutes')
-    parser.add_argument('mass', help='The mass of the precursor with 10 ppm')
+    # parser.add_argument('charge', help='The charge state of the precursor')
 
 
     # Add optional argument with '-w' flag
@@ -218,13 +218,17 @@ def main():
     # Parse arguments
     args = parser.parse_args()
 
-    spec_list = read_spec_file(args.directory)
+    try:
+        spec_list = read_spec_file(args.file)
+    except:
+        print("Wrong directory, file not found!")
+        exit(1)
 
     spec_dict = {}
     for spec in spec_list:
         spec_dict[str(spec.header.spec_scan)] = spec
 
-    jsfolder = args.directory.rsplit("_", 1)[0] + "_html/toppic_proteoform_cutoff/data_js/proteoforms/"
+    jsfolder = args.file.rsplit("_", 1)[0] + "_html/toppic_proteoform_cutoff/data_js/proteoforms/"
     outputlist = []
     for filename in sorted(os.listdir(jsfolder), key=numericalSort):
         try:
@@ -240,19 +244,29 @@ def main():
 
         dictlist = []
         prsm = toppic["compatible_proteoform"]["prsm"]
-        if (not int(toppic["compatible_proteoform"]["prsm_number"]) == 1):
-            prsm = prsm[0]
+        if (int(toppic["compatible_proteoform"]["prsm_number"]) == 1):
+            prsm = [prsm]
 
-        rtmin = float(spec_dict[str(prsm["ms"]["ms_header"]["scans"])].header.retention_time) / 60
-        if rtmin < float(args.rtbegin) or rtmin > float(args.rtend):
-           continue
+        # Find the best prsm within the rt range and correct charge state until run out
+        rtmin = float(spec_dict[str(prsm[0]["ms"]["ms_header"]["scans"])].header.retention_time) / 60
+        # charge = int(spec_dict[str(prsm[0]["ms"]["ms_header"]["scans"])].header.pre_charge_list[0])
+        while ((rtmin < float(args.rtbegin) or rtmin > float(args.rtend))):
+          prsm = prsm[1:]
+          if (len(prsm) == 0):
+             break
+          rtmin = float(spec_dict[str(prsm[0]["ms"]["ms_header"]["scans"])].header.retention_time) / 60
+          # charge = int(spec_dict[str(prsm[0]["ms"]["ms_header"]["scans"])].header.pre_charge_list[0])
+
+        if (len(prsm) == 0):
+          continue
         
-        tol = float(args.mass) / 1e5
-        if (tol < 0.01):
-          tol = 0.01
-        print(tol)
-        if not (abs(float(spec_dict[str(prsm["ms"]["ms_header"]["scans"])].header.pre_mass_list[0]) - float(args.mass)) <= tol):
-           continue
+        prsm = prsm[0]
+        
+        # tol = (10 * float(args.mass)) / 1e6
+        # if (tol < 0.01):
+        #   tol = 0.01
+        # if not (abs(float(spec_dict[str(prsm["ms"]["ms_header"]["scans"])].header.pre_mass_list[0]) - float(args.mass)) <= tol):
+        #    continue
         
         peak_list = prsm["ms"]["peaks"]["peak"]
         for peak in peak_list:
