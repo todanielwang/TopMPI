@@ -12,8 +12,6 @@ input_file="$3"
 # Extract the base directory
 base_dir=$(dirname "$input_file")
 
-echo $base_dir
-
 # Extract common prefix by trimming the last underscore segment and subsequent text
 common_prefix=$(basename "$input_file" | sed -r 's/(_[^_]+)$//')
 
@@ -21,7 +19,7 @@ common_prefix=$(basename "$input_file" | sed -r 's/(_[^_]+)$//')
 new_sub_dir="${base_dir}/${common_prefix}_MSDeplex"
 
 # Create the new directory if it doesn't exist
-mkdir -p "$new_sub_dir"
+# mkdir -p "$new_sub_dir"
 
 # Define function to copy and rename files
 copy_and_rename() {
@@ -80,11 +78,11 @@ $TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -d -t FDR -v 10000 -T
 
 $TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -d -t FDR -v 10000 -T FDR -V 10000
 
-python3 multiplexCheck.py ${new_sub_dir}
+python3 multiplexCheck.py ${new_sub_dir}/
 
 python3 resolveConflicts.py ${new_sub_dir}/Result.tsv
 
-python multiplexRescore.py ${new_sub_dir}
+python3 multiplexRescore.py ${new_sub_dir}/
 
 for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     src_file="${new_sub_dir}/A_${extension}"
@@ -93,6 +91,9 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file1"
     copy_and_rename "$src_file" "$dst_file2"
 done
+
+mv ${new_sub_dir}/resolved1_ms2_modified.msalign ${new_sub_dir}/resolved1_ms2.msalign
+mv ${new_sub_dir}/resolved2_ms2_modified.msalign ${new_sub_dir}/resolved2_ms2.msalign
 
 $TopPIC $database "${new_sub_dir}/resolved1_ms2.msalign" "${@:4}"
 
