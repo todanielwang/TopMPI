@@ -19,7 +19,7 @@ common_prefix=$(basename "$input_file" | sed -r 's/(_[^_]+)$//')
 new_sub_dir="${base_dir}/${common_prefix}_MSDeplex"
 
 # Create the new directory if it doesn't exist
-# mkdir -p "$new_sub_dir"
+mkdir -p "$new_sub_dir"
 
 # Define function to copy and rename files
 copy_and_rename() {
@@ -95,7 +95,7 @@ done
 mv ${new_sub_dir}/resolved1_ms2_modified.msalign ${new_sub_dir}/resolved1_ms2.msalign
 mv ${new_sub_dir}/resolved2_ms2_modified.msalign ${new_sub_dir}/resolved2_ms2.msalign
 
-$TopPIC $database "${new_sub_dir}/resolved1_ms2.msalign" "${@:4}"
+$TopPIC $database ${new_sub_dir}/resolved1_ms2.msalign ${@:4}
 
-$TopPIC $database "${new_sub_dir}/resolved2_ms2.msalign" "${@:4}"
+$TopPIC $database ${new_sub_dir}/resolved2_ms2.msalign ${@:4}
 
