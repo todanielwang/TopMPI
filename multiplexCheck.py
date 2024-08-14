@@ -8,10 +8,10 @@ def main():
         raise Exception(
             "Please pass in the directory")
     
-    result_a = pd.read_csv(args[0] + "A_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
-    result_ab = pd.read_csv(args[0] + "AB_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
-    result_b = pd.read_csv(args[0] + "B_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
-    result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
+    result_a = pd.read_csv(args[0] + "A_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ab = pd.read_csv(args[0] + "AB_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_b = pd.read_csv(args[0] + "B_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
 
     a_scans = set(result_a["Scan(s)"].tolist())
     ab_scans = set(result_ab["Scan(s)"].tolist())
@@ -20,27 +20,27 @@ def main():
 
     scanlist = sorted(list(a_scans.union(ab_scans).union(b_scans).union(ba_scans)))
 
-    spec_list_a = read_msalign.read_spec_file(args[0] + "A_ms2.msalign")
-    spec_list_ab = read_msalign.read_spec_file(args[0] + "AB_ms2.msalign")
-    spec_list_b = read_msalign.read_spec_file(args[0] + "B_ms2.msalign")
-    spec_list_ba = read_msalign.read_spec_file(args[0] + "BA_ms2.msalign")
+    # spec_list_a = read_msalign.read_spec_file(args[0] + "A_ms2.msalign")
+    # spec_list_ab = read_msalign.read_spec_file(args[0] + "AB_ms2.msalign")
+    # spec_list_b = read_msalign.read_spec_file(args[0] + "B_ms2.msalign")
+    # spec_list_ba = read_msalign.read_spec_file(args[0] + "BA_ms2.msalign")
 
 
-    spec_dict_a = {}
-    for spec in spec_list_a:
-        spec_dict_a[str(spec.header.spec_scan)] = spec
+    # spec_dict_a = {}
+    # for spec in spec_list_a:
+    #     spec_dict_a[str(spec.header.spec_scan)] = spec
     
-    spec_dict_ab = {}
-    for spec in spec_list_ab:
-        spec_dict_ab[str(spec.header.spec_scan)] = spec
+    # spec_dict_ab = {}
+    # for spec in spec_list_ab:
+    #     spec_dict_ab[str(spec.header.spec_scan)] = spec
     
-    spec_dict_b = {}
-    for spec in spec_list_b:
-        spec_dict_b[str(spec.header.spec_scan)] = spec
+    # spec_dict_b = {}
+    # for spec in spec_list_b:
+    #     spec_dict_b[str(spec.header.spec_scan)] = spec
 
-    spec_dict_ba = {}
-    for spec in spec_list_ba:
-        spec_dict_ba[str(spec.header.spec_scan)] = spec
+    # spec_dict_ba = {}
+    # for spec in spec_list_ba:
+    #     spec_dict_ba[str(spec.header.spec_scan)] = spec
 
     output_dict = {"Scan": [], 
                     "A+B_1": [], 

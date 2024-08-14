@@ -50,7 +50,7 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -d -t FDR -v 10000 -T FDR -V 10000
+$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -d -v 100000 -V 100000 -K
 
 python3 splitDDA.py ${new_sub_dir}/A_ms2.msalign
 
@@ -62,7 +62,7 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -d -t FDR -v 10000 -T FDR -V 10000
+$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -d -v 100000 -V 100000 -K
 
 python3 splitDDA.py ${new_sub_dir}/B_ms2.msalign
 
@@ -74,13 +74,11 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -d -t FDR -v 10000 -T FDR -V 10000
+$TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -d -v 100000 -V 100000 -K
 
-$TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -d -t FDR -v 10000 -T FDR -V 10000
+$TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -d -v 100000 -V 100000 -K
 
 python3 multiplexCheck.py ${new_sub_dir}/
-
-python3 resolveConflicts.py ${new_sub_dir}/Result.tsv
 
 python3 multiplexRescore.py ${new_sub_dir}/
 
@@ -95,7 +93,7 @@ done
 mv ${new_sub_dir}/resolved1_ms2_modified.msalign ${new_sub_dir}/resolved1_ms2.msalign
 mv ${new_sub_dir}/resolved2_ms2_modified.msalign ${new_sub_dir}/resolved2_ms2.msalign
 
-$TopPIC $database ${new_sub_dir}/resolved1_ms2.msalign ${@:4}
+$TopPIC $database ${new_sub_dir}/resolved1_ms2.msalign ${@:4} -d -t FDR -T FDR -K
 
-$TopPIC $database ${new_sub_dir}/resolved2_ms2.msalign ${@:4}
+$TopPIC $database ${new_sub_dir}/resolved2_ms2.msalign ${@:4} -d -t FDR -T FDR -K
 

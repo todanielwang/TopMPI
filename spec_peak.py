@@ -26,4 +26,13 @@ class SpecPeak:
       if self.mass == __value.mass and self.charge == __value.charge and self.ecscore == __value.ecscore:
           return True
     return False
+
+  def __hash__(self):
+    return hash(tuple([self.mass, self.intensity, self.charge, self.ecscore]))
+  
+  def __str__(self):
+    return "Test mass:% s charge:% s ecscore:% s\n" % (self.mass, self.charge, self.ecscore)
+  
+  def __repr__(self):
+    return "Test mass:% s charge:% s ecscore:% s\n" % (self.mass, self.charge, self.ecscore)
   
