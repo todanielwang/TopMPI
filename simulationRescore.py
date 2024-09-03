@@ -121,7 +121,7 @@ def main():
             inputdf.loc[(inputdf["Pair"] == str(pair)), ["F1 Con"]] = "True"
             count += 1
             continue
-        if (len(seta) > 0 and len(setba) > 0 and len(seta.intersection(setba)) / min(float(len(seta)), float(len(setba))) > 0.9):
+        if (len(setb) > 0 and len(setab) > 0 and len(setb.intersection(setab)) / min(float(len(setb)), float(len(setab))) > 0.9):
             inputdf.loc[(inputdf["Pair"] == str(pair)), ["F2 Con"]] = "True"
             count += 1
             continue
@@ -141,7 +141,7 @@ def main():
     mask = (((inputdf['F1 Con'] == "True") & (inputdf['F2 Con'] == "True")) | ((inputdf['F1 Con'] == "-") & (inputdf['F2 Con'] == "-"))) & ((inputdf["A+B_1 peaks"] + inputdf["A+B_2 peaks"] < inputdf["B+A_1 peaks"] + inputdf["B+A_2 peaks"]) | ((inputdf["A+B_1 peaks"] + inputdf["A+B_2 peaks"] == inputdf["B+A_1 peaks"] + inputdf["B+A_2 peaks"]) & (inputdf["A+B_1 E-value"] > inputdf["B+A_1 E-value"])))
     inputdf.loc[mask, "choice"] = "B"
 
-    # inputdf.to_csv(args[0] + "Result_final.tsv", sep="\t")
+    inputdf.to_csv(args[0] + "Result_final.tsv", sep="\t")
     
     output_list_1 = []
     output_list_2 = []
@@ -159,10 +159,10 @@ def main():
                 output_list_2.append(spec_dict_ab[str(accessA[pair])])
                 continue
             main_spec = copy.deepcopy((spec_dict_a[str(accessA[pair])]))
-            main_matchedList, nonMatchedList = getMatchedPeaks(a_result[a_result["Scan(s)"] == int(accessA[pair])].iloc[0]["Prsm ID"], a_dir, main_spec)
+            # main_matchedList, nonMatchedList = getMatchedPeaks(a_result[a_result["Scan(s)"] == int(accessA[pair])].iloc[0]["Prsm ID"], a_dir, main_spec)
             
             sub_spec = copy.deepcopy((spec_dict_ab[str(accessA[pair])]))
-            sub_matchedList, noiseList = getMatchedPeaks(ab_result[ab_result["Scan(s)"] == int(accessA[pair])].iloc[0]["Prsm ID"], ab_dir, sub_spec)
+            # sub_matchedList, noiseList = getMatchedPeaks(ab_result[ab_result["Scan(s)"] == int(accessA[pair])].iloc[0]["Prsm ID"], ab_dir, sub_spec)
         else:
             if inputdf.loc[(inputdf["Pair"] == str(pair))].iloc[0]["B+A_2"] == "-":
                 if inputdf.loc[(inputdf["Pair"] == str(pair))].iloc[0]["B+A_1"] == "-":
@@ -175,10 +175,10 @@ def main():
                 output_list_2.append(spec_dict_ab[str(accessA[pair])])
                 continue
             main_spec = copy.deepcopy((spec_dict_b[str(accessB[pair])]))
-            main_matchedList, nonMatchedList = getMatchedPeaks(b_result[b_result["Scan(s)"] == int(accessB[pair])].iloc[0]["Prsm ID"], b_dir, main_spec)
+            # main_matchedList, nonMatchedList = getMatchedPeaks(b_result[b_result["Scan(s)"] == int(accessB[pair])].iloc[0]["Prsm ID"], b_dir, main_spec)
             
             sub_spec = copy.deepcopy((spec_dict_ba[str(accessB[pair])]))
-            sub_matchedList, noiseList = getMatchedPeaks(ba_result[ba_result["Scan(s)"] == int(accessB[pair])].iloc[0]["Prsm ID"], ba_dir, sub_spec)
+            # sub_matchedList, noiseList = getMatchedPeaks(ba_result[ba_result["Scan(s)"] == int(accessB[pair])].iloc[0]["Prsm ID"], ba_dir, sub_spec)
 
         # output.append(copy.deepcopy(main_spec))
         
@@ -191,14 +191,16 @@ def main():
 
     sorted2 = read_msalign.sortScans(output_list_2)
 
-    # for spec in sorted2:
-    #     spec.header.spec_scan += 10000000
-    #     spec.header.spec_id += 10000000
+    for spec in sorted2:
+        spec.header.spec_scan += 10000000
+        spec.header.spec_id += 10000000
 
     # read_msalign.write_spec_file(args[0] + "temp_ms2.msalign", output)
 
-    read_msalign.write_spec_file(args[0] + "resolved1_ms2.msalign", sorted1)
-    read_msalign.write_spec_file(args[0] + "resolved2_ms2.msalign", sorted2)
+    read_msalign.write_spec_file(args[0] + "resolved_ms2.msalign", list(sorted1) + list(sorted2))
+
+    # read_msalign.write_spec_file(args[0] + "resolved1_ms2.msalign", sorted1)
+    # read_msalign.write_spec_file(args[0] + "resolved2_ms2.msalign", sorted2)
 
 if __name__ == "__main__":
     main()

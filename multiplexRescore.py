@@ -47,13 +47,13 @@ def main():
 
     ba_spec_list = read_msalign.read_spec_file(args[0] + "BA_ms2.msalign")
 
-    result_a = pd.read_csv(args[0] + "A_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_a = pd.read_csv(args[0] + "A_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
-    result_ab = pd.read_csv(args[0] + "AB_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ab = pd.read_csv(args[0] + "AB_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
-    result_b = pd.read_csv(args[0] + "B_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_b = pd.read_csv(args[0] + "B_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
-    result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
     spec_dict_a = {}
     for spec in a_spec_list:
@@ -154,10 +154,10 @@ def main():
                 continue
             
             main_spec = copy.deepcopy((spec_dict_a[str(scan)]))
-            main_matchedList, nonMatchedList = getMatchedPeaks(result_a[result_a["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], a_dir, main_spec)
+            # main_matchedList, nonMatchedList = getMatchedPeaks(result_a[result_a["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], a_dir, main_spec)
             
             sub_spec = copy.deepcopy((spec_dict_ab[str(scan)]))
-            sub_matchedList, noiseList = getMatchedPeaks(result_ab[result_ab["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], ab_dir, sub_spec)
+            # sub_matchedList, noiseList = getMatchedPeaks(result_ab[result_ab["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], ab_dir, sub_spec)
         elif (row["choice"] == "B"):
             if (row["B+A_2"] == "-"):
                 if (row["B+A_1"] == "-"):
@@ -171,10 +171,10 @@ def main():
                 continue
 
             main_spec = copy.deepcopy((spec_dict_b[str(scan)]))
-            main_matchedList, nonMatchedList = getMatchedPeaks(result_b[result_b["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], b_dir, main_spec)
+            # main_matchedList, nonMatchedList = getMatchedPeaks(result_b[result_b["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], b_dir, main_spec)
             
             sub_spec = copy.deepcopy((spec_dict_ba[str(scan)]))
-            sub_matchedList, noiseList = getMatchedPeaks(result_ba[result_ba["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], ba_dir, sub_spec)
+            # sub_matchedList, noiseList = getMatchedPeaks(result_ba[result_ba["Scan(s)"] == int(scan)].iloc[0]["Prsm ID"], ba_dir, sub_spec)
 
         # output.append(copy.deepcopy(main_spec))
 
