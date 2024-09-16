@@ -195,6 +195,31 @@ def switchPrecursors(spec_list):
     outputlist.append(spec)
   return outputlist
 
+def switchPrecursorsMSDeplex(spec_list):
+  outputlist = []
+  for spec in spec_list:
+    if (len(spec.header.pre_charge_list) < 2) or (float(spec.header.pre_inte_list[1]) < 1) or (float(spec.header.pre_inte_list[0]) / float(spec.header.pre_inte_list[1]) > 5):
+      continue
+    pre_mz_list = spec.header.pre_mz_list
+    pre_charge_list = spec.header.pre_charge_list
+    pre_mass_list = spec.header.pre_mass_list
+    pre_inte_list = spec.header.pre_inte_list
+    pre_id_list = spec.header.pre_id_list
+
+    pre_mz_list[0], pre_mz_list[1] = pre_mz_list[1], pre_mz_list[0]
+    pre_charge_list[0], pre_charge_list[1] = pre_charge_list[1], pre_charge_list[0]
+    pre_mass_list[0], pre_mass_list[1] = pre_mass_list[1], pre_mass_list[0]
+    pre_inte_list[0], pre_inte_list[1] = pre_inte_list[1], pre_inte_list[0]
+    pre_id_list[0], pre_id_list[1] = pre_id_list[1], pre_id_list[0]
+
+    spec.header.pre_mz_list = pre_mz_list
+    spec.header.pre_charge_list = pre_charge_list
+    spec.header.pre_mass_list = pre_mass_list
+    spec.header.pre_inte_list = pre_inte_list
+    spec.header.pre_id_list = pre_id_list
+    outputlist.append(spec)
+  return outputlist
+
 def sortScans(spec_list):
     sort_dict = {}
     for spec in spec_list:

@@ -50,51 +50,51 @@ copy_and_rename() {
 #     copy_and_rename "$src_file" "$dst_file"
 # done
 
-$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K -f C57
+# $TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
 
-python3 splitDDA.py ${new_sub_dir}/A_ms2.msalign
+# python3 splitDDA.py ${new_sub_dir}/A_ms2.msalign
 
-mv ${new_sub_dir}/A_ms2_modified.msalign ${new_sub_dir}/AB_ms2.msalign
+# mv ${new_sub_dir}/A_ms2_modified.msalign ${new_sub_dir}/AB_ms2.msalign
 
-for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
-    src_file="${new_sub_dir}/A_${extension}"
-    dst_file="${new_sub_dir}/AB_${extension}"
-    copy_and_rename "$src_file" "$dst_file"
-done
+# for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
+#     src_file="${new_sub_dir}/A_${extension}"
+#     dst_file="${new_sub_dir}/AB_${extension}"
+#     copy_and_rename "$src_file" "$dst_file"
+# done
 
-$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K -f C57
+# $TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
 
-python3 splitDDA.py ${new_sub_dir}/B_ms2.msalign
+# python3 splitDDA.py ${new_sub_dir}/B_ms2.msalign
 
-mv ${new_sub_dir}/B_ms2_modified.msalign ${new_sub_dir}/BA_ms2.msalign
+# mv ${new_sub_dir}/B_ms2_modified.msalign ${new_sub_dir}/BA_ms2.msalign
 
-for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
-    src_file="${new_sub_dir}/B_${extension}"
-    dst_file="${new_sub_dir}/BA_${extension}"
-    copy_and_rename "$src_file" "$dst_file"
-done
+# for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
+#     src_file="${new_sub_dir}/B_${extension}"
+#     dst_file="${new_sub_dir}/BA_${extension}"
+#     copy_and_rename "$src_file" "$dst_file"
+# done
 
-$TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K -f C57
+# $TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
 
-$TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K -f C57
+# $TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
 
-python3 simulationCheck.py ${new_sub_dir}/
+# python3 simulationCheck.py ${new_sub_dir}/
 
 python3 simulationRescore.py ${new_sub_dir}/
 
 for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     src_file="${new_sub_dir}/A_${extension}"
-    dst_file1="${new_sub_dir}/resolved1_${extension}"
-    dst_file2="${new_sub_dir}/resolved2_${extension}"
+    dst_file1="${new_sub_dir}/resolved_${extension}"
+    # dst_file2="${new_sub_dir}/resolved2_${extension}"
     copy_and_rename "$src_file" "$dst_file1"
-    copy_and_rename "$src_file" "$dst_file2"
+    # copy_and_rename "$src_file" "$dst_file2"
 done
 
-mv ${new_sub_dir}/resolved1_ms2_modified.msalign ${new_sub_dir}/resolved1_ms2.msalign
+mv ${new_sub_dir}/resolved_ms2_modified.msalign ${new_sub_dir}/resolved_ms2.msalign
 
-mv ${new_sub_dir}/resolved2_ms2_modified.msalign ${new_sub_dir}/resolved2_ms2.msalign
+# mv ${new_sub_dir}/resolved2_ms2_modified.msalign ${new_sub_dir}/resolved2_ms2.msalign
 
-$TopPIC $database ${new_sub_dir}/resolved1_ms2.msalign ${@:4} -f C57 -K
+$TopPIC $database ${new_sub_dir}/resolved_ms2.msalign ${@:4} -K
 
-$TopPIC $database ${new_sub_dir}/resolved2_ms2.msalign ${@:4} -f C57 -K
+# $TopPIC $database ${new_sub_dir}/resolved2_ms2.msalign ${@:4} -K
 

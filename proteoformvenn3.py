@@ -13,99 +13,52 @@ def main():
         raise Exception(
             "Please pass in proteoform single files")
     
-    r1 = pd.read_csv(args[0])
-    r2 = pd.read_csv(args[1])
-    r3 = pd.read_csv(args[2])
+    r1 = pd.read_csv(args[0], sep="\t", skiprows=29)
+    r2 = pd.read_csv(args[1], sep="\t", skiprows=29)
+    r3 = pd.read_csv(args[2], sep="\t", skiprows=29)
 
     r1 = r1[~r1['Protein accession'].str.contains('DECOY')]
     r2 = r2[~r2['Protein accession'].str.contains('DECOY')]
     r3 = r3[~r3['Protein accession'].str.contains('DECOY')]
 
-    df1_sorted = r1.sort_values(by='E-value')
-    df2_sorted = r2.sort_values(by='E-value')
-    df3_sorted = r3.sort_values(by='E-value')
+    r1["Origin"] = 1
+    r2["Origin"] = 2
+    r3["Origin"] = 3
 
-    # Function to identify duplicates based on custom condition
-    def identify_duplicates(df1, df2, df3, threshold):
-        set1 = set()
-        set2 = set()
-        set3 = set()
-        overlap12 = set()
-        overlap13 = set()
-        overlap23 = set()
-        overlap_all = set()
+    combined = pd.concat([r1, r2, r3], ignore_index=True)
 
-        # Compare each entry in df1 with df2 and df3
-        for i, row1 in df1.iterrows():
-            is_duplicate12 = False
-            is_duplicate13 = False
+    combined.sort_values(by="E-value")
 
-            for j, row2 in df2.iterrows():
-                if row1['Protein accession'] == row2['Protein accession'] and abs(row1['Precursor mass'] - row2['Precursor mass']) < threshold:
-                    overlap12.add((row1['Protein accession'], row1['Precursor mass']))
-                    is_duplicate12 = True
-                    break
+    combined["1"] = combined["Origin"] == 1
+    combined["2"] = combined["Origin"] == 2
+    combined["3"] = combined["Origin"] == 3
 
-            for k, row3 in df3.iterrows():
-                if row1['Protein accession'] == row3['Protein accession'] and abs(row1['Precursor mass'] - row3['Precursor mass']) < threshold:
-                    overlap13.add((row1['Protein accession'], row1['Precursor mass']))
-                    is_duplicate13 = True
-                    break
+    resultlist = pd.DataFrame(columns=combined.columns).astype(combined.dtypes)
 
-            if is_duplicate12 and is_duplicate13:
-                overlap_all.add((row1['Protein accession'], row1['Precursor mass']))
-            elif not is_duplicate12 and not is_duplicate13:
-                set1.add((row1['Protein accession'], row1['Precursor mass']))
-
-        # Compare each entry in df2 with df1 and df3 using the duplicate condition
-        for i, row2 in df2.iterrows():
-            is_duplicate_with_df1 = any(
-                row2['Protein accession'] == row1['Protein accession'] and abs(row2['Precursor mass'] - row1['Precursor mass']) < threshold
-                for j, row1 in df1.iterrows()
-            )
-
-            if is_duplicate_with_df1:
-                if (row2['Protein accession'], row2['Precursor mass']) not in overlap_all:
-                    continue
-
-            is_duplicate23 = False
-
-            for j, row3 in df3.iterrows():
-                if row2['Protein accession'] == row3['Protein accession'] and abs(row2['Precursor mass'] - row3['Precursor mass']) < threshold:
-                    overlap23.add((row2['Protein accession'], row2['Precursor mass']))
-                    is_duplicate23 = True
-                    break
-
-            if not is_duplicate23 and not is_duplicate_with_df1:
-                set2.add((row2['Protein accession'], row2['Precursor mass']))
-
-        # Compare each entry in df3 with df1 and df2 using the duplicate condition
-        for i, row3 in df3.iterrows():
-            is_duplicate_with_df1 = any(
-                row3['Protein accession'] == row1['Protein accession'] and abs(row3['Precursor mass'] - row1['Precursor mass']) < threshold
-                for j, row1 in df1.iterrows()
-            )
-
-            is_duplicate_with_df2 = any(
-                row3['Protein accession'] == row2['Protein accession'] and abs(row3['Precursor mass'] - row2['Precursor mass']) < threshold
-                for j, row2 in df2.iterrows()
-            )
-
-            if not is_duplicate_with_df1 and not is_duplicate_with_df2:
-                set3.add((row3['Protein accession'], row3['Precursor mass']))
-
-        return set1, set2, set3, overlap12, overlap13, overlap23, overlap_all
-    
-    set1, set2, set3, overlap12, overlap13, overlap23, overlap_all = identify_duplicates(df1_sorted, df2_sorted, df3_sorted, 1.2)
+    for i, row in combined.iterrows():
+        is_duplicate = False
+        for j, result in resultlist.iterrows():
+            if row['Protein accession'] == result['Protein accession'] and abs(row['Precursor mass'] - result['Precursor mass']) < 1.2:
+                if row["Origin"] == 1:
+                    resultlist.loc[j, "1"] = True
+                elif row["Origin"] == 2:
+                    resultlist.loc[j, "2"] = True
+                elif row["Origin"] == 3:
+                    resultlist.loc[j, "3"] = True
+                is_duplicate = True
+                break
+        
+        if not is_duplicate:
+            resultlist.loc[0 if pd.isnull(resultlist.index.max()) else resultlist.index.max() + 1] = row
 
     # Calculate the sizes for the Venn diagram
-    only_set1 = len(set1)
-    only_set2 = len(set2)
-    only_set3 = len(set3)
-    intersection12 = len(overlap12) - len(overlap_all)
-    intersection13 = len(overlap13) - len(overlap_all)
-    intersection23 = len(overlap23)
-    intersection123 = len(overlap_all)
+    only_set1 = resultlist[(resultlist["1"] == True) & (resultlist["2"] == False) & (resultlist["3"] == False)].shape[0]
+    only_set2 = resultlist[(resultlist["1"] == False) & (resultlist["2"] == True) & (resultlist["3"] == False)].shape[0]
+    only_set3 = resultlist[(resultlist["1"] == False) & (resultlist["2"] == False) & (resultlist["3"] == True)].shape[0]
+    intersection12 = resultlist[(resultlist["1"] == True) & (resultlist["2"] == True) & (resultlist["3"] == False)].shape[0]
+    intersection13 = resultlist[(resultlist["1"] == True) & (resultlist["2"] == False) & (resultlist["3"] == True)].shape[0]
+    intersection23 = resultlist[(resultlist["1"] == False) & (resultlist["2"] == True) & (resultlist["3"] == True)].shape[0]
+    intersection123 = resultlist[(resultlist["1"] == True) & (resultlist["2"] == True) & (resultlist["3"] == True)].shape[0]
 
     # Plot the Venn diagram
     venn3(subsets=(only_set1, only_set2, intersection12, only_set3, intersection13, intersection23, intersection123),

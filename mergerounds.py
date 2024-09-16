@@ -8,7 +8,7 @@ def main():
     
 
     r1 = pd.read_csv(args[0], sep="\t")
-    r2 = pd.read_csv(args[1], sep="\t", skiprows=29)
+    r2 = pd.read_csv(args[1], sep="\t")
 
     # Concatenate two proteoform files
     combined_df = pd.concat([r1, r2], ignore_index=True)
@@ -48,7 +48,7 @@ def main():
     # Apply the function to groups defined by 'ColumnA'
     result_df = combined_df.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
 
-    result_df.to_csv('./filtered_results.csv', sep='\t', index=False)
+    result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + '/merged_results.csv', sep='\t', index=False)
         
 
 

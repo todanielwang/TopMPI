@@ -120,11 +120,9 @@ def main():
         if (len(seta) > 0 and len(setba) > 0 and len(seta.intersection(setba)) / min(float(len(seta)), float(len(setba))) > 0.9):
             inputdf.loc[(inputdf["Pair"] == str(pair)), ["F1 Con"]] = "True"
             count += 1
-            continue
         if (len(setb) > 0 and len(setab) > 0 and len(setb.intersection(setab)) / min(float(len(setb)), float(len(setab))) > 0.9):
             inputdf.loc[(inputdf["Pair"] == str(pair)), ["F2 Con"]] = "True"
             count += 1
-            continue
 
     inputdf["choice"] = "-"
 
