@@ -97,7 +97,7 @@ def main():
 
     outputdf = pd.DataFrame(output_dict)
 
-    outputdf.to_csv(args[0] + "Result.tsv", sep="\t")
+    outputdf.to_csv(args[0] + "Evaluecutoff10000/Result.tsv", sep="\t")
 
 if __name__ == "__main__":
     main()

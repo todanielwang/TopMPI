@@ -88,7 +88,7 @@ def main():
     #Please pass in directory with option flag of cutofftype and cutoffvalue
     args = sys.argv[1:]
     
-    cutofftype = "E-value"
+    cutofftype = "FDR"
     cutoffvalue = 0.01
 
     if len(args) > 1:
@@ -113,13 +113,13 @@ def main():
 
     ba_spec_list = read_msalign.read_spec_file(args[0] + "BA_ms2.msalign")
 
-    result_a = pd.read_csv(args[0] + "A_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_a = pd.read_csv(args[0] + "A_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
-    result_ab = pd.read_csv(args[0] + "AB_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ab = pd.read_csv(args[0] + "AB_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
-    result_b = pd.read_csv(args[0] + "B_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_b = pd.read_csv(args[0] + "B_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
-    result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=29)
+    result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
     spec_dict_a = {}
     for spec in a_spec_list:
@@ -172,9 +172,9 @@ def main():
         setb = set(matchedList_b)
         setba = set(matchedList_ba)
 
-        if (len(seta) > 0 and len(setba) > 0 and len(seta.intersection(setba)) / min(float(len(seta)), float(len(setba))) > 0.9):
+        if (len(seta) > 0 and len(setba) > 0 and len(seta.intersection(setba)) / min(float(len(seta)), float(len(setba))) >= 0.8):
             inputdf.loc[(inputdf["Scan"] == scan), ["F1 Con"]] = "True"
-        if (len(setb) > 0 and len(setab) > 0 and len(setb.intersection(setab)) / min(float(len(setb)), float(len(setab))) > 0.9):
+        if (len(setb) > 0 and len(setab) > 0 and len(setb.intersection(setab)) / min(float(len(setb)), float(len(setab))) >= 0.8):
             inputdf.loc[(inputdf["Scan"] == scan), ["F2 Con"]] = "True"
 
     
@@ -193,71 +193,137 @@ def main():
     mask = (((inputdf['F1 Con'] == "True") & (inputdf['F2 Con'] == "True")) | ((inputdf['F1 Con'] == "-") & (inputdf['F2 Con'] == "-"))) & ((inputdf["A+B_1 peaks"] + inputdf["A+B_2 peaks"] < inputdf["B+A_1 peaks"] + inputdf["B+A_2 peaks"]) | ((inputdf["A+B_1 peaks"] + inputdf["A+B_2 peaks"] == inputdf["B+A_1 peaks"] + inputdf["B+A_2 peaks"]) & (inputdf["A+B_1 E-value"] > inputdf["B+A_1 E-value"])))
     inputdf.loc[mask, "choice"] = "B"
 
-    inputdf.to_csv(args[0] + "Result_final.tsv", sep="\t")
+    inputdf.to_csv(args[0] + "Result_final.tsv", sep="\t", index=False)
 
     output1 = pd.DataFrame(columns=result_a.columns).astype(result_a.dtypes)
-    output2 = pd.DataFrame(columns=result_a.columns).astype(result_a.dtypes)
 
     for index, row in inputdf.iterrows():
         scan = row["Scan"]
+        # if int(scan) not in scanlist:
         o1 = pd.Series()
-        o2 = pd.Series()
+
+        A1 = result_a[result_a["Scan(s)"] == scan]
+        B1 = result_b[result_b["Scan(s)"] == scan]
+
+        # Filter on same protein in R1R3
+        # if A1.shape[0] > 0 and B1.shape[0] > 0 and A1.iloc[0]["Protein accession"] == B1.iloc[0]["Protein accession"]:
+        #     output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = A1.iloc[0]
+        #     continue 
 
         if (row["choice"] == "A"):
-            A1 = result_a[result_a["Scan(s)"] == scan]
-            A2 = result_ab[result_ab["Scan(s)"] == scan]
-
             if A1.shape[0] > 0:
                 o1 = A1.iloc[0]
-            if A2.shape[0] > 0:
-                o2 = A2.iloc[0]
         elif (row["choice"] == "B"):
-            B1 = result_b[result_b["Scan(s)"] == scan]
-            B2 = result_ba[result_ba["Scan(s)"] == scan]
-
             if B1.shape[0] > 0:
                 o1 = B1.iloc[0]
-            if B2.shape[0] > 0:
-                o2 = B2.iloc[0]
 
         if not o1.empty:
             output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = o1
-        if not o2.empty:
-            output2.loc[0 if pd.isnull(output2.index.max()) else output2.index.max() + 1] = o2
+        # else:
+        #     A1 = result_a[result_a["Scan(s)"] == scan]
+        #     A2 = result_ab[result_ab["Scan(s)"] == scan]
+        #     if A1.shape[0] > 0:
+        #         output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = A1.iloc[0]
+        #     if A2.shape[0] > 0:
+        #         output2.loc[0 if pd.isnull(output2.index.max()) else output2.index.max() + 1] = A2.iloc[0]
 
     output1["Data file name"] = "First Identification"
-    output2["Data file name"] = "Second Identification"
 
     output3 = output1.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first').groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
-    output4 = output2.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first').groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
 
     if cutofftype == "E-value":
         prsm1 = output1[output1["E-value"] < cutoffvalue]
-        prsm2 = output2[output2["E-value"] < cutoffvalue]
 
         proteoform1 = output3[output3["E-value"] < cutoffvalue]
-        proteoform2 = output4[output4["E-value"] < cutoffvalue]
     else:
         output1.drop(["Spectrum-level Q-value", "Proteoform-level Q-value"], axis=1, inplace=True)
-        output2.drop(["Spectrum-level Q-value", "Proteoform-level Q-value"], axis=1, inplace=True)
         output3.drop(["Spectrum-level Q-value", "Proteoform-level Q-value"], axis=1, inplace=True)
-        output4.drop(["Spectrum-level Q-value", "Proteoform-level Q-value"], axis=1, inplace=True)
 
         output1["Spectrum-level Q-value"] = calculate_q_values(output1)
-        output2["Spectrum-level Q-value"] = calculate_q_values(output2)
         output3["Proteoform-level Q-value"] = calculate_q_values(output3)
+
+        #  & ~(output1["Protein accession"].str.contains("DECOY"))
+        prsm1 = output1[(output1["Spectrum-level Q-value"] < cutoffvalue)].sort_values(by="Scan(s)")
+
+        #  & ~(output3["Protein accession"].str.contains("DECOY"))
+        proteoform1 = output3[(output3["Proteoform-level Q-value"] < cutoffvalue)].sort_values(by="Scan(s)")
+    
+    prsm1scanlist = prsm1["Scan(s)"].tolist()
+
+    output2 = pd.DataFrame(columns=result_a.columns).astype(result_a.dtypes)
+    for index, row in inputdf.iterrows():
+        scan = row["Scan"]
+        # if int(scan) not in scanlist:
+        o2 = pd.Series()
+
+        A1 = result_a[result_a["Scan(s)"] == scan]
+        A2 = result_ab[result_ab["Scan(s)"] == scan]
+        B1 = result_b[result_b["Scan(s)"] == scan]
+        B2 = result_ba[result_ba["Scan(s)"] == scan]
+
+
+        if (row["choice"] == "A"):
+            if scan in prsm1scanlist:
+                if A2.shape[0] > 0:
+                    o2 = A2.iloc[0]
+            else:
+                if B1.shape[0] > 0:
+                    o2 = B1.iloc[0]
+        elif (row["choice"] == "B"):
+            if scan in prsm1scanlist:
+                if B2.shape[0] > 0:
+                    o2 = B2.iloc[0]
+            else:
+                if A1.shape[0] > 0:
+                    o2 = A1.iloc[0]
+
+            # # Filter on R1R2 + R3R4
+            # if (not o1.empty) and (not o2.empty) and (o1["Protein accession"] == o2["Protein accession"]):
+            #     if o1["E-value"] <= o2["E-value"]:
+            #         o2 = pd.Series()
+            #     else:
+            #         o1 = pd.Series()
+
+            if not o2.empty:
+                output2.loc[0 if pd.isnull(output2.index.max()) else output2.index.max() + 1] = o2
+        # else:
+        #     A1 = result_a[result_a["Scan(s)"] == scan]
+        #     A2 = result_ab[result_ab["Scan(s)"] == scan]
+        #     if A1.shape[0] > 0:
+        #         output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = A1.iloc[0]
+        #     if A2.shape[0] > 0:
+        #         output2.loc[0 if pd.isnull(output2.index.max()) else output2.index.max() + 1] = A2.iloc[0]
+
+    output2["Data file name"] = "Second Identification"
+
+    output4 = output2.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first').groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
+
+    if cutofftype == "E-value":
+        prsm2 = output2[output2["E-value"] < cutoffvalue]
+
+        proteoform2 = output4[output4["E-value"] < cutoffvalue]
+    else:
+        output2.drop(["Spectrum-level Q-value", "Proteoform-level Q-value"], axis=1, inplace=True)
+        output4.drop(["Spectrum-level Q-value", "Proteoform-level Q-value"], axis=1, inplace=True)
+
+        output2["Spectrum-level Q-value"] = calculate_q_values(output2)
         output4["Proteoform-level Q-value"] = calculate_q_values(output4)
+        
+        # & ~(output2["Protein accession"].str.contains("DECOY"))
+        prsm2 = output2[(output2["Spectrum-level Q-value"] < cutoffvalue)].sort_values(by="Scan(s)")
 
-        prsm1 = output1[(output1["Spectrum-level Q-value"] < cutoffvalue) & ~(output1["Protein accession"].str.contains("DECOY"))].sort_values(by="Scan(s)")
-        prsm2 = output2[(output2["Spectrum-level Q-value"] < cutoffvalue) & ~(output2["Protein accession"].str.contains("DECOY"))].sort_values(by="Scan(s)")
+        # & ~(output4["Protein accession"].str.contains("DECOY"))
+        proteoform2 = output4[(output4["Proteoform-level Q-value"] < cutoffvalue)].sort_values(by="Scan(s)")
 
-        proteoform1 = output3[(output3["Proteoform-level Q-value"] < cutoffvalue) & ~(output3["Protein accession"].str.contains("DECOY"))].sort_values(by="Scan(s)")
-        proteoform2 = output4[(output4["Proteoform-level Q-value"] < cutoffvalue) & ~(output4["Protein accession"].str.contains("DECOY"))].sort_values(by="Scan(s)")
+    prsm1 = prsm1[~(prsm1["Protein accession"].str.contains("DECOY"))]
+    prsm2 = prsm2[~(prsm2["Protein accession"].str.contains("DECOY"))]
+    proteoform1 = proteoform1[~(proteoform1["Protein accession"].str.contains("DECOY"))]
+    proteoform2 = proteoform2[~(proteoform2["Protein accession"].str.contains("DECOY"))]
 
     prsm1.to_csv(args[0] + "prsm1.tsv", sep="\t", index=False)
     prsm2.to_csv(args[0] + "prsm2.tsv", sep="\t", index=False)
     proteoform1.to_csv(args[0] + "proteoform1.tsv", sep="\t", index=False)
-    proteoform2.to_csv(args[0] + "proteoform2.tsv", sep="\t", index=False)        
+    proteoform2.to_csv(args[0] + "proteoform2.tsv", sep="\t", index=False)         
 
 if __name__ == "__main__":
     main()

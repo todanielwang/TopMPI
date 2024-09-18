@@ -48,7 +48,7 @@ def main():
     # Apply the function to groups defined by 'ColumnA'
     result_df = combined_df.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
 
-    result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + '/merged_results.csv', sep='\t', index=False)
+    result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + '/merged_results.tsv', sep='\t', index=False)
         
 
 

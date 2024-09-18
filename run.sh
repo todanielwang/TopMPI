@@ -50,7 +50,7 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
+$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
 
 python3 splitDDA.py ${new_sub_dir}/A_ms2.msalign
 
@@ -62,7 +62,7 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
+$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
 
 python3 splitDDA.py ${new_sub_dir}/B_ms2.msalign
 
@@ -74,15 +74,15 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
+$TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
 
-$TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -v 100000 -V 100000 -K
+$TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
 
 python3 multiplexCheck.py ${new_sub_dir}/
 
 python3 multiplexRescore.py ${new_sub_dir}/
 
-python3 mergerounds.py ${new_sub_dir}/proteoform1.tsv ${new_sub_dir}/proteoform2.tsv
+# python3 mergerounds.py ${new_sub_dir}/proteoform1.tsv ${new_sub_dir}/proteoform2.tsv
 
 # for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
 #     src_file="${new_sub_dir}/A_${extension}"
