@@ -17,6 +17,7 @@
 from spec_header import SpecHeader
 from spec_peak import SpecPeak
 from spectrum import Spectrum
+from random import randint
 import copy
 
 def _read_header(spec_lines):
@@ -217,6 +218,55 @@ def switchPrecursorsMSDeplex(spec_list):
     spec.header.pre_mass_list = pre_mass_list
     spec.header.pre_inte_list = pre_inte_list
     spec.header.pre_id_list = pre_id_list
+    outputlist.append(spec)
+  return outputlist
+
+def changePrecursorsByDalton(spec_list, shift):
+  outputlist = []
+  for spec in spec_list:
+    if (len(spec.header.pre_charge_list) < 1) or spec.header.pre_inte_list[0]=='' or (float(spec.header.pre_inte_list[0]) < 1):
+      continue
+    pre_mz_list = spec.header.pre_mz_list
+    pre_mass_list = spec.header.pre_mass_list
+
+    if pre_charge_list[0] == 0:
+      print("precursor charge error:", pre_charge_list[0])
+
+    pre_mz_list[0] = str(float(pre_mz_list[0]) + shift/float(pre_charge_list[0])) 
+    pre_mass_list[0] = str(float(pre_mass_list[0]) + shift) 
+
+    spec.header.pre_mz_list = pre_mz_list
+    spec.header.pre_mass_list = pre_mass_list
+    outputlist.append(spec)
+  return outputlist
+
+def changePrecursorsByCharge(spec_list):
+  outputlist = []
+  proton_mass = 1.007276466879
+  for spec in spec_list:
+    if (len(spec.header.pre_charge_list) < 1) or spec.header.pre_inte_list[0]=='' or (float(spec.header.pre_inte_list[0]) < 1):
+      continue
+    pre_mz_list = spec.header.pre_mz_list
+    pre_charge_list = spec.header.pre_charge_list
+    pre_mass_list = spec.header.pre_mass_list
+
+    if pre_charge_list[0] == 0:
+      print("precursor charge error:", pre_charge_list[0])
+
+    charge = int(pre_charge_list[0])
+    if charge == 1:
+      new_charge = charge + 1
+    else:
+      k = randint(0, 1)
+      if k == 0:
+        new_charge = charge - 1
+      else:
+        new_charge = charge + 1
+    pre_charge_list[0] = str(new_charge)
+    pre_mass_list[0] = str((float(pre_mz_list[0]) - proton_mass) * new_charge) 
+
+    spec.header.pre_charge_list = pre_charge_list
+    spec.header.pre_mass_list = pre_mass_list
     outputlist.append(spec)
   return outputlist
 
