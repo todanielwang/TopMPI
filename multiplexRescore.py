@@ -139,6 +139,7 @@ def main():
 
     inputdf["F1 Con"] = "-"
     inputdf["F2 Con"] = "-"
+    inputdf["R1R3 Con"] = "-"
 
     for index, row in inputdf.iterrows():
         scan = row["Scan"]
@@ -176,6 +177,8 @@ def main():
             inputdf.loc[(inputdf["Scan"] == scan), ["F1 Con"]] = "True"
         if (len(setb) > 0 and len(setab) > 0 and len(setb.intersection(setab)) / min(float(len(setb)), float(len(setab))) >= 0.8):
             inputdf.loc[(inputdf["Scan"] == scan), ["F2 Con"]] = "True"
+        if (len(seta) > 0 and len(setb) > 0 and len(seta.intersection(setb)) / min(float(len(seta)), float(len(setb))) >= 0.8):
+            inputdf.loc[(inputdf["Scan"] == scan), ["R1R3 Con"]] = "True"
 
     
     inputdf["choice"] = "-"
@@ -193,7 +196,12 @@ def main():
     mask = (((inputdf['F1 Con'] == "True") & (inputdf['F2 Con'] == "True")) | ((inputdf['F1 Con'] == "-") & (inputdf['F2 Con'] == "-"))) & ((inputdf["A+B_1 peaks"] + inputdf["A+B_2 peaks"] < inputdf["B+A_1 peaks"] + inputdf["B+A_2 peaks"]) | ((inputdf["A+B_1 peaks"] + inputdf["A+B_2 peaks"] == inputdf["B+A_1 peaks"] + inputdf["B+A_2 peaks"]) & (inputdf["A+B_1 E-value"] > inputdf["B+A_1 E-value"])))
     inputdf.loc[mask, "choice"] = "B"
 
-    inputdf.to_csv(args[0] + "Result_final.tsv", sep="\t", index=False)
+    # mask = (inputdf['R1R3 Con'] == "True")
+    # inputdf.loc[mask, "choice"] = "A" 
+
+    inputdf.to_csv(args[0] + "/tests/precursorerror/Result_final.tsv", sep="\t", index=False)
+
+    exit(1)
 
     output1 = pd.DataFrame(columns=result_a.columns).astype(result_a.dtypes)
 

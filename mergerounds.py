@@ -8,7 +8,7 @@ def main():
     
 
     r1 = pd.read_csv(args[0], sep="\t")
-    r2 = pd.read_csv(args[1], sep="\t")
+    r2 = pd.read_csv(args[1], sep="\t", skiprows=26)
 
     # Concatenate two proteoform files
     combined_df = pd.concat([r1, r2], ignore_index=True)
@@ -19,8 +19,7 @@ def main():
     threshold = 1.2
 
     # Drop duplicates using feature IDs and keeping the one with the lowest E-value
-    if args[2] == "Drop":
-        combined_df = combined_df.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first')
+    combined_df = combined_df.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first')
 
     # Function to find duplicates based on the condition
     def drop_custom_duplicates(group):
@@ -48,7 +47,7 @@ def main():
     # Apply the function to groups defined by 'ColumnA'
     result_df = combined_df.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
 
-    result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + '/merged_results.tsv', sep='\t', index=False)
+    result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + '/total_proteoforms.tsv', sep='\t', index=False)
         
 
 

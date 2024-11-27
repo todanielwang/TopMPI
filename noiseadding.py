@@ -192,10 +192,12 @@ def main():
     nonmulti_dict = {}
     toplength = 0
     for spec in prsms:
-        if (len(spec.header.pre_inte_list) == 1 or float(spec.header.pre_inte_list[0]) > 0.8 * sum(map(float, spec.header.pre_inte_list))):
+        if (len(spec.header.pre_inte_list) == 1 or float(spec.header.pre_inte_list[0]) > 0.85 * sum(map(float, spec.header.pre_inte_list))):
             nonmulti_dict[spec.header.spec_scan] = spec
             if len(spec.peak_list) > toplength:
                 toplength = len(spec.peak_list)
+
+    print(len(nonmulti_dict))
 
     candidate_dict = {}
     topnoise = 2

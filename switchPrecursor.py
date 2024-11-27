@@ -12,7 +12,7 @@ def main():
 
     spec_list = read_msalign.read_spec_file(args[0])
 
-    outputlist = read_msalign.switchPrecursorsMSDeplex(spec_list)
+    outputlist = read_msalign.switchPrecursors(spec_list)
 
     read_msalign.write_spec_file(args[0], outputlist)
 

@@ -16,11 +16,11 @@ def main():
         raise Exception(
             "Please pass in the ms.align file")
     
-    jsfolder = args[0].rsplit("_", 1)[0] + "_html/toppic_proteoform_cutoff/data_js/prsms/"
+    jsfolder = args[0].rsplit("_", 1)[0] + "_html/toppic_prsm_cutoff/data_js/prsms/"
     
     spec_list = read_msalign.read_spec_file(args[0])
 
-    spec_list = [spec for spec in spec_list if (len(spec.header.pre_mz_list) > 1) and (float(spec.header.pre_inte_list[1]) > 0) and (float(spec.header.pre_inte_list[0]) / float(spec.header.pre_inte_list[1]) < 5)]
+    spec_list = [spec for spec in spec_list if (len(spec.header.pre_mz_list) > 1)]
 
     for spec in spec_list:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]

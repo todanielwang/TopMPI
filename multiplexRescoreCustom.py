@@ -88,7 +88,7 @@ def main():
     #Please pass in directory with option flag of cutofftype and cutoffvalue
     args = sys.argv[1:]
     
-    cutofftype = "E-value"
+    cutofftype = "FDR"
     cutoffvalue = 0.01
 
     if len(args) > 1:
@@ -107,22 +107,22 @@ def main():
 
     result_ba = pd.read_csv(args[0] + "BA_ms2_toppic_prsm_single.tsv", delimiter="\t", skiprows=26)
 
-    # ratio = 1
-    # and (float(spec.header.pre_inte_list[0]) / float(spec.header.pre_inte_list[1]) < ratio)
+    # ratio = 10
+    # speclist = [spec for spec in a_spec_list if (len(spec.header.pre_mz_list) > 1) and (float(spec.header.pre_inte_list[1]) > 0) and (float(spec.header.pre_inte_list[0]) / float(spec.header.pre_inte_list[1]) < ratio)]
 
     # coverage = 0.7
-    # and (float(spec.header.pre_inte_list[0]) + float(spec.header.pre_inte_list[1]) > coverage * sum(map(float, spec.header.pre_inte_list)))
+    # speclist = [spec for spec in a_spec_list if (len(spec.header.pre_mz_list) > 1) and (float(spec.header.pre_inte_list[1]) > 0) and (float(spec.header.pre_inte_list[0]) + float(spec.header.pre_inte_list[1]) > coverage * sum(map(float, spec.header.pre_inte_list)))]
 
-    # intensity = 20
-    #and (float(spec.header.pre_inte_list[1]) > intensity * 10000)
-
-    # speclist = [spec for spec in a_spec_list if (len(spec.header.pre_mz_list) > 1) and (float(spec.header.pre_inte_list[1]) > 0) and (float(spec.header.pre_inte_list[0]) / float(spec.header.pre_inte_list[1]) < ratio)]
+    # intensity = 5
+    # speclist = [spec for spec in a_spec_list if (len(spec.header.pre_mz_list) > 1) and (float(spec.header.pre_inte_list[1]) > 0) and (float(spec.header.pre_inte_list[1]) > intensity * 10000)]
 
     # scanlist = [int(spec.header.spec_scan) for spec in speclist]
 
     scanlist = []
 
     output1 = pd.DataFrame(columns=result_a.columns).astype(result_a.dtypes)
+
+    # inputdf["choice"] = np.where((inputdf["F1 Con"] == "True") & (inputdf["F2 Con"] == "True") & (inputdf["A+B_1 peaks"] + inputdf["A+B_2 peaks"] == inputdf["B+A_1 peaks"] + inputdf["B+A_2 peaks"]), "-", inputdf["choice"])
 
     for index, row in inputdf.iterrows():
         scan = row["Scan"]
@@ -131,13 +131,10 @@ def main():
 
             A1 = result_a[result_a["Scan(s)"] == scan]
             B1 = result_b[result_b["Scan(s)"] == scan]
-
-            # Filter on same protein in R1R3
-            if A1.shape[0] > 0 and B1.shape[0] > 0 and A1.iloc[0]["Protein accession"] == B1.iloc[0]["Protein accession"]:
-                output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = A1.iloc[0]
-                continue 
-
-            if (row["choice"] == "A"):
+            
+            if (row["choice"] == "-"):
+                o1 = A1.iloc[0]
+            elif ((row["choice"] == "A")):
                 if A1.shape[0] > 0:
                     o1 = A1.iloc[0]
             elif (row["choice"] == "B"):
@@ -146,13 +143,10 @@ def main():
 
             if not o1.empty:
                 output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = o1
-        else:
-            A1 = result_a[result_a["Scan(s)"] == scan]
-            # A2 = result_ab[result_ab["Scan(s)"] == scan]
-            if A1.shape[0] > 0:
-                output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = A1.iloc[0]
-            # if A2.shape[0] > 0:
-            #     output2.loc[0 if pd.isnull(output2.index.max()) else output2.index.max() + 1] = A2.iloc[0]
+        # else:
+        #     A1 = result_a[result_a["Scan(s)"] == scan]
+        #     if A1.shape[0] > 0:
+        #         output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = A1.iloc[0]
 
     output1["Data file name"] = "First Identification"
 
@@ -187,21 +181,23 @@ def main():
             A2 = result_ab[result_ab["Scan(s)"] == scan]
             B1 = result_b[result_b["Scan(s)"] == scan]
             B2 = result_ba[result_ba["Scan(s)"] == scan]
-
-            # Filter on same protein in R1R3
-            if A1.shape[0] > 0 and B1.shape[0] > 0 and A1.iloc[0]["Protein accession"] == B1.iloc[0]["Protein accession"]:
-                continue
-
-            if (row["choice"] == "A"):
+            
+            if (row["choice"] == "-"):
+                if (A2.iloc[0]["Feature score"] > 0.8):
+                    if scan in prsm1scanlist:
+                        o2 = A2.iloc[0]
+                    else:
+                        o2 = B1.iloc[0]
+            elif (row["choice"] == "A"):
                 if scan in prsm1scanlist:
-                    if A2.shape[0] > 0:
+                    if (A2.shape[0] > 0) & (A2.iloc[0]["Protein accession"] != A1.iloc[0]["Protein accession"]):
                         o2 = A2.iloc[0]
                 else:
                     if B1.shape[0] > 0:
                         o2 = B1.iloc[0]
             elif (row["choice"] == "B"):
                 if scan in prsm1scanlist:
-                    if B2.shape[0] > 0:
+                    if (B2.shape[0] > 0) & (B2.iloc[0]["Protein accession"] != B1.iloc[0]["Protein accession"]):
                         o2 = B2.iloc[0]
                 else:
                     if A1.shape[0] > 0:
@@ -217,10 +213,7 @@ def main():
             if not o2.empty:
                 output2.loc[0 if pd.isnull(output2.index.max()) else output2.index.max() + 1] = o2
         # else:
-        #     A1 = result_a[result_a["Scan(s)"] == scan]
         #     A2 = result_ab[result_ab["Scan(s)"] == scan]
-        #     if A1.shape[0] > 0:
-        #         output1.loc[0 if pd.isnull(output1.index.max()) else output1.index.max() + 1] = A1.iloc[0]
         #     if A2.shape[0] > 0:
         #         output2.loc[0 if pd.isnull(output2.index.max()) else output2.index.max() + 1] = A2.iloc[0]
 
@@ -250,10 +243,10 @@ def main():
     proteoform1 = proteoform1[~(proteoform1["Protein accession"].str.contains("DECOY"))]
     proteoform2 = proteoform2[~(proteoform2["Protein accession"].str.contains("DECOY"))]
 
-    prsm1.to_csv(args[0] + "R1R3/prsm1.tsv", sep="\t", index=False)
-    prsm2.to_csv(args[0] + "R1R3/prsm2.tsv", sep="\t", index=False)
-    proteoform1.to_csv(args[0] + "R1R3/proteoform1.tsv", sep="\t", index=False)
-    proteoform2.to_csv(args[0] + "R1R3/proteoform2.tsv", sep="\t", index=False)        
+    prsm1.to_csv(args[0] + "tests/R1R2+R3R4/prsm1.tsv", sep="\t", index=False)
+    prsm2.to_csv(args[0] + "tests/R1R2+R3R4/prsm2.tsv", sep="\t", index=False)
+    proteoform1.to_csv(args[0] + "tests/R1R2+R3R4/proteoform1.tsv", sep="\t", index=False)
+    proteoform2.to_csv(args[0] + "tests/R1R2+R3R4/proteoform2.tsv", sep="\t", index=False)        
 
 if __name__ == "__main__":
     main()
