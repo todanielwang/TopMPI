@@ -63,8 +63,8 @@ def main():
     if (len(args) != 1):
         raise Exception(
             "Please pass in the directory")
-    A = pd.read_csv(args[0] + "/A_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=26)
-    B = pd.read_csv(args[0] + "/B_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=26)
+    A = pd.read_csv(args[0] + "/A_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
+    B = pd.read_csv(args[0] + "/B_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
 
     spectra = read_msalign.read_spec_file(args[0] + "/A_ms2.msalign")
 
@@ -72,10 +72,17 @@ def main():
     for spec in spectra:
         spec_dict[str(spec.header.spec_scan)] = spec
 
+    multiplexedspectra = [int(spec.header.spec_scan) for spec in spectra if (not (spec.header.pre_inte_list[0] == '' or float(spec.header.pre_inte_list[0]) == float(0) or len(spec.header.pre_inte_list) == 1 or float(spec.header.pre_inte_list[1]) == float(0))) and float(spec.header.pre_inte_list[1]) / float(spec.header.pre_inte_list[0]) > 0.2]
+
+    print("We have " + str(len(multiplexedspectra)) + " multiplexed spectra out of total of " + str(len(spectra)) + " spectra")
+
     dirA = args[0] + "/A_html/toppic_prsm_cutoff/data_js/prsms/"
     dirB = args[0] + "/B_html/toppic_prsm_cutoff/data_js/prsms/"
 
-    merge = A.merge(B, on="Scan(s)", how="inner")
+    multiplexA = A[A["Scan(s)"].isin(multiplexedspectra)]
+    multiplexB = B[B["Scan(s)"].isin(multiplexedspectra)]
+
+    merge = multiplexA.merge(multiplexB, on="Scan(s)", how="inner")
     bothscanlist = merge["Scan(s)"].tolist()
 
     sameproteinscans = merge[merge["Protein accession_x"] == merge["Protein accession_y"]]["Scan(s)"].tolist()
@@ -89,10 +96,10 @@ def main():
             matchedListB, nonMatchedList = getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_y"], dirB, spec_dict[str(scan)])
             setA = set(matchedListA)
             setB = set(matchedListB)
-            if (len(setA.intersection(setB)) / min(int(len(setA)), int(len(setB))) >= 0.9):
+            if (len(setA.intersection(setB)) / min(int(len(setA)), int(len(setB))) > 0.9):
                 sameproteinscans.append(scan)
 
-    print("We have total of " + str(len(sameproteinscans)) + " candidates with the shared matched peaks > 90% condition")
+    print("We have total of " + str(len(sameproteinscans)) + " candidates that are incosistent")
 
     filteredmerge = merge[merge["Scan(s)"].isin(sameproteinscans)].copy()
     completemerge = filteredmerge[filteredmerge["#unexpected modifications_x"] - filteredmerge["#unexpected modifications_y"] >= 0].copy()
@@ -101,10 +108,27 @@ def main():
 
     correctedscanlist = completemerge[completemerge["difference # ions"] >= 3]["Scan(s)"].tolist()
 
-    print("We will switch precursor for " + str(len(correctedscanlist)) + " scans")
+    print("We will switch precursor for " + str(len(correctedscanlist)) + " scans that are inconsistent")
+
+    consistentscans = set(bothscanlist) - set(sameproteinscans)
+
+    print("We have a total of " + str(len(consistentscans)) + " of scans that are consistent")
+
+    consistentrows = merge[merge["Scan(s)"].isin(list(consistentscans))].copy()
+    consistentswitchscans = consistentrows[consistentrows["#matched peaks_y"] > consistentrows["#matched peaks_x"]]["Scan(s)"].tolist()
+
+    print("We will switch precursor for " + str(len(consistentswitchscans)) + " scans that are consistent")
+
+    onlyB = set(multiplexB["Scan(s)"].tolist()) - set(multiplexA['Scan(s)'].tolist())
+
+    print("We also have " + str(len(onlyB)) + " spectra who only reported under second precuror")
+
+    switchlist = onlyB.union(set(correctedscanlist)).union(set(consistentswitchscans))
+
+    print("We will be switching precursor for a total of " + str(len(switchlist)) + " scans")
 
     for spec in spectra:
-        if int(spec.header.spec_scan) in correctedscanlist:
+        if int(spec.header.spec_scan) in switchlist:
             pre_mz_list = spec.header.pre_mz_list
             pre_charge_list = spec.header.pre_charge_list
             pre_mass_list = spec.header.pre_mass_list
@@ -125,28 +149,26 @@ def main():
 
     read_msalign.write_spec_file(args[0] + "FirstPrSM_ms2.msalign", spectra)
 
-    splitspectra = [spec for spec in spectra if (len(spec.header.pre_mz_list) > 1)]
-
     prsm = A
     prsmother = B
 
-    prsm["ID"] = prsm["Scan(s)"]
-    prsmother["ID"] = prsmother["Scan(s)"]
+    # Filter df2 for rows where "Scan(s)" is in the scan_list
+    filtered_other = prsmother[prsmother["Scan(s)"].isin(switchlist)]
 
-    prsm.set_index('ID', inplace=True)
-    prsmother.set_index('ID', inplace=True)
+    # Remove rows from df1 where "Scan(s)" is in the scan_list
+    remaining_prsm = prsm[~prsm["Scan(s)"].isin(switchlist)]
 
-    prsm.update(prsmother[prsmother.index.isin(correctedscanlist)])
+    # Merge the dataframes, prioritizing df2 values (even if empty)
+    result = pd.concat([remaining_prsm, filtered_other], ignore_index=True).sort_values(by="Scan(s)")
 
-    prsm.reset_index(inplace=True)
+    #Change to E-value?
+    result["Spectrum-level Q-value"] = calculate_q_values(result)
 
-    prsm = prsm.drop(columns=["ID"])
+    result = result[result["Spectrum-level Q-value"] < 0.01]
 
-    prsm["Spectrum-level Q-value"] = calculate_q_values(prsm)
+    result.to_csv(args[0] + "FirstPrSM_toppic_prsm_single.tsv", sep="\t", index=False)
 
-    prsm = prsm[prsm["Spectrum-level Q-value"] < 0.01]
-
-    prsm.to_csv(args[0] + "FirstPrSM_toppic_prsm_single.tsv", sep="\t", index=False)
+    splitspectra = [spec for spec in spectra if (len(spec.header.pre_mz_list) > 1 and int(spec.header.spec_scan) in multiplexedspectra)]
 
     for spec in splitspectra:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]
@@ -161,7 +183,7 @@ def main():
 
     dirend = "_html/toppic_prsm_cutoff/data_js/prsms/"
     count = 0
-    for index, row in prsm.iterrows():
+    for index, row in result.iterrows():
         dirmid = row["Data file name"].rsplit('/', 1)[-1].split('_')[0]
         prsmid = row["Prsm ID"]
         filename = args[0] + "/" + str(dirmid) + dirend + "prsm" + str(prsmid) + ".js"

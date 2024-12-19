@@ -1,0 +1,726 @@
+	x	y	scan1	scan2	boolean_x	boolean_y	combination
+0	-7.31069114087638	-7.020451625295905	1730.0	2070.0	True	True	Both identifications are reported
+1	-8.665546248849068	-9.266000713461613	2139.0	1754.0	True	True	Both identifications are reported
+2	-21.317854923626168	-6.280668713016273	2218.0	8121.0	True	True	Both identifications are reported
+3	-20.625251653989896	-6.280668713016273	2229.0	8121.0	True	True	Both identifications are reported
+4	-21.171984935776024	-8.943095148663527	2232.0	2124.0	True	True	Both identifications are reported
+5	-24.512861624522813	-13.534617148551582	2237.0	3980.0	True	True	Both identifications are reported
+6	-24.047691990337874	-8.943095148663527	2253.0	2124.0	True	True	Both identifications are reported
+7	-19.946921556516582	-4.835647144215563	2299.0	9402.0	True	True	Both identifications are reported
+8	-19.686132779630846	-4.835647144215563	2301.0	9402.0	True	True	Both identifications are reported
+9	-28.609064892896622	-4.835647144215563	2306.0	9402.0	True	True	Both identifications are reported
+10	-17.518557371497696	-4.835647144215563	2314.0	9402.0	True	True	Both identifications are reported
+11	-19.4145392704915	-4.835647144215563	2330.0	9402.0	True	True	Both identifications are reported
+12	-9.575118363368933	-11.146910470148134	2345.0	2223.0	True	True	Both identifications are reported
+13	-6.482804102050026	-3.5095919984939887	2348.0	4436.0	True	True	Both identifications are reported
+14	-7.931814138253839	-4.853871964321762	2363.0	4176.0	True	True	Both identifications are reported
+15	-6.006123085058789	-3.5095919984939887	2390.0	4436.0	True	True	Both identifications are reported
+16	-19.193141970481182	-4.835647144215563	2398.0	9402.0	True	True	Both identifications are reported
+17	-30.127843727251708	-4.835647144215563	2425.0	9402.0	True	True	Both identifications are reported
+18	-30.05551732784983	-4.835647144215563	2432.0	9402.0	True	True	Both identifications are reported
+19	-10.52432881167557	-5.094743951251549	2462.0	2573.0	True	True	Both identifications are reported
+20	-14.202040356262804	-4.835647144215563	2488.0	9402.0	True	True	Both identifications are reported
+21	-22.563837352959244	-4.835647144215563	2530.0	9402.0	True	True	Both identifications are reported
+22	-20.838631997765024	-4.835647144215563	2537.0	9402.0	True	True	Both identifications are reported
+23	-4.106238237942057	-4.835647144215563	2555.0	9402.0	True	True	Both identifications are reported
+24	-5.0	-4.935542010773082	2580.0	1893.0	True	True	Both identifications are reported
+25	-7.536107011014093	-4.835647144215563	2593.0	9402.0	True	True	Both identifications are reported
+26	-10.935542010773082	-4.835647144215563	2600.0	9402.0	True	True	Both identifications are reported
+27	-10.58335949266172	-4.835647144215563	2605.0	9402.0	True	True	Both identifications are reported
+28	-19.298432014944073	-4.835647144215563	2611.0	9402.0	True	True	Both identifications are reported
+29	-14.54515513999149	-4.835647144215563	2628.0	9402.0	True	True	Both identifications are reported
+30	-14.306273051076353	-4.835647144215563	2635.0	9402.0	True	True	Both identifications are reported
+31	-9.139063379299905	-4.835647144215563	2684.0	9402.0	True	True	Both identifications are reported
+32	-14.886056647693163	-4.835647144215563	2733.0	9402.0	True	True	Both identifications are reported
+33	-15.22548303427145	-4.835647144215563	2740.0	9402.0	True	True	Both identifications are reported
+34	-9.882728704344236	-4.835647144215563	2794.0	9402.0	True	True	Both identifications are reported
+35	-8.882728704344236	-2.1853819487243666	2804.0	8023.0	True	True	Both identifications are reported
+36	-9.570247719997592	-4.7594507517174005	2871.0	1988.0	True	True	Both identifications are reported
+37	-2.746674112434519	-3.1813532163598706	3379.0	1924.0	True	True	Both identifications are reported
+38	-13.298432014944073	-3.1813532163598706	3774.0	1924.0	True	True	Both identifications are reported
+39	-17.507239610973162	-3.1813532163598706	3788.0	1924.0	True	True	Both identifications are reported
+40	-13.2580609222708	-3.075694657050903	3839.0	5076.0	True	False	Only one identification is reported
+41	-14.480172006224281	-3.075694657050903	3850.0	5076.0	True	False	Only one identification is reported
+42	-14.411168274405792	-14.199282921717614	3854.0	5653.0	True	True	Both identifications are reported
+43	-15.493494967595128	-3.1813532163598706	3855.0	1924.0	True	True	Both identifications are reported
+44	-12.835647144215564	-3.075694657050903	3875.0	5076.0	True	True	Both identifications are reported
+45	-12.092588639225413	-3.075694657050903	3878.0	5076.0	True	False	Only one identification is reported
+46	-7.27083521030723	-4.935542010773082	3924.0	1893.0	True	True	Both identifications are reported
+47	-15.950781977329818	-14.199282921717614	3944.0	5653.0	True	True	Both identifications are reported
+48	-17.38933983691012	-3.1813532163598706	3951.0	1924.0	True	True	Both identifications are reported
+49	-15.15552282425432	-3.075694657050903	3958.0	5076.0	True	False	Only one identification is reported
+50	-14.623423042943488	-14.199282921717614	3965.0	5653.0	True	True	Both identifications are reported
+51	-15.747146969020108	-14.199282921717614	3977.0	5653.0	True	True	Both identifications are reported
+52	-13.534617148551582	-21.317854923626168	3980.0	2218.0	True	True	Both identifications are reported
+53	-18.27327279097343	-3.1813532163598706	3998.0	1924.0	True	True	Both identifications are reported
+54	-18.28819277095881	-4.935542010773082	4045.0	1893.0	True	True	Both identifications are reported
+55	-17.84163750790475	-12.860120913598763	4078.0	5431.0	True	True	Both identifications are reported
+56	-14.714442690992227	-3.1813532163598706	4084.0	1924.0	True	True	Both identifications are reported
+57	-14.787812395596042	-14.199282921717614	4091.0	5653.0	True	True	Both identifications are reported
+58	-19.33068311943389	-6.482804102050026	4119.0	2348.0	True	True	Both identifications are reported
+59	-10.329754146925875	-14.199282921717614	4122.0	5653.0	True	True	Both identifications are reported
+60	-12.296708621881338	-4.935542010773082	4133.0	1893.0	True	True	Both identifications are reported
+61	-15.341988603342887	-3.1813532163598706	4152.0	1924.0	True	True	Both identifications are reported
+62	-4.91721462968355	-4.939302159646388	4172.0	4543.0	True	True	Both identifications are reported
+63	-4.853871964321762	-6.482804102050026	4176.0	2348.0	True	True	Both identifications are reported
+64	-16.087777943467586	-8.779891911959945	4204.0	6125.0	True	True	Both identifications are reported
+65	-6.876148359032914	-6.482804102050026	4205.0	2348.0	True	True	Both identifications are reported
+66	-10.628932137728263	-3.1813532163598706	4228.0	1924.0	True	True	Both identifications are reported
+67	-6.392544976785332	-6.482804102050026	4238.0	2348.0	True	True	Both identifications are reported
+68	-5.772113295386326	-6.482804102050026	4245.0	2348.0	True	True	Both identifications are reported
+69	-7.6777807052660805	-6.482804102050026	4252.0	2348.0	True	True	Both identifications are reported
+70	-12.148741651280925	-5.54515513999149	4275.0	6013.0	True	True	Both identifications are reported
+71	-16.27490547891853	-4.91721462968355	4308.0	4172.0	True	True	Both identifications are reported
+72	-11.503070351926786	-9.266000713461613	4310.0	1754.0	True	True	Both identifications are reported
+73	-5.2262135550188065	-6.482804102050026	4320.0	2348.0	True	True	Both identifications are reported
+74	-8.126098402135538	-6.482804102050026	4336.0	2348.0	True	True	Both identifications are reported
+75	-6.863279432843593	-6.482804102050026	4343.0	2348.0	True	True	Both identifications are reported
+76	-5.614393726401688	-6.482804102050026	4351.0	2348.0	True	True	Both identifications are reported
+77	-4.705533773838407	-3.1813532163598706	4387.0	1924.0	True	True	Both identifications are reported
+78	-7.978810700930062	-5.54515513999149	4409.0	6013.0	True	True	Both identifications are reported
+79	-4.562249437179612	-3.1813532163598706	4554.0	1924.0	True	True	Both identifications are reported
+80	-3.9553980137428275	-6.021363051615526	4604.0	5243.0	True	False	Only one identification is reported
+81	-14.55129368009492	-2.0609426429621167	4646.0	6690.0	True	False	Only one identification is reported
+82	-3.718710906333347	-3.1813532163598706	4652.0	1924.0	True	True	Both identifications are reported
+83	-12.366531544420413	-9.446116973356126	4688.0	2225.0	True	True	Both identifications are reported
+84	-11.987162775294827	-2.0609426429621167	4735.0	6690.0	True	False	Only one identification is reported
+85	-15.090979145788843	-2.0609426429621167	4742.0	6690.0	True	False	Only one identification is reported
+86	-2.9457200322455	-5.636388020107856	4835.0	4442.0	True	False	Only one identification is reported
+87	-4.493494967595128	-2.5424208530042374	4842.0	6055.0	False	True	Only one identification is reported
+88	-3.9135567358429015	-5.636388020107856	4861.0	4442.0	True	False	Only one identification is reported
+89	-2.179601477296018	-6.642065152999546	4880.0	7354.0	False	True	Only one identification is reported
+90	-4.5934598195660445	-4.939302159646388	4920.0	4543.0	True	True	Both identifications are reported
+91	-9.454692883534175	-3.0253823946949225	4976.0	4470.0	True	False	Only one identification is reported
+92	-3.8546746303723	-5.636388020107856	4996.0	4442.0	True	False	Only one identification is reported
+93	-9.892790030352131	-3.0253823946949225	5002.0	4470.0	True	False	Only one identification is reported
+94	-3.8153141895002984	-5.636388020107856	5006.0	4442.0	True	False	Only one identification is reported
+95	-4.97061622231479	-2.0955915007263135	5012.0	8014.0	True	False	Only one identification is reported
+96	-13.285670240254767	-5.187755303199631	5057.0	5470.0	True	True	Both identifications are reported
+97	-19.568636235841012	-5.187755303199631	5071.0	5470.0	True	True	Both identifications are reported
+98	-3.075694657050903	-3.5911243266235773	5076.0	8985.0	True	False	Only one identification is reported
+99	-11.068033885271827	-2.171954478152317	5078.0	6177.0	True	False	Only one identification is reported
+100	-14.041436116778032	-2.171954478152317	5086.0	6177.0	True	False	Only one identification is reported
+101	-3.517709676787201	-3.0253823946949225	5136.0	4470.0	True	False	Only one identification is reported
+102	-3.8412141565565796	-3.0253823946949225	5151.0	4470.0	True	False	Only one identification is reported
+103	-13.074172425375258	-10.510041520575164	5165.0	2244.0	True	True	Both identifications are reported
+104	-15.61798295742513	-10.510041520575164	5180.0	2244.0	True	True	Both identifications are reported
+105	-4.377785977033705	-9.928117992693874	5188.0	4784.0	True	True	Both identifications are reported
+106	-7.002176919254275	-11.75448733218585	5225.0	6220.0	True	True	Both identifications are reported
+107	-4.559090917934783	-2.7139864040137684	5234.0	4555.0	True	False	Only one identification is reported
+108	-5.939302159646388	-2.7139864040137684	5240.0	4555.0	True	False	Only one identification is reported
+109	-13.610833915635467	-4.703334809738469	5242.0	2418.0	True	True	Both identifications are reported
+110	-11.136677139879543	-4.703334809738469	5254.0	2418.0	True	True	Both identifications are reported
+111	-3.279783869776999	-2.7139864040137684	5327.0	4555.0	False	False	No identifications are reported
+112	-12.860120913598763	-6.798602875679548	5431.0	4106.0	True	True	Both identifications are reported
+113	-7.465973893943865	-4.351639989019068	5437.0	5265.0	True	True	Both identifications are reported
+114	-3.0599862328347562	-3.0253823946949225	5463.0	4470.0	True	False	Only one identification is reported
+115	-3.1855812513690824	-2.5813281848401766	5467.0	7988.0	True	True	Both identifications are reported
+116	-12.471083299722345	-3.0253823946949225	5481.0	4470.0	True	False	Only one identification is reported
+117	-8.785156151952302	-9.454692883534175	5499.0	4976.0	True	True	Both identifications are reported
+118	-17.20342566678957	-4.634512015109101	5505.0	7561.0	True	False	Only one identification is reported
+119	-10.342944147142896	-9.454692883534175	5536.0	4976.0	True	True	Both identifications are reported
+120	-5.562249437179612	-3.9428663281432823	5554.0	7776.0	True	True	Both identifications are reported
+121	-3.1981094396152483	-2.9717948800945573	5555.0	6653.0	False	False	No identifications are reported
+122	-12.619788758288394	-9.266000713461613	5614.0	1754.0	True	True	Both identifications are reported
+123	-7.295849483160201	-2.7166625815975083	5652.0	7089.0	True	True	Both identifications are reported
+124	-14.199282921717614	-2.581574405531411	5653.0	3578.0	True	False	Only one identification is reported
+125	-4.761953896871205	-5.0726296369609765	5673.0	8064.0	True	True	Both identifications are reported
+126	-5.321481620959886	-5.0726296369609765	5683.0	8064.0	True	True	Both identifications are reported
+127	-5.701146923590294	-3.517709676787201	5684.0	5136.0	True	False	Only one identification is reported
+128	-4.559090917934783	-2.1020437942483765	5698.0	8218.0	True	False	Only one identification is reported
+129	-6.1904402853647325	-2.971987345592869	5835.0	8581.0	True	False	Only one identification is reported
+130	-8.96657624451305	-7.442492798094342	5849.0	6237.0	True	True	Both identifications are reported
+131	-9.441291429466835	-7.442492798094342	5866.0	6237.0	True	True	Both identifications are reported
+132	-12.279840696594043	-4.703334809738469	5953.0	2418.0	True	True	Both identifications are reported
+133	-11.204815410317575	-4.703334809738469	5961.0	2418.0	True	True	Both identifications are reported
+134	-12.021819483062586	-4.493494967595128	5971.0	4842.0	True	True	Both identifications are reported
+135	-10.913640169325252	-4.493494967595128	6010.0	4842.0	True	False	Only one identification is reported
+136	-5.54515513999149	-2.971987345592869	6013.0	8581.0	True	False	Only one identification is reported
+137	-9.747146969020108	-7.991399828238082	6025.0	1869.0	True	True	Both identifications are reported
+138	-7.22767829327708	-4.703334809738469	6048.0	2418.0	True	True	Both identifications are reported
+139	-7.1904402853647325	-7.991399828238082	6058.0	1869.0	True	True	Both identifications are reported
+140	-9.714442690992227	-2.983669352764419	6066.0	2374.0	True	False	Only one identification is reported
+141	-10.7281583934635	-4.423658649794207	6114.0	4059.0	True	False	Only one identification is reported
+142	-16.27901425584626	-6.1904402853647325	6142.0	5835.0	True	True	Both identifications are reported
+143	-23.906578314837766	-6.1904402853647325	6157.0	5835.0	True	True	Both identifications are reported
+144	-12.067019178076801	-4.634512015109101	6164.0	7561.0	True	False	Only one identification is reported
+145	-13.744727494896694	-4.634512015109101	6173.0	7561.0	True	False	Only one identification is reported
+146	-11.75448733218585	-9.785156151952302	6220.0	8400.0	True	True	Both identifications are reported
+147	-7.442492798094342	-6.1904402853647325	6237.0	5835.0	True	True	Both identifications are reported
+148	-10.774690718274137	-9.785156151952302	6238.0	8400.0	True	True	Both identifications are reported
+149	-11.995678626217357	-6.1904402853647325	6249.0	5835.0	True	True	Both identifications are reported
+150	-3.1886802171166204	-4.714442690992226	6282.0	7068.0	True	True	Both identifications are reported
+151	-5.847711655616943	-4.714442690992226	6293.0	7068.0	True	True	Both identifications are reported
+152	-7.085656842880559	-7.295849483160201	6433.0	5652.0	True	True	Both identifications are reported
+153	-2.2695735394739556	-10.257274868695301	6674.0	4877.0	False	True	Only one identification is reported
+154	-2.0609426429621167	-7.815308569182402	6690.0	4631.0	False	True	Only one identification is reported
+155	-2.792824940559389	-10.257274868695301	6696.0	4877.0	True	True	Both identifications are reported
+156	-2.0368215091062374	-5.73754891026957	6842.0	1867.0	False	True	Only one identification is reported
+157	-10.428291168191313	-3.1886802171166204	6892.0	6282.0	True	True	Both identifications are reported
+158	-13.385102783966865	-2.581574405531411	6910.0	3578.0	True	False	Only one identification is reported
+159	-9.669586226650809	-10.718966632752272	6926.0	4108.0	True	True	Both identifications are reported
+160	-12.387216143280265	-3.1981094396152483	6930.0	5555.0	True	False	Only one identification is reported
+161	-8.164943898279883	-6.1904402853647325	6969.0	5835.0	True	True	Both identifications are reported
+162	-13.0268721464003	-11.75448733218585	6972.0	6220.0	True	True	Both identifications are reported
+163	-13.423658649794207	-11.75448733218585	6982.0	6220.0	True	True	Both identifications are reported
+164	-15.131943638176958	-11.75448733218585	6991.0	6220.0	True	True	Both identifications are reported
+165	-6.950781977329818	-6.1904402853647325	6993.0	5835.0	True	True	Both identifications are reported
+166	-5.168770306132936	-6.1904402853647325	7083.0	5835.0	True	True	Both identifications are reported
+167	-2.7166625815975083	-3.2334324868194013	7089.0	8127.0	True	True	Both identifications are reported
+168	-8.274088367704952	-7.815308569182402	7364.0	4631.0	True	True	Both identifications are reported
+169	-6.1180450286604	-7.815308569182402	7435.0	4631.0	True	True	Both identifications are reported
+170	-10.164943898279883	-4.939302159646388	7546.0	4543.0	True	True	Both identifications are reported
+171	-7.913640169325252	-4.939302159646388	7549.0	4543.0	True	True	Both identifications are reported
+172	-14.935542010773082	-7.815308569182402	7598.0	4631.0	True	True	Both identifications are reported
+173	-4.47755576649368	-3.5095919984939887	7602.0	4436.0	True	True	Both identifications are reported
+174	-18.79317412396815	-3.0261593798313853	7620.0	8442.0	True	False	Only one identification is reported
+175	-18.459670525209127	-7.815308569182402	7626.0	4631.0	True	True	Both identifications are reported
+176	-11.97469413473523	-3.0261593798313853	7654.0	8442.0	True	True	Both identifications are reported
+177	-11.244125144327509	-7.815308569182402	7658.0	4631.0	True	True	Both identifications are reported
+178	-15.494850021680094	-11.75448733218585	7732.0	6220.0	True	True	Both identifications are reported
+179	-5.449771646944906	-6.482804102050026	7739.0	2348.0	True	True	Both identifications are reported
+180	-4.681936665037238	-5.54515513999149	7742.0	6013.0	True	True	Both identifications are reported
+181	-13.886056647693163	-11.75448733218585	7745.0	6220.0	True	True	Both identifications are reported
+182	-9.034798298974088	-3.1981094396152483	7762.0	5555.0	True	True	Both identifications are reported
+183	-5.709965388637482	-7.295849483160201	7763.0	5652.0	True	True	Both identifications are reported
+184	-13.367542707815275	-11.75448733218585	7778.0	6220.0	True	True	Both identifications are reported
+185	-6.284832642151542	-4.91721462968355	7796.0	4172.0	True	True	Both identifications are reported
+186	-7.261219441515631	-6.1904402853647325	7804.0	5835.0	True	True	Both identifications are reported
+187	-7.375717904164332	-6.1904402853647325	7860.0	5835.0	True	True	Both identifications are reported
+188	-2.5967215822647614	-8.274088367704952	7866.0	7364.0	False	True	Only one identification is reported
+189	-2.2243929011341588	-2.0955915007263135	7874.0	8014.0	True	False	Only one identification is reported
+190	-3.2869900507394636	-2.0955915007263135	7895.0	8014.0	True	False	Only one identification is reported
+191	-4.892790030352131	-5.931814138253839	7922.0	2230.0	True	True	Both identifications are reported
+192	-8.692503962086787	-4.761953896871205	7923.0	5673.0	True	True	Both identifications are reported
+193	-12.657577319177793	-5.562249437179612	7928.0	5554.0	True	True	Both identifications are reported
+194	-21.12726117252733	-2.5967215822647614	7934.0	7866.0	True	False	Only one identification is reported
+195	-8.321481620959887	-4.761953896871205	7984.0	5673.0	True	True	Both identifications are reported
+196	-18.366531544420415	-2.5967215822647614	7995.0	7866.0	True	False	Only one identification is reported
+197	-8.233587152887601	-4.761953896871205	8000.0	5673.0	True	True	Both identifications are reported
+198	-23.642065152999546	-21.317854923626168	8008.0	2218.0	True	True	Both identifications are reported
+199	-2.563954279818212	-7.295849483160201	8012.0	5652.0	True	True	Both identifications are reported
+200	-10.014573525916997	-5.562249437179612	8018.0	5554.0	True	True	Both identifications are reported
+201	-11.555955204081924	-5.562249437179612	8025.0	5554.0	True	True	Both identifications are reported
+202	-12.76447155309245	-11.452225294612177	8029.0	2922.0	True	True	Both identifications are reported
+203	-4.510041520575165	-7.295849483160201	8032.0	5652.0	True	True	Both identifications are reported
+204	-18.05700040663396	-11.75448733218585	8036.0	6220.0	True	True	Both identifications are reported
+205	-13.213248577854438	-7.991399828238082	8056.0	1869.0	True	True	Both identifications are reported
+206	-5.0726296369609765	-4.559090917934783	8064.0	5698.0	True	True	Both identifications are reported
+207	-12.681936665037238	-16.82390874094432	8067.0	1816.0	True	True	Both identifications are reported
+208	-16.291579099865288	-2.5967215822647614	8068.0	7866.0	True	False	Only one identification is reported
+209	-15.108462542327436	-11.75448733218585	8078.0	6220.0	True	True	Both identifications are reported
+210	-21.943095148663527	-7.991399828238082	8081.0	1869.0	True	True	Both identifications are reported
+211	-8.667561540084394	-16.82390874094432	8095.0	1816.0	True	True	Both identifications are reported
+212	-14.856985199745905	-2.5967215822647614	8140.0	7866.0	True	False	Only one identification is reported
+213	-15.913640169325252	-7.991399828238082	8154.0	1869.0	True	True	Both identifications are reported
+214	-15.131943638176958	-11.75448733218585	8263.0	6220.0	True	True	Both identifications are reported
+215	-11.681936665037238	-11.75448733218585	8354.0	6220.0	True	True	Both identifications are reported
+216	-10.289036881004725	-11.75448733218585	8363.0	6220.0	True	True	Both identifications are reported
+217	-3.0261593798313853	-2.7756162339765673	8442.0	8413.0	True	True	Both identifications are reported
+218	-5.619788758288394	-6.1904402853647325	8587.0	5835.0	True	True	Both identifications are reported
+219	-6.492144128304169	-6.1904402853647325	8603.0	5835.0	True	True	Both identifications are reported
+220	-7.400116927926312	-6.1904402853647325	8657.0	5835.0	True	True	Both identifications are reported
+221	-2.180482912583236	-9.040958607678906	9268.0	3900.0	False	True	Only one identification is reported
+222	-10.826813731587725	-2.5967215822647614	9285.0	7866.0	True	False	Only one identification is reported
+223	-5.471083299722345	-6.1904402853647325	9677.0	5835.0	True	True	Both identifications are reported
+224	-11.324221658325914	-3.1813532163598706	9777.0	1924.0	True	True	Both identifications are reported
+225	-5.493494967595128	-5.223298816011589	9783.0	1733.0	True	True	Both identifications are reported
+226	-7.291579099865287	-5.223298816011589	9806.0	1733.0	True	True	Both identifications are reported
+227	-6.448550002027125	-3.075694657050903	10147.0	5076.0	True	True	Both identifications are reported
+228	-8.581698708680255	-3.1813532163598706	10153.0	1924.0	True	True	Both identifications are reported
+229	-7.576754126063192	-3.1813532163598706	10538.0	1924.0	True	True	Both identifications are reported
+230	-7.396855627379818	-3.1886802171166204	10588.0	6282.0	True	True	Both identifications are reported
+231	-9.67366413907125	-3.1813532163598706	10916.0	1924.0	True	True	Both identifications are reported
+232	-4.319664486585436	-3.1813532163598706	10926.0	1924.0	True	True	Both identifications are reported
+233	-4.549750891680639	-5.223298816011589	10945.0	1733.0	True	True	Both identifications are reported
+234	-5.694648630553377	-3.1813532163598706	11259.0	1924.0	True	True	Both identifications are reported
+235	-5.221125527997261	-5.223298816011589	11281.0	1733.0	True	True	Both identifications are reported
+236	-5.349692476868063	-5.223298816011589	11625.0	1733.0	True	True	Both identifications are reported
+237	-24.512861624522813	-6.280668713016273	2237.0	8121.0	True	True	Both identifications are reported
+238	-19.686132779630846	-3.242042788133535	2301.0	9414.0	True	False	Only one identification is reported
+239	-17.518557371497696	-3.242042788133535	2314.0	9414.0	True	False	Only one identification is reported
+240	-19.4145392704915	-3.242042788133535	2330.0	9414.0	True	False	Only one identification is reported
+241	-6.482804102050026	-4.47755576649368	2348.0	7602.0	True	True	Both identifications are reported
+242	-7.931814138253839	-5.2262135550188065	2363.0	4320.0	True	True	Both identifications are reported
+243	-6.006123085058789	-4.47755576649368	2390.0	7602.0	True	True	Both identifications are reported
+244	-19.193141970481182	-3.242042788133535	2398.0	9414.0	True	False	Only one identification is reported
+245	-14.202040356262804	-3.242042788133535	2488.0	9414.0	True	False	Only one identification is reported
+246	-7.536107011014093	-3.242042788133535	2593.0	9414.0	True	False	Only one identification is reported
+247	-10.935542010773082	-3.242042788133535	2600.0	9414.0	True	False	Only one identification is reported
+248	-9.139063379299905	-3.242042788133535	2684.0	9414.0	True	False	Only one identification is reported
+249	-14.411168274405792	-13.385102783966865	3854.0	6910.0	True	True	Both identifications are reported
+250	-7.27083521030723	-5.0	3924.0	2580.0	True	True	Both identifications are reported
+251	-15.950781977329818	-13.385102783966865	3944.0	6910.0	True	True	Both identifications are reported
+252	-14.623423042943488	-13.385102783966865	3965.0	6910.0	True	True	Both identifications are reported
+253	-15.747146969020108	-13.385102783966865	3977.0	6910.0	True	True	Both identifications are reported
+254	-13.534617148551582	-20.625251653989896	3980.0	2229.0	True	True	Both identifications are reported
+255	-18.28819277095881	-5.0	4045.0	2580.0	True	True	Both identifications are reported
+256	-14.787812395596042	-13.385102783966865	4091.0	6910.0	True	True	Both identifications are reported
+257	-19.33068311943389	-7.931814138253839	4119.0	2363.0	True	True	Both identifications are reported
+258	-12.296708621881338	-5.0	4133.0	2580.0	True	True	Both identifications are reported
+259	-4.91721462968355	-4.5934598195660445	4172.0	4920.0	True	True	Both identifications are reported
+260	-4.853871964321762	-6.006123085058789	4176.0	2390.0	True	True	Both identifications are reported
+261	-16.087777943467586	-7.146301788223826	4204.0	6206.0	True	True	Both identifications are reported
+262	-6.876148359032914	-7.931814138253839	4205.0	2363.0	True	True	Both identifications are reported
+263	-6.392544976785332	-7.931814138253839	4238.0	2363.0	True	True	Both identifications are reported
+264	-5.772113295386326	-7.931814138253839	4245.0	2363.0	True	True	Both identifications are reported
+265	-7.6777807052660805	-7.931814138253839	4252.0	2363.0	True	True	Both identifications are reported
+266	-12.148741651280925	-7.2644011003018205	4275.0	7904.0	True	True	Both identifications are reported
+267	-16.27490547891853	-4.5934598195660445	4308.0	4920.0	True	True	Both identifications are reported
+268	-11.503070351926786	-8.665546248849068	4310.0	2139.0	True	True	Both identifications are reported
+269	-5.2262135550188065	-6.006123085058789	4320.0	2390.0	True	True	Both identifications are reported
+270	-8.126098402135538	-7.931814138253839	4336.0	2363.0	True	True	Both identifications are reported
+271	-6.863279432843593	-6.006123085058789	4343.0	2390.0	True	True	Both identifications are reported
+272	-5.614393726401688	-6.006123085058789	4351.0	2390.0	True	True	Both identifications are reported
+273	-7.978810700930062	-7.2644011003018205	4409.0	7904.0	True	True	Both identifications are reported
+274	-14.55129368009492	-8.274088367704952	4646.0	7364.0	True	True	Both identifications are reported
+275	-12.366531544420413	-4.512861624522813	4688.0	2364.0	True	True	Both identifications are reported
+276	-11.987162775294827	-6.1180450286604	4735.0	7435.0	True	True	Both identifications are reported
+277	-15.090979145788843	-8.274088367704952	4742.0	7364.0	True	True	Both identifications are reported
+278	-9.454692883534175	-11.01592296609717	4976.0	6152.0	True	True	Both identifications are reported
+279	-9.892790030352131	-8.785156151952302	5002.0	5499.0	True	True	Both identifications are reported
+280	-13.285670240254767	-8.312471038785366	5057.0	6214.0	True	True	Both identifications are reported
+281	-19.568636235841012	-8.312471038785366	5071.0	6214.0	True	True	Both identifications are reported
+282	-11.068033885271827	-6.642065152999546	5078.0	7354.0	True	True	Both identifications are reported
+283	-14.041436116778032	-6.642065152999546	5086.0	7354.0	True	True	Both identifications are reported
+284	-3.517709676787201	-7.295849483160201	5136.0	5652.0	True	False	Only one identification is reported
+285	-3.8412141565565796	-7.295849483160201	5151.0	5652.0	True	True	Both identifications are reported
+286	-4.377785977033705	-5.573488738635425	5188.0	4950.0	True	False	Only one identification is reported
+287	-7.002176919254275	-10.774690718274137	5225.0	6238.0	True	True	Both identifications are reported
+288	-13.610833915635467	-8.016824927962187	5242.0	2426.0	True	True	Both identifications are reported
+289	-11.136677139879543	-8.016824927962187	5254.0	2426.0	True	True	Both identifications are reported
+290	-3.0599862328347562	-7.295849483160201	5463.0	5652.0	True	True	Both identifications are reported
+291	-12.471083299722345	-7.295849483160201	5481.0	5652.0	True	True	Both identifications are reported
+292	-10.342944147142896	-9.892790030352131	5536.0	5002.0	True	True	Both identifications are reported
+293	-5.562249437179612	-6.106793246940152	5554.0	8212.0	True	True	Both identifications are reported
+294	-12.619788758288394	-8.665546248849068	5614.0	2139.0	True	True	Both identifications are reported
+295	-7.295849483160201	-3.2334324868194013	5652.0	8127.0	True	True	Both identifications are reported
+296	-14.199282921717614	-3.3804371335791727	5653.0	3599.0	True	False	Only one identification is reported
+297	-4.761953896871205	-2.1020437942483765	5673.0	8218.0	True	False	Only one identification is reported
+298	-5.321481620959886	-2.1020437942483765	5683.0	8218.0	True	False	Only one identification is reported
+299	-5.701146923590294	-3.8412141565565796	5684.0	5151.0	True	True	Both identifications are reported
+300	-4.559090917934783	-2.7756162339765673	5698.0	8413.0	True	False	Only one identification is reported
+301	-6.1904402853647325	-6.231361898752386	5835.0	8733.0	True	True	Both identifications are reported
+302	-8.96657624451305	-11.995678626217357	5849.0	6249.0	True	True	Both identifications are reported
+303	-9.441291429466835	-11.995678626217357	5866.0	6249.0	True	True	Both identifications are reported
+304	-12.279840696594043	-8.016824927962187	5953.0	2426.0	True	True	Both identifications are reported
+305	-11.204815410317575	-8.016824927962187	5961.0	2426.0	True	True	Both identifications are reported
+306	-9.747146969020108	-21.943095148663527	6025.0	8081.0	True	True	Both identifications are reported
+307	-7.22767829327708	-8.016824927962187	6048.0	2426.0	True	True	Both identifications are reported
+308	-7.1904402853647325	-21.943095148663527	6058.0	8081.0	True	True	Both identifications are reported
+309	-10.7281583934635	-15.554395796726402	6114.0	4102.0	True	True	Both identifications are reported
+310	-16.27901425584626	-8.96657624451305	6142.0	5849.0	True	True	Both identifications are reported
+311	-23.906578314837766	-8.96657624451305	6157.0	5849.0	True	True	Both identifications are reported
+312	-12.067019178076801	-13.30715308072277	6164.0	9247.0	True	True	Both identifications are reported
+313	-13.744727494896694	-13.30715308072277	6173.0	9247.0	True	True	Both identifications are reported
+314	-7.442492798094342	-2.971987345592869	6237.0	8581.0	True	True	Both identifications are reported
+315	-11.995678626217357	-5.168770306132936	6249.0	7083.0	True	True	Both identifications are reported
+316	-5.847711655616943	-7.396855627379818	6293.0	10588.0	True	True	Both identifications are reported
+317	-7.085656842880559	-2.7166625815975083	6433.0	7089.0	True	True	Both identifications are reported
+318	-2.0609426429621167	-6.1180450286604	6690.0	7435.0	False	True	Only one identification is reported
+319	-10.428291168191313	-5.847711655616943	6892.0	6293.0	True	True	Both identifications are reported
+320	-13.385102783966865	-3.3804371335791727	6910.0	3599.0	True	True	Both identifications are reported
+321	-9.669586226650809	-6.0835460514500745	6926.0	4112.0	True	True	Both identifications are reported
+322	-12.387216143280265	-9.034798298974088	6930.0	7762.0	True	True	Both identifications are reported
+323	-8.164943898279883	-8.96657624451305	6969.0	5849.0	True	True	Both identifications are reported
+324	-13.0268721464003	-10.774690718274137	6972.0	6238.0	True	True	Both identifications are reported
+325	-13.423658649794207	-10.774690718274137	6982.0	6238.0	True	True	Both identifications are reported
+326	-15.131943638176958	-10.774690718274137	6991.0	6238.0	True	True	Both identifications are reported
+327	-6.950781977329818	-8.96657624451305	6993.0	5849.0	True	True	Both identifications are reported
+328	-5.168770306132936	-7.442492798094342	7083.0	6237.0	True	True	Both identifications are reported
+329	-8.274088367704952	-11.987162775294827	7364.0	4735.0	True	True	Both identifications are reported
+330	-10.164943898279883	-4.5934598195660445	7546.0	4920.0	True	True	Both identifications are reported
+331	-7.913640169325252	-4.5934598195660445	7549.0	4920.0	True	True	Both identifications are reported
+332	-14.935542010773082	-14.55129368009492	7598.0	4646.0	True	True	Both identifications are reported
+333	-18.459670525209127	-14.55129368009492	7626.0	4646.0	True	True	Both identifications are reported
+334	-11.244125144327509	-14.55129368009492	7658.0	4646.0	True	True	Both identifications are reported
+335	-15.494850021680094	-10.774690718274137	7732.0	6238.0	True	True	Both identifications are reported
+336	-5.449771646944906	-7.931814138253839	7739.0	2363.0	True	True	Both identifications are reported
+337	-4.681936665037238	-7.442492798094342	7742.0	6237.0	True	True	Both identifications are reported
+338	-13.886056647693163	-10.774690718274137	7745.0	6238.0	True	True	Both identifications are reported
+339	-9.034798298974088	-2.9717948800945573	7762.0	6653.0	True	True	Both identifications are reported
+340	-5.709965388637482	-3.2334324868194013	7763.0	8127.0	True	True	Both identifications are reported
+341	-13.367542707815275	-10.774690718274137	7778.0	6238.0	True	True	Both identifications are reported
+342	-6.284832642151542	-4.939302159646388	7796.0	4543.0	True	True	Both identifications are reported
+343	-7.261219441515631	-8.96657624451305	7804.0	5849.0	True	True	Both identifications are reported
+344	-7.375717904164332	-8.96657624451305	7860.0	5849.0	True	True	Both identifications are reported
+345	-2.5967215822647614	-10.821023052706831	7866.0	8370.0	True	True	Both identifications are reported
+346	-8.692503962086787	-5.321481620959886	7923.0	5683.0	True	True	Both identifications are reported
+347	-8.321481620959887	-5.321481620959886	7984.0	5683.0	True	True	Both identifications are reported
+348	-8.233587152887601	-5.321481620959886	8000.0	5683.0	True	True	Both identifications are reported
+349	-23.642065152999546	-20.625251653989896	8008.0	2229.0	True	True	Both identifications are reported
+350	-2.563954279818212	-2.7166625815975083	8012.0	7089.0	False	True	Only one identification is reported
+351	-12.76447155309245	-8.11747546204512	8029.0	2929.0	True	True	Both identifications are reported
+352	-4.510041520575165	-2.7166625815975083	8032.0	7089.0	True	False	Only one identification is reported
+353	-18.05700040663396	-10.774690718274137	8036.0	6238.0	True	True	Both identifications are reported
+354	-13.213248577854438	-9.747146969020108	8056.0	6025.0	True	True	Both identifications are reported
+355	-5.0726296369609765	-3.0261593798313853	8064.0	8442.0	True	False	Only one identification is reported
+356	-12.681936665037238	-12.213248577854438	8067.0	1825.0	True	True	Both identifications are reported
+357	-15.108462542327436	-10.774690718274137	8078.0	6238.0	True	True	Both identifications are reported
+358	-8.667561540084394	-12.213248577854438	8095.0	1825.0	True	True	Both identifications are reported
+359	-15.913640169325252	-9.747146969020108	8154.0	6025.0	True	True	Both identifications are reported
+360	-15.131943638176958	-10.774690718274137	8263.0	6238.0	True	True	Both identifications are reported
+361	-11.681936665037238	-10.774690718274137	8354.0	6238.0	True	True	Both identifications are reported
+362	-10.289036881004725	-10.774690718274137	8363.0	6238.0	True	True	Both identifications are reported
+363	-7.396855627379818	-4.714442690992226	10588.0	7068.0	True	True	Both identifications are reported
+364	-7.931814138253839	-6.863279432843593	2363.0	4343.0	True	True	Both identifications are reported
+365	-13.534617148551582	-6.280668713016273	3980.0	8121.0	True	True	Both identifications are reported
+366	-19.33068311943389	-6.006123085058789	4119.0	2390.0	True	True	Both identifications are reported
+367	-4.853871964321762	-4.47755576649368	4176.0	7602.0	True	True	Both identifications are reported
+368	-6.876148359032914	-6.006123085058789	4205.0	2390.0	True	True	Both identifications are reported
+369	-6.392544976785332	-6.006123085058789	4238.0	2390.0	True	True	Both identifications are reported
+370	-5.772113295386326	-6.006123085058789	4245.0	2390.0	True	True	Both identifications are reported
+371	-7.6777807052660805	-6.006123085058789	4252.0	2390.0	True	True	Both identifications are reported
+372	-16.27490547891853	-10.164943898279883	4308.0	7546.0	True	True	Both identifications are reported
+373	-5.2262135550188065	-4.47755576649368	4320.0	7602.0	True	False	Only one identification is reported
+374	-8.126098402135538	-6.006123085058789	4336.0	2390.0	True	True	Both identifications are reported
+375	-6.863279432843593	-4.47755576649368	4343.0	7602.0	True	False	Only one identification is reported
+376	-5.614393726401688	-4.47755576649368	4351.0	7602.0	True	True	Both identifications are reported
+377	-14.55129368009492	-6.1180450286604	4646.0	7435.0	True	True	Both identifications are reported
+378	-15.090979145788843	-6.1180450286604	4742.0	7435.0	True	True	Both identifications are reported
+379	-9.892790030352131	-11.01592296609717	5002.0	6152.0	True	True	Both identifications are reported
+380	-3.517709676787201	-2.563954279818212	5136.0	8012.0	True	False	Only one identification is reported
+381	-3.8412141565565796	-2.563954279818212	5151.0	8012.0	True	True	Both identifications are reported
+382	-7.002176919254275	-13.0268721464003	5225.0	6972.0	True	True	Both identifications are reported
+383	-13.610833915635467	-9.543633966870956	5242.0	2467.0	True	True	Both identifications are reported
+384	-11.136677139879543	-9.543633966870956	5254.0	2467.0	True	True	Both identifications are reported
+385	-3.0599862328347562	-2.563954279818212	5463.0	8012.0	True	True	Both identifications are reported
+386	-12.471083299722345	-5.701146923590294	5481.0	5684.0	True	True	Both identifications are reported
+387	-5.562249437179612	-6.490797477668897	5554.0	8214.0	True	True	Both identifications are reported
+388	-12.619788758288394	-5.0	5614.0	2580.0	True	True	Both identifications are reported
+389	-14.199282921717614	-7.578396073130169	5653.0	3660.0	True	True	Both identifications are reported
+390	-4.761953896871205	-2.7756162339765673	5673.0	8413.0	True	False	Only one identification is reported
+391	-5.321481620959886	-2.7756162339765673	5683.0	8413.0	True	False	Only one identification is reported
+392	-5.701146923590294	-3.0599862328347562	5684.0	5463.0	True	False	Only one identification is reported
+393	-8.96657624451305	-5.168770306132936	5849.0	7083.0	True	True	Both identifications are reported
+394	-9.441291429466835	-5.168770306132936	5866.0	7083.0	True	True	Both identifications are reported
+395	-12.279840696594043	-9.543633966870956	5953.0	2467.0	True	True	Both identifications are reported
+396	-11.204815410317575	-9.543633966870956	5961.0	2467.0	True	True	Both identifications are reported
+397	-7.22767829327708	-9.543633966870956	6048.0	2467.0	True	True	Both identifications are reported
+398	-10.7281583934635	-17.06048074738138	6114.0	4114.0	True	True	Both identifications are reported
+399	-16.27901425584626	-9.441291429466835	6142.0	5866.0	True	True	Both identifications are reported
+400	-23.906578314837766	-9.441291429466835	6157.0	5866.0	True	True	Both identifications are reported
+401	-12.067019178076801	-5.943095148663527	6164.0	10023.0	True	True	Both identifications are reported
+402	-13.744727494896694	-5.943095148663527	6173.0	10023.0	True	True	Both identifications are reported
+403	-7.442492798094342	-5.619788758288394	6237.0	8587.0	True	True	Both identifications are reported
+404	-11.995678626217357	-2.971987345592869	6249.0	8581.0	True	False	Only one identification is reported
+405	-7.085656842880559	-5.709965388637482	6433.0	7763.0	True	True	Both identifications are reported
+406	-10.428291168191313	-7.396855627379818	6892.0	10588.0	True	True	Both identifications are reported
+407	-13.385102783966865	-7.578396073130169	6910.0	3660.0	True	True	Both identifications are reported
+408	-9.669586226650809	-9.415668775632469	6926.0	4121.0	True	True	Both identifications are reported
+409	-8.164943898279883	-9.441291429466835	6969.0	5866.0	True	True	Both identifications are reported
+410	-6.950781977329818	-9.441291429466835	6993.0	5866.0	True	True	Both identifications are reported
+411	-8.274088367704952	-2.0609426429621167	7364.0	6690.0	True	False	Only one identification is reported
+412	-14.935542010773082	-11.987162775294827	7598.0	4735.0	True	True	Both identifications are reported
+413	-18.459670525209127	-11.987162775294827	7626.0	4735.0	True	True	Both identifications are reported
+414	-11.244125144327509	-11.987162775294827	7658.0	4735.0	True	True	Both identifications are reported
+415	-5.449771646944906	-6.006123085058789	7739.0	2390.0	True	True	Both identifications are reported
+416	-4.681936665037238	-11.995678626217357	7742.0	6249.0	True	True	Both identifications are reported
+417	-6.284832642151542	-4.5934598195660445	7796.0	4920.0	True	True	Both identifications are reported
+418	-7.261219441515631	-9.441291429466835	7804.0	5866.0	True	True	Both identifications are reported
+419	-7.375717904164332	-9.441291429466835	7860.0	5866.0	True	True	Both identifications are reported
+420	-2.5967215822647614	-13.006563769502389	7866.0	8412.0	False	True	Only one identification is reported
+421	-8.692503962086787	-4.559090917934783	7923.0	5698.0	True	True	Both identifications are reported
+422	-8.321481620959887	-4.559090917934783	7984.0	5698.0	True	True	Both identifications are reported
+423	-8.233587152887601	-4.559090917934783	8000.0	5698.0	True	True	Both identifications are reported
+424	-23.642065152999546	-24.512861624522813	8008.0	2237.0	True	True	Both identifications are reported
+425	-2.563954279818212	-5.709965388637482	8012.0	7763.0	False	True	Only one identification is reported
+426	-4.510041520575165	-5.709965388637482	8032.0	7763.0	True	True	Both identifications are reported
+427	-13.213248577854438	-7.1904402853647325	8056.0	6058.0	True	True	Both identifications are reported
+428	-15.913640169325252	-7.1904402853647325	8154.0	6058.0	True	True	Both identifications are reported
+429	-7.931814138253839	-5.614393726401688	2363.0	4351.0	True	True	Both identifications are reported
+430	-19.33068311943389	-4.853871964321762	4119.0	4176.0	True	True	Both identifications are reported
+431	-6.876148359032914	-4.47755576649368	4205.0	7602.0	True	True	Both identifications are reported
+432	-6.392544976785332	-4.47755576649368	4238.0	7602.0	True	False	Only one identification is reported
+433	-5.772113295386326	-4.47755576649368	4245.0	7602.0	True	True	Both identifications are reported
+434	-7.6777807052660805	-4.47755576649368	4252.0	7602.0	True	False	Only one identification is reported
+435	-16.27490547891853	-7.913640169325252	4308.0	7549.0	True	True	Both identifications are reported
+436	-8.126098402135538	-4.47755576649368	4336.0	7602.0	True	False	Only one identification is reported
+437	-3.517709676787201	-4.510041520575165	5136.0	8032.0	True	False	Only one identification is reported
+438	-3.8412141565565796	-4.510041520575165	5151.0	8032.0	True	True	Both identifications are reported
+439	-7.002176919254275	-13.423658649794207	5225.0	6982.0	True	True	Both identifications are reported
+440	-13.610833915635467	-7.3124710387853655	5242.0	2519.0	True	True	Both identifications are reported
+441	-11.136677139879543	-7.3124710387853655	5254.0	2519.0	True	True	Both identifications are reported
+442	-3.0599862328347562	-4.510041520575165	5463.0	8032.0	True	True	Both identifications are reported
+443	-12.471083299722345	-2.563954279818212	5481.0	8012.0	True	True	Both identifications are reported
+444	-5.562249437179612	-5.239577516576788	5554.0	8336.0	True	True	Both identifications are reported
+445	-12.619788758288394	-7.27083521030723	5614.0	3924.0	True	True	Both identifications are reported
+446	-14.199282921717614	-4.361510743045363	5653.0	3759.0	True	False	Only one identification is reported
+447	-5.701146923590294	-7.085656842880559	5684.0	6433.0	True	True	Both identifications are reported
+448	-8.96657624451305	-2.971987345592869	5849.0	8581.0	True	False	Only one identification is reported
+449	-9.441291429466835	-2.971987345592869	5866.0	8581.0	True	False	Only one identification is reported
+450	-12.279840696594043	-7.3124710387853655	5953.0	2519.0	True	True	Both identifications are reported
+451	-11.204815410317575	-7.3124710387853655	5961.0	2519.0	True	True	Both identifications are reported
+452	-7.22767829327708	-7.3124710387853655	6048.0	2519.0	True	True	Both identifications are reported
+453	-10.7281583934635	-10.596879478824182	6114.0	4196.0	True	True	Both identifications are reported
+454	-16.27901425584626	-8.164943898279883	6142.0	6969.0	True	True	Both identifications are reported
+455	-23.906578314837766	-8.164943898279883	6157.0	6969.0	True	True	Both identifications are reported
+456	-12.067019178076801	-2.757885182319225	6164.0	10412.0	True	False	Only one identification is reported
+457	-13.744727494896694	-2.757885182319225	6173.0	10412.0	True	False	Only one identification is reported
+458	-7.442492798094342	-6.492144128304169	6237.0	8603.0	True	True	Both identifications are reported
+459	-11.995678626217357	-5.619788758288394	6249.0	8587.0	True	True	Both identifications are reported
+460	-7.085656842880559	-2.563954279818212	6433.0	8012.0	True	True	Both identifications are reported
+461	-13.385102783966865	-4.361510743045363	6910.0	3759.0	True	True	Both identifications are reported
+462	-9.669586226650809	-2.8734742687056753	6926.0	4501.0	True	False	Only one identification is reported
+463	-8.164943898279883	-7.442492798094342	6969.0	6237.0	True	True	Both identifications are reported
+464	-6.950781977329818	-7.442492798094342	6993.0	6237.0	True	True	Both identifications are reported
+465	-14.935542010773082	-15.090979145788843	7598.0	4742.0	True	True	Both identifications are reported
+466	-18.459670525209127	-15.090979145788843	7626.0	4742.0	True	True	Both identifications are reported
+467	-11.244125144327509	-15.090979145788843	7658.0	4742.0	True	True	Both identifications are reported
+468	-5.449771646944906	-4.853871964321762	7739.0	4176.0	True	True	Both identifications are reported
+469	-6.284832642151542	-10.164943898279883	7796.0	7546.0	True	True	Both identifications are reported
+470	-7.261219441515631	-7.442492798094342	7804.0	6237.0	True	True	Both identifications are reported
+471	-7.375717904164332	-16.27901425584626	7860.0	6142.0	True	True	Both identifications are reported
+472	-2.5967215822647614	-7.127261172527331	7866.0	8824.0	True	False	Only one identification is reported
+473	-8.692503962086787	-3.0261593798313853	7923.0	8442.0	True	False	Only one identification is reported
+474	-8.321481620959887	-3.0261593798313853	7984.0	8442.0	True	False	Only one identification is reported
+475	-8.233587152887601	-3.0261593798313853	8000.0	8442.0	True	False	Only one identification is reported
+476	-23.642065152999546	-13.534617148551582	8008.0	3980.0	True	True	Both identifications are reported
+477	-7.931814138253839	-3.5095919984939887	2363.0	4436.0	True	True	Both identifications are reported
+478	-19.33068311943389	-6.876148359032914	4119.0	4205.0	True	True	Both identifications are reported
+479	-6.876148359032914	-5.449771646944906	4205.0	7739.0	True	True	Both identifications are reported
+480	-6.392544976785332	-5.449771646944906	4238.0	7739.0	True	True	Both identifications are reported
+481	-5.772113295386326	-5.449771646944906	4245.0	7739.0	True	True	Both identifications are reported
+482	-7.6777807052660805	-5.449771646944906	4252.0	7739.0	True	True	Both identifications are reported
+483	-16.27490547891853	-6.284832642151542	4308.0	7796.0	True	False	Only one identification is reported
+484	-8.126098402135538	-5.449771646944906	4336.0	7739.0	True	True	Both identifications are reported
+485	-3.517709676787201	-3.2334324868194013	5136.0	8127.0	True	False	Only one identification is reported
+486	-3.8412141565565796	-3.2334324868194013	5151.0	8127.0	True	True	Both identifications are reported
+487	-7.002176919254275	-15.131943638176958	5225.0	6991.0	True	True	Both identifications are reported
+488	-13.610833915635467	-8.149353764816933	5242.0	2607.0	True	True	Both identifications are reported
+489	-11.136677139879543	-8.149353764816933	5254.0	2607.0	True	True	Both identifications are reported
+490	-3.0599862328347562	-3.2334324868194013	5463.0	8127.0	True	True	Both identifications are reported
+491	-12.471083299722345	-4.510041520575165	5481.0	8032.0	True	True	Both identifications are reported
+492	-12.619788758288394	-18.28819277095881	5614.0	4045.0	True	True	Both identifications are reported
+493	-14.199282921717614	-9.090443970758825	5653.0	3974.0	True	True	Both identifications are reported
+494	-5.701146923590294	-2.7166625815975083	5684.0	7089.0	True	False	Only one identification is reported
+495	-8.96657624451305	-5.619788758288394	5849.0	8587.0	True	True	Both identifications are reported
+496	-9.441291429466835	-5.619788758288394	5866.0	8587.0	True	True	Both identifications are reported
+497	-12.279840696594043	-8.149353764816933	5953.0	2607.0	True	True	Both identifications are reported
+498	-11.204815410317575	-8.149353764816933	5961.0	2607.0	True	True	Both identifications are reported
+499	-7.22767829327708	-8.149353764816933	6048.0	2607.0	True	True	Both identifications are reported
+500	-10.7281583934635	-7.739928612014925	6114.0	4211.0	True	True	Both identifications are reported
+501	-16.27901425584626	-6.950781977329818	6142.0	6993.0	True	True	Both identifications are reported
+502	-23.906578314837766	-6.950781977329818	6157.0	6993.0	True	True	Both identifications are reported
+503	-7.442492798094342	-7.400116927926312	6237.0	8657.0	True	True	Both identifications are reported
+504	-11.995678626217357	-6.492144128304169	6249.0	8603.0	True	True	Both identifications are reported
+505	-7.085656842880559	-4.510041520575165	6433.0	8032.0	True	True	Both identifications are reported
+506	-13.385102783966865	-9.090443970758825	6910.0	3974.0	True	True	Both identifications are reported
+507	-8.164943898279883	-11.995678626217357	6969.0	6249.0	True	True	Both identifications are reported
+508	-6.950781977329818	-11.995678626217357	6993.0	6249.0	True	True	Both identifications are reported
+509	-14.935542010773082	-2.0609426429621167	7598.0	6690.0	True	False	Only one identification is reported
+510	-18.459670525209127	-2.0609426429621167	7626.0	6690.0	True	False	Only one identification is reported
+511	-11.244125144327509	-2.0609426429621167	7658.0	6690.0	True	False	Only one identification is reported
+512	-5.449771646944906	-5.2262135550188065	7739.0	4320.0	True	True	Both identifications are reported
+513	-6.284832642151542	-7.913640169325252	7796.0	7549.0	True	True	Both identifications are reported
+514	-7.261219441515631	-11.995678626217357	7804.0	6249.0	True	True	Both identifications are reported
+515	-7.375717904164332	-7.442492798094342	7860.0	6237.0	True	True	Both identifications are reported
+516	-2.5967215822647614	-11.575118363368933	7866.0	11516.0	True	True	Both identifications are reported
+517	-7.931814138253839	-4.47755576649368	2363.0	7602.0	True	True	Both identifications are reported
+518	-19.33068311943389	-6.392544976785332	4119.0	4238.0	True	True	Both identifications are reported
+519	-7.002176919254275	-15.494850021680094	5225.0	7732.0	True	True	Both identifications are reported
+520	-13.610833915635467	-10.174573882232178	5242.0	2614.0	True	True	Both identifications are reported
+521	-11.136677139879543	-10.174573882232178	5254.0	2614.0	True	True	Both identifications are reported
+522	-12.471083299722345	-3.2334324868194013	5481.0	8127.0	True	True	Both identifications are reported
+523	-12.619788758288394	-12.296708621881338	5614.0	4133.0	True	True	Both identifications are reported
+524	-14.199282921717614	-5.8326826652518236	5653.0	4250.0	True	True	Both identifications are reported
+525	-5.701146923590294	-5.709965388637482	5684.0	7763.0	True	False	Only one identification is reported
+526	-8.96657624451305	-6.492144128304169	5849.0	8603.0	True	True	Both identifications are reported
+527	-9.441291429466835	-6.492144128304169	5866.0	8603.0	True	True	Both identifications are reported
+528	-12.279840696594043	-10.174573882232178	5953.0	2614.0	True	True	Both identifications are reported
+529	-11.204815410317575	-10.174573882232178	5961.0	2614.0	True	True	Both identifications are reported
+530	-7.22767829327708	-10.174573882232178	6048.0	2614.0	True	True	Both identifications are reported
+531	-10.7281583934635	-3.328769749015704	6114.0	4294.0	True	False	Only one identification is reported
+532	-16.27901425584626	-5.168770306132936	6142.0	7083.0	True	True	Both identifications are reported
+533	-23.906578314837766	-5.168770306132936	6157.0	7083.0	True	True	Both identifications are reported
+534	-7.442492798094342	-6.231361898752386	6237.0	8733.0	True	True	Both identifications are reported
+535	-11.995678626217357	-7.400116927926312	6249.0	8657.0	True	True	Both identifications are reported
+536	-7.085656842880559	-3.2334324868194013	6433.0	8127.0	True	True	Both identifications are reported
+537	-13.385102783966865	-10.329754146925875	6910.0	4122.0	True	True	Both identifications are reported
+538	-5.449771646944906	-6.863279432843593	7739.0	4343.0	True	True	Both identifications are reported
+539	-7.375717904164332	-11.995678626217357	7860.0	6249.0	True	True	Both identifications are reported
+540	-19.33068311943389	-5.772113295386326	4119.0	4245.0	True	True	Both identifications are reported
+541	-7.002176919254275	-13.886056647693163	5225.0	7745.0	True	True	Both identifications are reported
+542	-13.610833915635467	-10.769551078621726	5242.0	2624.0	True	True	Both identifications are reported
+543	-11.136677139879543	-10.769551078621726	5254.0	2624.0	True	True	Both identifications are reported
+544	-14.199282921717614	-2.0476677558309127	5653.0	4564.0	True	False	Only one identification is reported
+545	-5.701146923590294	-2.563954279818212	5684.0	8012.0	True	False	Only one identification is reported
+546	-8.96657624451305	-7.400116927926312	5849.0	8657.0	True	True	Both identifications are reported
+547	-9.441291429466835	-7.400116927926312	5866.0	8657.0	True	True	Both identifications are reported
+548	-12.279840696594043	-10.769551078621726	5953.0	2624.0	True	True	Both identifications are reported
+549	-11.204815410317575	-10.769551078621726	5961.0	2624.0	True	True	Both identifications are reported
+550	-7.22767829327708	-10.769551078621726	6048.0	2624.0	True	True	Both identifications are reported
+551	-16.27901425584626	-4.681936665037238	6142.0	7742.0	True	True	Both identifications are reported
+552	-23.906578314837766	-4.681936665037238	6157.0	7742.0	True	True	Both identifications are reported
+553	-7.442492798094342	-5.471083299722345	6237.0	9677.0	True	True	Both identifications are reported
+554	-11.995678626217357	-6.231361898752386	6249.0	8733.0	True	True	Both identifications are reported
+555	-13.385102783966865	-5.8326826652518236	6910.0	4250.0	True	True	Both identifications are reported
+556	-5.449771646944906	-5.614393726401688	7739.0	4351.0	True	True	Both identifications are reported
+557	-19.33068311943389	-7.6777807052660805	4119.0	4252.0	True	True	Both identifications are reported
+558	-7.002176919254275	-13.367542707815275	5225.0	7778.0	True	True	Both identifications are reported
+559	-13.610833915635467	-5.421360790031928	5242.0	2706.0	True	True	Both identifications are reported
+560	-11.136677139879543	-5.421360790031928	5254.0	2706.0	True	True	Both identifications are reported
+561	-14.199282921717614	-3.9553980137428275	5653.0	4604.0	True	True	Both identifications are reported
+562	-5.701146923590294	-4.510041520575165	5684.0	8032.0	True	True	Both identifications are reported
+563	-8.96657624451305	-6.231361898752386	5849.0	8733.0	True	True	Both identifications are reported
+564	-9.441291429466835	-6.231361898752386	5866.0	8733.0	True	True	Both identifications are reported
+565	-12.279840696594043	-5.421360790031928	5953.0	2706.0	True	True	Both identifications are reported
+566	-11.204815410317575	-5.421360790031928	5961.0	2706.0	True	True	Both identifications are reported
+567	-7.22767829327708	-5.421360790031928	6048.0	2706.0	True	True	Both identifications are reported
+568	-16.27901425584626	-7.261219441515631	6142.0	7804.0	True	True	Both identifications are reported
+569	-23.906578314837766	-7.261219441515631	6157.0	7804.0	True	True	Both identifications are reported
+570	-11.995678626217357	-5.471083299722345	6249.0	9677.0	True	True	Both identifications are reported
+571	-13.385102783966865	-2.0476677558309127	6910.0	4564.0	True	False	Only one identification is reported
+572	-5.449771646944906	-3.5095919984939887	7739.0	4436.0	True	True	Both identifications are reported
+573	-19.33068311943389	-5.2262135550188065	4119.0	4320.0	True	True	Both identifications are reported
+574	-7.002176919254275	-18.05700040663396	5225.0	8036.0	True	True	Both identifications are reported
+575	-13.610833915635467	-9.172630726946174	5242.0	2790.0	True	True	Both identifications are reported
+576	-11.136677139879543	-9.172630726946174	5254.0	2790.0	True	True	Both identifications are reported
+577	-14.199282921717614	-2.5984702241388224	5653.0	8992.0	True	False	Only one identification is reported
+578	-5.701146923590294	-3.2334324868194013	5684.0	8127.0	True	False	Only one identification is reported
+579	-8.96657624451305	-5.471083299722345	5849.0	9677.0	True	True	Both identifications are reported
+580	-9.441291429466835	-5.471083299722345	5866.0	9677.0	True	True	Both identifications are reported
+581	-12.279840696594043	-9.172630726946174	5953.0	2790.0	True	True	Both identifications are reported
+582	-11.204815410317575	-9.172630726946174	5961.0	2790.0	True	True	Both identifications are reported
+583	-7.22767829327708	-9.172630726946174	6048.0	2790.0	True	True	Both identifications are reported
+584	-16.27901425584626	-2.971987345592869	6142.0	8581.0	True	False	Only one identification is reported
+585	-23.906578314837766	-7.375717904164332	6157.0	7860.0	True	True	Both identifications are reported
+586	-13.385102783966865	-3.9553980137428275	6910.0	4604.0	True	True	Both identifications are reported
+587	-19.33068311943389	-8.126098402135538	4119.0	4336.0	True	True	Both identifications are reported
+588	-7.002176919254275	-15.108462542327436	5225.0	8078.0	True	True	Both identifications are reported
+589	-13.610833915635467	-7.071092309756048	5242.0	2798.0	True	True	Both identifications are reported
+590	-11.136677139879543	-7.071092309756048	5254.0	2798.0	True	True	Both identifications are reported
+591	-14.199282921717614	-7.2839966563652006	5653.0	9768.0	True	True	Both identifications are reported
+592	-12.279840696594043	-7.071092309756048	5953.0	2798.0	True	True	Both identifications are reported
+593	-11.204815410317575	-7.071092309756048	5961.0	2798.0	True	True	Both identifications are reported
+594	-7.22767829327708	-7.071092309756048	6048.0	2798.0	True	True	Both identifications are reported
+595	-16.27901425584626	-5.619788758288394	6142.0	8587.0	True	True	Both identifications are reported
+596	-23.906578314837766	-2.971987345592869	6157.0	8581.0	True	False	Only one identification is reported
+597	-13.385102783966865	-14.199282921717614	6910.0	5653.0	True	True	Both identifications are reported
+598	-19.33068311943389	-6.863279432843593	4119.0	4343.0	True	True	Both identifications are reported
+599	-7.002176919254275	-15.131943638176958	5225.0	8263.0	True	True	Both identifications are reported
+600	-13.610833915635467	-8.050122295963126	5242.0	2875.0	True	True	Both identifications are reported
+601	-11.136677139879543	-8.050122295963126	5254.0	2875.0	True	True	Both identifications are reported
+602	-14.199282921717614	-5.3819519032879075	5653.0	10161.0	True	True	Both identifications are reported
+603	-12.279840696594043	-8.050122295963126	5953.0	2875.0	True	True	Both identifications are reported
+604	-11.204815410317575	-8.050122295963126	5961.0	2875.0	True	True	Both identifications are reported
+605	-7.22767829327708	-8.050122295963126	6048.0	2875.0	True	True	Both identifications are reported
+606	-16.27901425584626	-6.492144128304169	6142.0	8603.0	True	True	Both identifications are reported
+607	-23.906578314837766	-5.619788758288394	6157.0	8587.0	True	True	Both identifications are reported
+608	-13.385102783966865	-2.5984702241388224	6910.0	8992.0	True	False	Only one identification is reported
+609	-19.33068311943389	-5.614393726401688	4119.0	4351.0	True	True	Both identifications are reported
+610	-7.002176919254275	-11.681936665037238	5225.0	8354.0	True	True	Both identifications are reported
+611	-13.610833915635467	-6.355561410532162	5242.0	2964.0	True	True	Both identifications are reported
+612	-11.136677139879543	-6.355561410532162	5254.0	2964.0	True	True	Both identifications are reported
+613	-14.199282921717614	-5.5376020021010435	5653.0	10545.0	True	True	Both identifications are reported
+614	-12.279840696594043	-6.355561410532162	5953.0	2964.0	True	True	Both identifications are reported
+615	-11.204815410317575	-6.355561410532162	5961.0	2964.0	True	True	Both identifications are reported
+616	-7.22767829327708	-6.355561410532162	6048.0	2964.0	True	True	Both identifications are reported
+617	-16.27901425584626	-7.400116927926312	6142.0	8657.0	True	True	Both identifications are reported
+618	-23.906578314837766	-6.492144128304169	6157.0	8603.0	True	True	Both identifications are reported
+619	-13.385102783966865	-7.2839966563652006	6910.0	9768.0	True	True	Both identifications are reported
+620	-19.33068311943389	-3.5095919984939887	4119.0	4436.0	True	True	Both identifications are reported
+621	-7.002176919254275	-10.289036881004725	5225.0	8363.0	True	True	Both identifications are reported
+622	-13.610833915635467	-9.173277479831007	5242.0	2971.0	True	True	Both identifications are reported
+623	-11.136677139879543	-9.173277479831007	5254.0	2971.0	True	True	Both identifications are reported
+624	-12.279840696594043	-9.173277479831007	5953.0	2971.0	True	True	Both identifications are reported
+625	-11.204815410317575	-9.173277479831007	5961.0	2971.0	True	True	Both identifications are reported
+626	-7.22767829327708	-9.173277479831007	6048.0	2971.0	True	True	Both identifications are reported
+627	-16.27901425584626	-6.231361898752386	6142.0	8733.0	True	True	Both identifications are reported
+628	-23.906578314837766	-7.400116927926312	6157.0	8657.0	True	True	Both identifications are reported
+629	-13.385102783966865	-5.3819519032879075	6910.0	10161.0	True	True	Both identifications are reported
+630	-19.33068311943389	-4.47755576649368	4119.0	7602.0	True	True	Both identifications are reported
+631	-7.002176919254275	-9.785156151952302	5225.0	8400.0	True	True	Both identifications are reported
+632	-13.610833915635467	-6.317854923626168	5242.0	3001.0	True	True	Both identifications are reported
+633	-11.136677139879543	-6.317854923626168	5254.0	3001.0	True	True	Both identifications are reported
+634	-12.279840696594043	-6.317854923626168	5953.0	3001.0	True	True	Both identifications are reported
+635	-11.204815410317575	-6.317854923626168	5961.0	3001.0	True	True	Both identifications are reported
+636	-7.22767829327708	-6.317854923626168	6048.0	3001.0	True	True	Both identifications are reported
+637	-16.27901425584626	-5.471083299722345	6142.0	9677.0	True	True	Both identifications are reported
+638	-23.906578314837766	-6.231361898752386	6157.0	8733.0	True	True	Both identifications are reported
+639	-13.385102783966865	-5.5376020021010435	6910.0	10545.0	True	True	Both identifications are reported
+640	-19.33068311943389	-5.449771646944906	4119.0	7739.0	True	True	Both identifications are reported
+641	-13.610833915635467	-5.5003129173815966	5242.0	3090.0	True	True	Both identifications are reported
+642	-11.136677139879543	-5.5003129173815966	5254.0	3090.0	True	True	Both identifications are reported
+643	-12.279840696594043	-5.5003129173815966	5953.0	3090.0	True	True	Both identifications are reported
+644	-11.204815410317575	-5.5003129173815966	5961.0	3090.0	True	True	Both identifications are reported
+645	-7.22767829327708	-5.5003129173815966	6048.0	3090.0	True	True	Both identifications are reported
+646	-23.906578314837766	-5.471083299722345	6157.0	9677.0	True	True	Both identifications are reported
+647	-13.610833915635467	-5.080921907623926	5242.0	3102.0	True	True	Both identifications are reported
+648	-11.136677139879543	-5.080921907623926	5254.0	3102.0	True	True	Both identifications are reported
+649	-12.279840696594043	-5.080921907623926	5953.0	3102.0	True	True	Both identifications are reported
+650	-11.204815410317575	-5.080921907623926	5961.0	3102.0	True	True	Both identifications are reported
+651	-7.22767829327708	-5.080921907623926	6048.0	3102.0	True	True	Both identifications are reported
+652	-13.610833915635467	-8.26841123481326	5242.0	3189.0	True	True	Both identifications are reported
+653	-11.136677139879543	-8.26841123481326	5254.0	3189.0	True	True	Both identifications are reported
+654	-12.279840696594043	-8.26841123481326	5953.0	3189.0	True	True	Both identifications are reported
+655	-11.204815410317575	-8.26841123481326	5961.0	3189.0	True	True	Both identifications are reported
+656	-7.22767829327708	-8.26841123481326	6048.0	3189.0	True	True	Both identifications are reported
+657	-13.610833915635467	-6.388276691992658	5242.0	3196.0	True	True	Both identifications are reported
+658	-11.136677139879543	-6.388276691992658	5254.0	3196.0	True	True	Both identifications are reported
+659	-12.279840696594043	-6.388276691992658	5953.0	3196.0	True	True	Both identifications are reported
+660	-11.204815410317575	-6.388276691992658	5961.0	3196.0	True	True	Both identifications are reported
+661	-7.22767829327708	-6.388276691992658	6048.0	3196.0	True	True	Both identifications are reported
+662	-13.610833915635467	-6.449771646944906	5242.0	3214.0	True	True	Both identifications are reported
+663	-11.136677139879543	-6.449771646944906	5254.0	3214.0	True	True	Both identifications are reported
+664	-12.279840696594043	-6.449771646944906	5953.0	3214.0	True	True	Both identifications are reported
+665	-11.204815410317575	-6.449771646944906	5961.0	3214.0	True	True	Both identifications are reported
+666	-7.22767829327708	-6.449771646944906	6048.0	3214.0	True	True	Both identifications are reported
+667	-13.610833915635467	-8.236572006437063	5242.0	3300.0	True	True	Both identifications are reported
+668	-11.136677139879543	-8.236572006437063	5254.0	3300.0	True	True	Both identifications are reported
+669	-12.279840696594043	-8.236572006437063	5953.0	3300.0	True	True	Both identifications are reported
+670	-11.204815410317575	-8.236572006437063	5961.0	3300.0	True	True	Both identifications are reported
+671	-7.22767829327708	-8.236572006437063	6048.0	3300.0	True	True	Both identifications are reported
+672	-13.610833915635467	-3.974243685465586	5242.0	3307.0	True	False	Only one identification is reported
+673	-11.136677139879543	-3.974243685465586	5254.0	3307.0	True	True	Both identifications are reported
+674	-12.279840696594043	-3.974243685465586	5953.0	3307.0	True	True	Both identifications are reported
+675	-11.204815410317575	-3.974243685465586	5961.0	3307.0	True	True	Both identifications are reported
+676	-7.22767829327708	-3.974243685465586	6048.0	3307.0	True	True	Both identifications are reported
+677	-13.610833915635467	-6.966576244513051	5242.0	3401.0	True	True	Both identifications are reported
+678	-11.136677139879543	-6.966576244513051	5254.0	3401.0	True	True	Both identifications are reported
+679	-12.279840696594043	-6.966576244513051	5953.0	3401.0	True	True	Both identifications are reported
+680	-11.204815410317575	-6.966576244513051	5961.0	3401.0	True	True	Both identifications are reported
+681	-7.22767829327708	-6.966576244513051	6048.0	3401.0	True	True	Both identifications are reported
+682	-13.610833915635467	-3.587399358495834	5242.0	3496.0	True	False	Only one identification is reported
+683	-11.136677139879543	-3.587399358495834	5254.0	3496.0	True	True	Both identifications are reported
+684	-12.279840696594043	-3.587399358495834	5953.0	3496.0	True	False	Only one identification is reported
+685	-11.204815410317575	-3.587399358495834	5961.0	3496.0	True	False	Only one identification is reported
+686	-7.22767829327708	-3.587399358495834	6048.0	3496.0	True	True	Both identifications are reported
+687	-13.610833915635467	-4.728158393463501	5242.0	3587.0	True	False	Only one identification is reported
+688	-11.136677139879543	-4.728158393463501	5254.0	3587.0	True	True	Both identifications are reported
+689	-12.279840696594043	-4.728158393463501	5953.0	3587.0	True	True	Both identifications are reported
+690	-11.204815410317575	-4.728158393463501	5961.0	3587.0	True	True	Both identifications are reported
+691	-7.22767829327708	-4.728158393463501	6048.0	3587.0	True	True	Both identifications are reported
+692	-13.610833915635467	-4.679853713888946	5242.0	3736.0	True	True	Both identifications are reported
+693	-11.136677139879543	-4.679853713888946	5254.0	3736.0	True	True	Both identifications are reported
+694	-12.279840696594043	-4.679853713888946	5953.0	3736.0	True	True	Both identifications are reported
+695	-11.204815410317575	-4.679853713888946	5961.0	3736.0	True	True	Both identifications are reported
+696	-7.22767829327708	-4.679853713888946	6048.0	3736.0	True	True	Both identifications are reported
+697	-13.610833915635467	-4.97061622231479	5242.0	5012.0	True	False	Only one identification is reported
+698	-11.136677139879543	-4.97061622231479	5254.0	5012.0	True	True	Both identifications are reported
+699	-12.279840696594043	-14.112382699664265	5953.0	9377.0	True	True	Both identifications are reported
+700	-11.204815410317575	-14.112382699664265	5961.0	9377.0	True	True	Both identifications are reported
+701	-7.22767829327708	-14.112382699664265	6048.0	9377.0	True	True	Both identifications are reported
+702	-13.610833915635467	-12.279840696594043	5242.0	5953.0	True	True	Both identifications are reported
+703	-11.136677139879543	-12.279840696594043	5254.0	5953.0	True	True	Both identifications are reported
+704	-12.279840696594043	-7.609064892896621	5953.0	10548.0	True	True	Both identifications are reported
+705	-11.204815410317575	-7.609064892896621	5961.0	10548.0	True	True	Both identifications are reported
+706	-7.22767829327708	-7.609064892896621	6048.0	10548.0	True	True	Both identifications are reported
+707	-13.610833915635467	-11.204815410317575	5242.0	5961.0	True	True	Both identifications are reported
+708	-11.136677139879543	-11.204815410317575	5254.0	5961.0	True	True	Both identifications are reported
+709	-12.279840696594043	-5.434152181326482	5953.0	10923.0	True	True	Both identifications are reported
+710	-11.204815410317575	-5.434152181326482	5961.0	10923.0	True	True	Both identifications are reported
+711	-7.22767829327708	-5.434152181326482	6048.0	10923.0	True	True	Both identifications are reported
+712	-13.610833915635467	-7.22767829327708	5242.0	6048.0	True	True	Both identifications are reported
+713	-11.136677139879543	-7.22767829327708	5254.0	6048.0	True	True	Both identifications are reported
+714	-12.279840696594043	-6.391473966422806	5953.0	11260.0	True	True	Both identifications are reported
+715	-11.204815410317575	-6.391473966422806	5961.0	11260.0	True	True	Both identifications are reported
+716	-7.22767829327708	-6.391473966422806	6048.0	11260.0	True	True	Both identifications are reported
+717	-13.610833915635467	-14.112382699664265	5242.0	9377.0	True	True	Both identifications are reported
+718	-11.136677139879543	-14.112382699664265	5254.0	9377.0	True	True	Both identifications are reported
+719	-13.610833915635467	-7.609064892896621	5242.0	10548.0	True	True	Both identifications are reported
+720	-11.136677139879543	-7.609064892896621	5254.0	10548.0	True	True	Both identifications are reported
+721	-13.610833915635467	-5.434152181326482	5242.0	10923.0	True	True	Both identifications are reported
+722	-11.136677139879543	-5.434152181326482	5254.0	10923.0	True	True	Both identifications are reported
+723	-13.610833915635467	-6.391473966422806	5242.0	11260.0	True	True	Both identifications are reported
+724	-11.136677139879543	-6.391473966422806	5254.0	11260.0	True	True	Both identifications are reported

@@ -264,6 +264,19 @@ def main():
 
         outputspec = copy.deepcopy(spec)
 
+        pre_mz_list = outputspec.header.pre_mz_list[:1] + [spec0.header.pre_mz_list[0]]
+        pre_charge_list = outputspec.header.pre_charge_list[:1] + [spec0.header.pre_charge_list[0]]
+        pre_mass_list = outputspec.header.pre_mass_list[:1] + [spec0.header.pre_mass_list[0]]
+        pre_inte_list = outputspec.header.pre_inte_list[:1] + [spec0.header.pre_inte_list[0]]
+        pre_id_list = outputspec.header.pre_id_list[:1] + [spec0.header.pre_id_list[0]]
+
+
+        outputspec.header.pre_mz_list = pre_mz_list
+        outputspec.header.pre_charge_list = pre_charge_list
+        outputspec.header.pre_mass_list = pre_mass_list
+        outputspec.header.pre_inte_list = pre_inte_list
+        outputspec.header.pre_id_list = pre_id_list
+
         outputList[0].append(copy.deepcopy(outputspec))
 
         step = math.ceil(length * 0.2)
@@ -290,6 +303,18 @@ def main():
         new_noise_peak_list= removePeaks(noise_peak_list, proteoform)
 
         outputspec = copy.deepcopy(spec)
+
+        pre_mz_list = outputspec.header.pre_mz_list[:1] + [spec1.header.pre_mz_list[0]]
+        pre_charge_list = outputspec.header.pre_charge_list[:1] + [spec1.header.pre_charge_list[0]]
+        pre_mass_list = outputspec.header.pre_mass_list[:1] + [spec1.header.pre_mass_list[0]]
+        pre_inte_list = outputspec.header.pre_inte_list[:1] + [spec1.header.pre_inte_list[0]]
+        pre_id_list = outputspec.header.pre_id_list[:1] + [spec1.header.pre_id_list[0]]
+
+        outputspec.header.pre_mz_list = pre_mz_list
+        outputspec.header.pre_charge_list = pre_charge_list
+        outputspec.header.pre_mass_list = pre_mass_list
+        outputspec.header.pre_inte_list = pre_inte_list
+        outputspec.header.pre_id_list = pre_id_list
 
         outputList[0].append(copy.deepcopy(outputspec))
 

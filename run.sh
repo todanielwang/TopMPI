@@ -50,56 +50,21 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
+$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 16 -K
 
-python3 splitDDA.py ${new_sub_dir}/A_ms2.msalign
+$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 16 -K
 
-mv ${new_sub_dir}/A_ms2_modified.msalign ${new_sub_dir}/AB_ms2.msalign
+python3 noisefilter.py ${new_sub_dir}/
+
+mv ${new_sub_dir}/FirstPrSM_ms2_modified.msalign ${new_sub_dir}/FirstPrSM_ms2.msalign
+
+mv ${new_sub_dir}/SecondPrSM_ms2_modified.msalign ${new_sub_dir}/SecondPrSM_ms2.msalign
 
 for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
-    src_file="${new_sub_dir}/A_${extension}"
-    dst_file="${new_sub_dir}/AB_${extension}"
+    src_file="${new_sub_dir}/SecondPrSM_${extension}"
+    dst_file="${new_sub_dir}/SecondPrSM_${extension}"
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
-
-python3 splitDDA.py ${new_sub_dir}/B_ms2.msalign
-
-mv ${new_sub_dir}/B_ms2_modified.msalign ${new_sub_dir}/BA_ms2.msalign
-
-for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
-    src_file="${new_sub_dir}/B_${extension}"
-    dst_file="${new_sub_dir}/BA_${extension}"
-    copy_and_rename "$src_file" "$dst_file"
-done
-
-$TopPIC $database "${new_sub_dir}/AB_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
-
-$TopPIC $database "${new_sub_dir}/BA_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 6 -K
-
-python3 multiplexCheck.py ${new_sub_dir}/
-
-python3 multiplexRescore.py ${new_sub_dir}/
-
-# python3 mergerounds.py ${new_sub_dir}/proteoform1.tsv ${new_sub_dir}/proteoform2.tsv
-
-# for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
-#     src_file="${new_sub_dir}/A_${extension}"
-#     dst_file1="${new_sub_dir}/resolved1_${extension}"
-#     dst_file2="${new_sub_dir}/resolved2_${extension}"
-#     copy_and_rename "$src_file" "$dst_file1"
-#     copy_and_rename "$src_file" "$dst_file2"
-# done
-
-# mv ${new_sub_dir}/resolved1_ms2_modified.msalign ${new_sub_dir}/resolved1_ms2.msalign
-# mv ${new_sub_dir}/resolved2_ms2_modified.msalign ${new_sub_dir}/resolved2_ms2.msalign
-
-# $TopPIC $database ${new_sub_dir}/resolved1_ms2.msalign ${@:4} -K
-
-# # python3 filterFinal.py ${new_sub_dir}/
-
-# # mv ${new_sub_dir}/resolved2_ms2_modified.msalign ${new_sub_dir}/resolved2_ms2.msalign
-
-# $TopPIC $database ${new_sub_dir}/resolved2_ms2.msalign ${@:4} -K
+$TopPIC $database "${new_sub_dir}/SecondPrSM_ms2.msalign" "${@:4}" -f C57 -d -t FDR -T FDR -u 16
 
