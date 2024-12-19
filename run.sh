@@ -50,9 +50,9 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 16 -K
+$TopPIC $database "${new_sub_dir}/A_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 16 -K -m -24000 -M 24000
 
-$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 16 -K
+$TopPIC $database "${new_sub_dir}/B_ms2.msalign" "${@:4}" -f C57 -d -v 100000 -V 100000 -u 16 -K -m -24000 -M 24000
 
 python3 noisefilter.py ${new_sub_dir}/
 
@@ -66,5 +66,5 @@ for extension in feature.xml ms1.feature ms1.msalign ms2.feature; do
     copy_and_rename "$src_file" "$dst_file"
 done
 
-$TopPIC $database "${new_sub_dir}/SecondPrSM_ms2.msalign" "${@:4}" -f C57 -d -t FDR -T FDR -u 16
+$TopPIC $database "${new_sub_dir}/SecondPrSM_ms2.msalign" "${@:4}" -f C57 -d -t FDR -T FDR -u 16 -m -24000 -M 24000
 
