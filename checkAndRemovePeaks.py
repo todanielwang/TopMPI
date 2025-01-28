@@ -1,9 +1,8 @@
-import sys
 import pandas as pd
 import read_msalign
 import json
 import copy
-import numpy as np
+import argparse
 
 def getMatchedPeaks(prsmID, dir, spec):
     with open(dir + "prsm" + str(prsmID) + ".js") as file:
@@ -59,25 +58,36 @@ def calculate_q_values(df):
     return df["q-value"]
 
 def main():
-    args = sys.argv[1:]
-    if (len(args) != 1):
-        raise Exception(
-            "Please pass in the directory")
-    A = pd.read_csv(args[0] + "/A_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
-    B = pd.read_csv(args[0] + "/B_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
+    # Create the argument parser
+    parser = argparse.ArgumentParser(description="The main body of TopMPI, use -h to see manual")
 
-    spectra = read_msalign.read_spec_file(args[0] + "/A_ms2.msalign")
+    # Add the positional argument
+    parser.add_argument("directory", help="The directory to the TopMPI folder")
+
+    # Add the optional flags
+    parser.add_argument("-a", "--alpha", type=float, default=0.2, help="The intensity ratio between the first and second precursor required for a spectrum to treated as multiplexed")
+    parser.add_argument("-b", "--beta", type=float, default=0.9, help="The percentage of shared matched peaks required for the identifications of the 2 precursors to be treated as inconsistent")
+    parser.add_argument("-d", "--delta", type=int, default=5, help="The offset to the # of matched peaks condition based on number of unexpected mass shifts")
+    parser.add_argument("-g", "--gamma", type=int, default=4, help="The number of matched peaks difference required to switch to the second precursor")
+
+    # Parse the arguments
+    args = parser.parse_args()
+
+    A = pd.read_csv(args.directory + "/A_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=26)
+    B = pd.read_csv(args.directory + "/B_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=26)
+
+    spectra = read_msalign.read_spec_file(args.directory + "/A_ms2.msalign")
 
     spec_dict = {}
     for spec in spectra:
         spec_dict[str(spec.header.spec_scan)] = spec
 
-    multiplexedspectra = [int(spec.header.spec_scan) for spec in spectra if (not (spec.header.pre_inte_list[0] == '' or float(spec.header.pre_inte_list[0]) == float(0) or len(spec.header.pre_inte_list) == 1 or float(spec.header.pre_inte_list[1]) == float(0))) and float(spec.header.pre_inte_list[1]) / float(spec.header.pre_inte_list[0]) > 0.2]
+    multiplexedspectra = [int(spec.header.spec_scan) for spec in spectra if (not (spec.header.pre_inte_list[0] == '' or float(spec.header.pre_inte_list[0]) == float(0) or len(spec.header.pre_inte_list) == 1 or float(spec.header.pre_inte_list[1]) == float(0))) and float(spec.header.pre_inte_list[1]) / float(spec.header.pre_inte_list[0]) > args.alpha]
 
     print("We have " + str(len(multiplexedspectra)) + " multiplexed spectra out of total of " + str(len(spectra)) + " spectra")
 
-    dirA = args[0] + "/A_html/toppic_prsm_cutoff/data_js/prsms/"
-    dirB = args[0] + "/B_html/toppic_prsm_cutoff/data_js/prsms/"
+    dirA = args.directory + "/A_html/toppic_prsm_cutoff/data_js/prsms/"
+    dirB = args.directory + "/B_html/toppic_prsm_cutoff/data_js/prsms/"
 
     multiplexA = A[A["Scan(s)"].isin(multiplexedspectra)]
     multiplexB = B[B["Scan(s)"].isin(multiplexedspectra)]
@@ -96,34 +106,32 @@ def main():
             matchedListB, nonMatchedList = getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_y"], dirB, spec_dict[str(scan)])
             setA = set(matchedListA)
             setB = set(matchedListB)
-            if (len(setA.intersection(setB)) / min(int(len(setA)), int(len(setB))) > 0.9):
+            if (len(setA.intersection(setB)) / min(int(len(setA)), int(len(setB))) > args.beta):
                 sameproteinscans.append(scan)
 
     print("We have total of " + str(len(sameproteinscans)) + " candidates that are incosistent")
 
-    filteredmerge = merge[merge["Scan(s)"].isin(sameproteinscans)].copy()
-    completemerge = filteredmerge[filteredmerge["#unexpected modifications_x"] - filteredmerge["#unexpected modifications_y"] >= 0].copy()
-    completemerge.loc[:, "difference # ions"] = completemerge["#matched fragment ions_y"] - completemerge["#matched fragment ions_x"]
-    completemerge.loc[:, "difference logged E-value"] = np.log10(completemerge["E-value_y"]) - np.log10(completemerge["E-value_x"])
+    filteredmerge = merge[merge["Scan(s)"].isin(sameproteinscans)].copy().reset_index(drop=True)
 
-    correctedscanlist = completemerge[completemerge["difference # ions"] >= 3]["Scan(s)"].tolist()
+    filteredmerge["difference"] = filteredmerge["#matched peaks_y"] - filteredmerge["#matched peaks_x"] - int(args.gamma)
 
-    print("We will switch precursor for " + str(len(correctedscanlist)) + " scans that are inconsistent")
+    filteredmerge["balanceddifference"] = filteredmerge["difference"]
 
-    consistentscans = set(bothscanlist) - set(sameproteinscans)
+    weight = int(args.delta)
 
-    print("We have a total of " + str(len(consistentscans)) + " of scans that are consistent")
+    filteredmerge.loc[filteredmerge["#unexpected modifications_x"] > filteredmerge["#unexpected modifications_y"], "balanceddifference"] += weight
 
-    consistentrows = merge[merge["Scan(s)"].isin(list(consistentscans))].copy()
-    consistentswitchscans = consistentrows[consistentrows["#matched peaks_y"] > consistentrows["#matched peaks_x"]]["Scan(s)"].tolist()
+    filteredmerge.loc[filteredmerge["#unexpected modifications_x"] < filteredmerge["#unexpected modifications_y"], "balanceddifference"] -= weight
 
-    print("We will switch precursor for " + str(len(consistentswitchscans)) + " scans that are consistent")
+    correctedscanlist = filteredmerge[filteredmerge["balanceddifference"] >= 0]["Scan(s)"].tolist()
+
+    print("We have " + str(len(correctedscanlist)) + " scans based on matched peaks comparsions")
 
     onlyB = set(multiplexB["Scan(s)"].tolist()) - set(multiplexA['Scan(s)'].tolist())
 
     print("We also have " + str(len(onlyB)) + " spectra who only reported under second precuror")
 
-    switchlist = onlyB.union(set(correctedscanlist)).union(set(consistentswitchscans))
+    switchlist = onlyB.union(set(correctedscanlist))
 
     print("We will be switching precursor for a total of " + str(len(switchlist)) + " scans")
 
@@ -147,61 +155,92 @@ def main():
             spec.header.pre_inte_list = pre_inte_list
             spec.header.pre_id_list = pre_id_list
 
-    read_msalign.write_spec_file(args[0] + "FirstPrSM_ms2.msalign", spectra)
+    read_msalign.write_spec_file(args.directory + "PrimaryPrSM_ms2.msalign", spectra)
 
     prsm = A
     prsmother = B
 
-    # Filter df2 for rows where "Scan(s)" is in the scan_list
-    filtered_other = prsmother[prsmother["Scan(s)"].isin(switchlist)]
+    filteredB = prsmother[prsmother["Scan(s)"].isin(switchlist)]
 
-    # Remove rows from df1 where "Scan(s)" is in the scan_list
-    remaining_prsm = prsm[~prsm["Scan(s)"].isin(switchlist)]
+    filteredA = prsm[~prsm["Scan(s)"].isin(switchlist)]
 
-    # Merge the dataframes, prioritizing df2 values (even if empty)
-    result = pd.concat([remaining_prsm, filtered_other], ignore_index=True).sort_values(by="Scan(s)")
+    result = pd.concat([filteredA, filteredB], ignore_index=True).sort_values(by="Scan(s)")
 
-    #Change to E-value?
     result["Spectrum-level Q-value"] = calculate_q_values(result)
 
-    result = result[result["Spectrum-level Q-value"] < 0.01]
+    outputresult = result[result["Spectrum-level Q-value"] < 0.01]
 
-    result.to_csv(args[0] + "FirstPrSM_toppic_prsm_single.tsv", sep="\t", index=False)
+    # outputresult = outputresult[~outputresult["Protein accession"].str.contains("DECOY")]
 
-    splitspectra = [spec for spec in spectra if (len(spec.header.pre_mz_list) > 1 and int(spec.header.spec_scan) in multiplexedspectra)]
+    outputresult.to_csv(args.directory + "PrimaryPrSM_toppic_prsm_single.tsv", sep="\t", index=False)
 
-    for spec in splitspectra:
+    proteoformoutput = result
+
+    # Define the threshold for the absolute difference in mass
+    threshold = 1.2
+
+    # Drop duplicates using feature IDs and keeping the one with the lowest E-value
+    proteoformoutput = proteoformoutput.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first')
+
+    # Function to find duplicates based on the condition
+    def drop_custom_duplicates(group):
+        # Sort the group by E-value to prioritize rows with the lowest value in E-value
+        group = group.sort_values(by='E-value')
+        
+        # Initialize a list to store indices of rows to keep
+        keep_indices = []
+
+        # Iterate through the sorted group
+        for index, row in group.iterrows():
+            # Check if this row is a duplicate of any previously kept row
+            is_duplicate = False
+            for keep_index in keep_indices:
+                if abs(row['Precursor mass'] - group.loc[keep_index, 'Precursor mass']) < threshold:
+                    is_duplicate = True
+                    break
+            # If not a duplicate, add it to the list of indices to keep
+            if not is_duplicate:
+                keep_indices.append(index)
+        
+        # Return only the rows to keep
+        return group.loc[keep_indices]
+
+    # Apply the function to groups defined by 'ColumnA'
+    proteoformresult = proteoformoutput.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
+
+    proteoformresult["Proteoform-level Q-value"] = calculate_q_values(proteoformresult)
+
+    proteoformresult = proteoformresult[~proteoformresult['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+
+    proteoformresult[proteoformresult["Proteoform-level Q-value"] < 0.01].to_csv(args.directory + "PrimaryPrSM_toppic_proteoform_single.tsv", sep="\t", index=False)
+
+    for spec in spectra:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]
         spec.header.pre_charge_list = spec.header.pre_charge_list[1:]
         spec.header.pre_mass_list = spec.header.pre_mass_list[1:]
         spec.header.pre_inte_list = spec.header.pre_inte_list[1:]
         spec.header.pre_id_list = spec.header.pre_id_list[1:]
 
-    splitspecdict = {}
-    for spec in splitspectra:
-        splitspecdict[str(spec.header.spec_scan)] = spec
-
     dirend = "_html/toppic_prsm_cutoff/data_js/prsms/"
     count = 0
     for index, row in result.iterrows():
         dirmid = row["Data file name"].rsplit('/', 1)[-1].split('_')[0]
         prsmid = row["Prsm ID"]
-        filename = args[0] + "/" + str(dirmid) + dirend + "prsm" + str(prsmid) + ".js"
+        filename = args.directory + "/" + str(dirmid) + dirend + "prsm" + str(prsmid) + ".js"
         with open(filename) as file:
             file.readline()
             toppic = json.loads(file.read())
             scan = str(toppic["prsm"]["ms"]["ms_header"]["scans"])
-            if scan in splitspecdict:
-                peak_list = toppic["prsm"]["ms"]["peaks"]["peak"]
-                for idx in range(len(peak_list) -1, -1, -1):
-                    if "matched_ions" in peak_list[idx]:
-                        del splitspecdict[scan].peak_list[idx]
-                count += 1
+            peak_list = toppic["prsm"]["ms"]["peaks"]["peak"]
+            for idx in range(len(peak_list) -1, -1, -1):
+                if "matched_ions" in peak_list[idx]:
+                    del spec_dict[scan].peak_list[idx]
+            count += 1
     
     print("Number of scans with peaks removed is {}".format(count))
 
 
-    read_msalign.write_spec_file(args[0] + "SecondPrSM_ms2.msalign", splitspectra)
+    read_msalign.write_spec_file(args.directory + "SecondaryPrSM_ms2.msalign", spectra)
 
 if __name__ == "__main__":
     main()

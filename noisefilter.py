@@ -2,6 +2,7 @@ import sys
 import pandas as pd
 import json
 import read_msalign
+import copy
 
 def calculate_q_values(df):
     """
@@ -39,11 +40,28 @@ def calculate_q_values(df):
 
     return df["q-value"]
 
+def getMatchedPeaks(prsmID, dir, spec):
+    with open(dir + "prsm" + str(prsmID) + ".js") as file:
+        file.readline()
+        toppic = json.loads(file.read())
+        peak_list = toppic["prsm"]["ms"]["peaks"]["peak"]
+        matched_list = []
+        nonmatched_list = []
+        if len(spec.peak_list) == 1:
+            matched_list.append(copy.deepcopy(spec.peak_list[0]))
+        else:
+            for idx in range(0, len(peak_list)):
+                if "matched_ions" in peak_list[idx]:
+                    matched_list.append(copy.deepcopy(spec.peak_list[idx]))
+                else:
+                    nonmatched_list.append(copy.deepcopy(spec.peak_list[idx]))
+        return matched_list, nonmatched_list
+
 def main():
     args = sys.argv[1:]
-    if (len(args) != 1):
+    if (len(args) != 3):
         raise Exception(
-            "Please pass in the directory")
+            "Please pass in the directory, delta, and gamma")
     A = pd.read_csv(args[0] + "/A_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
     B = pd.read_csv(args[0] + "/B_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
 
@@ -53,9 +71,42 @@ def main():
     for spec in spectra:
         spec_dict[str(spec.header.spec_scan)] = spec
 
+    dirA = args[0] + "/A_html/toppic_prsm_cutoff/data_js/prsms/"
+    dirB = args[0] + "/B_html/toppic_prsm_cutoff/data_js/prsms/"
+
     merge = A.merge(B, on="Scan(s)", how="inner")
 
-    switchlist = merge[merge["#matched peaks_y"] > merge["#matched peaks_x"]]["Scan(s)"].tolist()
+    bothscanlist = merge["Scan(s)"].tolist()
+
+    sameproteinscans = merge[merge["Protein accession_x"] == merge["Protein accession_y"]]["Scan(s)"].tolist()
+
+    print("We have " + str(len(sameproteinscans)) + " scans where both precursor reported the same protein")
+
+    for spec in spectra:
+        scan = int(spec.header.spec_scan)
+        if scan not in sameproteinscans and scan in bothscanlist:
+            matchedListA, nonMatchedList = getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_x"], dirA, spec_dict[str(scan)])
+            matchedListB, nonMatchedList = getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_y"], dirB, spec_dict[str(scan)])
+            setA = set(matchedListA)
+            setB = set(matchedListB)
+            if (len(setA.intersection(setB)) / min(int(len(setA)), int(len(setB))) > 0.9):
+                sameproteinscans.append(scan)
+
+    print("We have total of " + str(len(sameproteinscans)) + " candidates that are incosistent")
+
+    filteredmerge = merge[merge["Scan(s)"].isin(sameproteinscans)].copy().reset_index(drop=True)
+
+    filteredmerge["difference"] = filteredmerge["#matched peaks_y"] - filteredmerge["#matched peaks_x"] - int(args[2])
+
+    filteredmerge["balanceddifference"] = filteredmerge["difference"]
+
+    weight = int(args[1])
+
+    filteredmerge.loc[filteredmerge["#unexpected modifications_x"] > filteredmerge["#unexpected modifications_y"], "balanceddifference"] += weight
+
+    filteredmerge.loc[filteredmerge["#unexpected modifications_x"] < filteredmerge["#unexpected modifications_y"], "balanceddifference"] -= weight
+
+    switchlist = filteredmerge[filteredmerge["balanceddifference"] >= 0]["Scan(s)"].tolist()
 
     print("We have " + str(len(switchlist)) + " scans based on matched peaks comparsions")
 
@@ -102,7 +153,49 @@ def main():
 
     outputresult = result[result["Spectrum-level Q-value"] < 0.01]
 
+    # outputresult = outputresult[~outputresult["Protein accession"].str.contains("DECOY")]
+
     outputresult.to_csv(args[0] + "FirstPrSM_toppic_prsm_single.tsv", sep="\t", index=False)
+
+    proteoformoutput = result
+
+    # Define the threshold for the absolute difference in mass
+    threshold = 1.2
+
+    # Drop duplicates using feature IDs and keeping the one with the lowest E-value
+    proteoformoutput = proteoformoutput.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first')
+
+    # Function to find duplicates based on the condition
+    def drop_custom_duplicates(group):
+        # Sort the group by E-value to prioritize rows with the lowest value in E-value
+        group = group.sort_values(by='E-value')
+        
+        # Initialize a list to store indices of rows to keep
+        keep_indices = []
+
+        # Iterate through the sorted group
+        for index, row in group.iterrows():
+            # Check if this row is a duplicate of any previously kept row
+            is_duplicate = False
+            for keep_index in keep_indices:
+                if abs(row['Precursor mass'] - group.loc[keep_index, 'Precursor mass']) < threshold:
+                    is_duplicate = True
+                    break
+            # If not a duplicate, add it to the list of indices to keep
+            if not is_duplicate:
+                keep_indices.append(index)
+        
+        # Return only the rows to keep
+        return group.loc[keep_indices]
+
+    # Apply the function to groups defined by 'ColumnA'
+    proteoformresult = proteoformoutput.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
+
+    proteoformresult["Proteoform-level Q-value"] = calculate_q_values(proteoformresult)
+
+    # proteoformresult = proteoformresult[~proteoformresult['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+
+    proteoformresult[proteoformresult["Proteoform-level Q-value"] < 0.01].to_csv(args[0] + "FirstPrSM_toppic_proteoform_single.tsv", sep="\t", index=False)
 
     for spec in spectra:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]

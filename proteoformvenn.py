@@ -63,7 +63,7 @@ def main():
     # resultlist[(resultlist["1"] == False) & (resultlist["2"] == True)].to_csv("newproteoforms.tsv", sep="\t")
 
     # Plot the Venn diagram
-    venn2(subsets=(only_set1, only_set2, intersection), set_labels=('Replicate 1 TopDeplex', 'Replicate 2 New Proteoforms'))
+    venn2(subsets=(only_set1, only_set2, intersection), set_labels=('Replicate 1', 'Replicate 3'))
     plt.savefig(args[0].rsplit("/", maxsplit=1)[0] + "/newproteoforms2.png", dpi=200)
 
 if __name__ == "__main__":

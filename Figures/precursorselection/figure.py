@@ -47,9 +47,9 @@ def main():
   # Define bins for the histogram
   # bins = np.arange(-2, 28, 2)
 
-  bins_col1 = np.arange(0, 44+1, 4)
-  bins_col2 = np.arange(-2, 24+1, 2)
-  bins_col3 = np.arange(-4, 16+1, 2)
+  bins_col1 = np.arange(-1.5, 45.5+1, 1)
+  bins_col2 = np.arange(-3.5, 25.5+1, 1)
+  bins_col3 = np.arange(-4, 16+1, 1)
 
   fig, ([ax1, ax2, ax3], [ax4, ax5, ax6]) = plt.subplots(2, 3, figsize=(20, 12))
 

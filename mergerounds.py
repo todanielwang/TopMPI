@@ -3,6 +3,43 @@ import pandas as pd
 import numpy as np
 import csv
 
+def calculate_q_values(df):
+    """
+    Calculates q-values for a target-decoy search.
+    
+    Parameters:
+    df (pd.DataFrame): Input DataFrame containing protein accession and score columns.
+    protein_column (str): The name of the column containing protein accession data (default: 'Protein accession').
+    score_column (str): The name of the column containing identification scores (default: 'Score').
+    decoy_identifier (str): The string that identifies decoy entries in the protein accession column (default: 'DECOY').
+    
+    Returns:
+    pd.DataFrame: DataFrame with additional columns for cumulative decoy/target counts, FDR, and q-values.
+    """
+    # Copy the input DataFrame to avoid modifying the original data
+    df = df.copy()
+
+    # Add a column to indicate if the protein is a decoy
+    df['IsDecoy'] = df["Protein accession"].str.contains("DECOY")
+
+    # Sort by score (assuming higher score means better identification)
+    df = df.sort_values(by="E-value")
+
+    # Initialize counters for decoy and target counts
+    df['Cumulative_Decoy'] = df['IsDecoy'].cumsum()
+    df['Cumulative_Target'] = (~df['IsDecoy']).cumsum()
+
+    # Calculate FDR: FDR = (# decoys / # total)
+    df['FDR'] = df['Cumulative_Decoy'] / (df['Cumulative_Decoy'] + df['Cumulative_Target'])
+
+    # Calculate q-value: the minimum FDR at or above this score
+    df['q-value'] = df['FDR'][::-1].cummin()[::-1]  # Reverse cummin to get the minimum FDR for each score
+
+    df.sort_index()
+
+    return df["q-value"]
+
+
 def main():
     args = sys.argv[1:]
     
@@ -13,13 +50,11 @@ def main():
     # Concatenate two proteoform files
     combined_df = pd.concat([r1, r2], ignore_index=True)
 
-    combined_df = combined_df[~combined_df['Protein accession'].str.contains('DECOY')]
-
     # Define the threshold for the absolute difference in mass
     threshold = 1.2
 
     # Drop duplicates using feature IDs and keeping the one with the lowest E-value
-    combined_df = combined_df.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first')
+    combined_df = combined_df.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first').reset_index(drop=True)
 
     # Function to find duplicates based on the condition
     def drop_custom_duplicates(group):
@@ -46,6 +81,14 @@ def main():
 
     # Apply the function to groups defined by 'ColumnA'
     result_df = combined_df.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
+
+    result_df = result_df.reset_index(drop=True)
+
+    result_df["Proteoform-level Q-value"] = calculate_q_values(result_df)
+
+    result_df = result_df[result_df["Proteoform-level Q-value"] < 0.01].reset_index(drop=True)
+
+    result_df = result_df[~result_df['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
 
     result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + '/total_proteoforms.tsv', sep='\t', index=False)
         

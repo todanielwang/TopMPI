@@ -1,3 +1,5 @@
-./venv/*
-./Results/*
-./Figures/*
+venv/*
+vscode/*
+Results/*
+Figures/*
+__pychache__/*
