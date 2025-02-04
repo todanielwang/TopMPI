@@ -155,7 +155,7 @@ def main():
             spec.header.pre_inte_list = pre_inte_list
             spec.header.pre_id_list = pre_id_list
 
-    read_msalign.write_spec_file(args.directory + "PrimaryPrSM_ms2.msalign", spectra)
+    read_msalign.write_spec_file(args.directory + "Primary_ms2.msalign", spectra)
 
     prsm = A
     prsmother = B
@@ -170,9 +170,9 @@ def main():
 
     outputresult = result[result["Spectrum-level Q-value"] < 0.01]
 
-    # outputresult = outputresult[~outputresult["Protein accession"].str.contains("DECOY")]
+    outputresult = outputresult[~outputresult["Protein accession"].str.contains("DECOY")]
 
-    outputresult.to_csv(args.directory + "PrimaryPrSM_toppic_prsm_single.tsv", sep="\t", index=False)
+    outputresult.to_csv(args.directory + "Primary_ms2_toppic_prsm_single.tsv", sep="\t", index=False)
 
     proteoformoutput = result
 
@@ -212,7 +212,7 @@ def main():
 
     proteoformresult = proteoformresult[~proteoformresult['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
 
-    proteoformresult[proteoformresult["Proteoform-level Q-value"] < 0.01].to_csv(args.directory + "PrimaryPrSM_toppic_proteoform_single.tsv", sep="\t", index=False)
+    proteoformresult[proteoformresult["Proteoform-level Q-value"] < 0.01].to_csv(args.directory + "Primary_ms2_toppic_proteoform_single.tsv", sep="\t", index=False)
 
     for spec in spectra:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]
@@ -240,7 +240,7 @@ def main():
     print("Number of scans with peaks removed is {}".format(count))
 
 
-    read_msalign.write_spec_file(args.directory + "SecondaryPrSM_ms2.msalign", spectra)
+    read_msalign.write_spec_file(args.directory + "Secondary_ms2.msalign", spectra)
 
 if __name__ == "__main__":
     main()

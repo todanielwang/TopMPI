@@ -1,71 +1,144 @@
-TopMPI
-1. Input
-An TopPIC executable, install instructions can be found [here](https://github.com/toppic-suite/toppic-suite)
-A protein database file in the FASTA format
-A mass spectrum data file in the msalign format
-A text file containing LC-MS feature information (optional)
-A text file of fixed PTMs (optional)
-A text file of variable PTMs (optional)
-A text file of PTMs for the characterization of unexpected mass shifts (optional)
-2. Output
-TopMPI outputs 4 msalign files, 3 sets of TopPICoutputs, and 3 tab separated value (TSV) files, all output into one folder under name TopMPI. Format of TopPIC inputs and outputs can be found [here](https://www.toppic.org/software/toppic/manual.html). For example, when the input data file is spectra_ms2.msalign, the output includes:
+# TopMPI
+A computational tool specifically designed for the identification of multiplexed TD-MS/MS spectra
+## System Requirements
+- **Python** (version 3.7 or later)  
+  - Download from [python.org](https://www.python.org/downloads/)
+- **pip** (Python package manager)  
+  - It comes with Python by default. If not, install it using:
+    ```sh
+    python -m ensurepip --default-pip
+    ```
+- **virtualenv** (Recommended for isolated environments)  
+  - Install it using:
+    ```sh
+    pip install virtualenv
+    ```
+- **TopPIC Suite** (version 1.7.6 or later)
+    - Install instructions can be found [here](https://github.com/toppic-suite/toppic-suite)
 
-spectra_TopMPI/First_ms2.msalign: a msalign file with all MS/MS spectra in spectra_ms2.msalign using the first precursor as their precursor. 
-spectra_TopMPI/Second_ms2.msalign: a msalign file with only multiplexed MS/MS spectra in spectra_ms2.msalign using the second precursor as their precursor. 
-spectra_TopMPI/Primary_ms2.msalign: a msalign file with all MS/MS spectra in spectra_ms2.msalign using the TopMPI selected precursor as their precursor. 
-spectra_TopMPI/Secondary_ms2.msalign: a msalign file with only multiplexed MS/MS spectra in spectra_ms2.msalign with their matched experimental peaks removed if thier corresponding PrSM is reported in Primary_toppic_prsm_single.tsv,_using the TopMPI selected secondary precursor as their precursor. 
-spectra_TopMPI/First_*: The output of TopPIC searched using First_ms2.msalign while no E-value/FDR filter were applied to the output results. 
-spectra_TopMPI/Second_*: The output of TopPIC searched using Second_ms2.msalign while no E-value/FDR filter were applied to the output results. 
-spectra_TopMPI/Primary_toppic_prsm_single.tsv: a TSV file containing identified proteoform spectrum-matches (PrSMs) selected by TopMPI from output of First_ms2.msalign and Second_ms2.msalign with an E-value or spectrum-level FDR cutoff. When an identified proteoform is shared by multiple proteins, only one protein is reported.
-spectra_TopMPI/Primary_toppic_proteoform_single.tsv: a TSV file containing identified proteoforms selected by TopMPI from output of First_ms2.msalign and Second_ms2.msalign with an E-value or proteoform-level FDR cutoff. When an identified proteoform is shared by multiple proteins, only one protein is reported.
-spectra_TopMPI/Secondary_*: The output of TopPIC searched using Secondary_ms2.msalign while a E-value/FDR filter was applied. 
-To browse identified proteins, proteoforms, and PrSMs in e.g. First_ms2.msalign, use a chrome browser to open the file spectra_TopMPI/First_html/topmsv/index.html. Note that spectra_html/topfd needs to be copied to spectra_TopMPI/First_html/ in order to use this function. Google Chrome is recommended (Firefox and Edge are not recommended).
-3 Command line usage
-To run TopMPI, open a terminal window and run the following command. For TopPIC command flags, please see [here](https://www.toppic.org/software/toppic/manual.html). 
+## Installation Steps
 
-TopMPI.sh toppic-executable database-file-name spectrum-file-names [--TopPIC-flag=<flags>] [--TopMPI-flag=<flags>]
+### 1. Clone the Repository
 
-TopMPI Options
+If you haven’t already, clone the repository from GitHub:
+
+```sh
+git clone https://github.com/todanielwang/TopMPI.git
+cd TopMPI
+```
+
+### 2. Create and Activate a Virtual Environment (Optional but Recommended)
+
+Create a virtual environment:
+
+```sh
+python -m venv venv
+```
+
+Activate it:
+
+- **Windows (cmd/PowerShell):**
+  ```sh
+  venv\Scripts\activate
+  ```
+- **Mac/Linux:**
+  ```sh
+  source venv/bin/activate
+  ```
+
+### 3. Install Dependencies
+
+Install all required Python packages using:
+
+```sh
+pip install -r requirements.txt
+```
+
+## Uninstallation
+
+To remove the virtual environment and dependencies, simply delete the `venv` folder:
+
+```sh
+rm -rf venv  # Mac/Linux
+rmdir /s /q venv  # Windows
+```
+## Manual
+### 1. Input
+* A protein database file in the FASTA format
+* A mass spectrum data file in the msalign format
+* A text file containing LC-MS feature information (optional)
+* A text file of fixed PTMs (optional)
+* A text file of variable PTMs (optional)
+* A text file of PTMs for the characterization of unexpected mass shifts (optional)
+### 2. Output
+TopMPI outputs 4 msalign files, 3 sets of TopPIC outputs, and 4 tab separated value (TSV) files. All outputs will be placed into one folder under name TopMPI. 
+
+Format of TopPIC inputs and outputs can be found [here](https://www.toppic.org/software/toppic/manual.html). 
+
+For example, when the input data file to TopMPI is spectra_ms2.msalign, the output includes:
+
+* **spectra_TopMPI/First_ms2.msalign**: a msalign file with all MS/MS spectra in spectra_ms2.msalign using the first precursor as their precursor. 
+* **spectra_TopMPI/Second_ms2.msalign**: a msalign file with only multiplexed MS/MS spectra in spectra_ms2.msalign using the second precursor as their precursor. 
+* **spectra_TopMPI/Primary_ms2.msalign**: a msalign file with all MS/MS spectra in spectra_ms2.msalign using the TopMPI selected precursor as their precursor. 
+* **spectra_TopMPI/Secondary_ms2.msalign**: a msalign file with only multiplexed MS/MS spectra in spectra_ms2.msalign with their primary matched experimental peaks removed, using the TopMPI selected secondary precursor as their precursor. 
+* **spectra_TopMPI/First_\***: The output of TopPIC searched using First_ms2.msalign while no E-value/FDR filter were applied to the output results. 
+* **spectra_TopMPI/Second_\***: The output of TopPIC searched using Second_ms2.msalign while no E-value/FDR filter were applied to the output results. 
+* **spectra_TopMPI/Primary_ms2_toppic_prsm_single.tsv**: a TSV file containing identified proteoform spectrum-matches (PrSMs) selected by TopMPI from output of First_ms2.msalign and Second_ms2.msalign with an E-value or spectrum-level FDR cutoff. When an identified proteoform is shared by multiple proteins, only one protein is reported.
+* **spectra_TopMPI/Primary_ms2_toppic_proteoform_single.tsv**: a TSV file containing identified proteoforms selected by TopMPI from output of First_ms2.msalign and Second_ms2.msalign with an E-value or proteoform-level FDR cutoff. When an identified proteoform is shared by multiple proteins, only one protein is reported.
+* **spectra_TopMPI/Secondary_\***: The output of TopPIC searched using Secondary_ms2.msalign while a E-value/FDR filter was applied. 
+* **spectra_TopMPI/Total_PrSMs.tsv**: a TSV file containing the combined list of primary PrSMs and secondary PrSMs.
+* **spectra_TopMPI/Total_Proteoforms.tsv**: a TSV file containing the combined list of primary proteoforms and secondary proteoforms, filtered using TopFD features. 
+
+To browse identified proteins, proteoforms, and PrSMs in e.g. First_ms2.msalign, use a chrome browser to open the file spectra_TopMPI/First_html/topmsv/index.html. Note that the folder spectra_html/topfd **needs** to be copied to spectra_TopMPI/First_html/ in order to use this function. **Google Chrome** is recommended (Firefox and Edge are not recommended).
+### 3. Command line usage
+To run TopMPI, open a terminal window and run the following command. 
+```
+TopMPI.sh toppic-executable database-file spectrum-file --TopPIC-flags=["toppic-options"] --TopMPI-flags=["topmpi-options"]
+```
+For TopPIC options, please see [here](https://www.toppic.org/software/toppic/manual.html). 
+
+#### TopMPI Options
 <!-- -h [ --help ]
 
 Print the help message. -->
-
+```
 -a [ --alpha ] <a number between 0 and 1>
+```
+The intensity ratio between the first and second precursor required for a spectrum to treated as multiplexed. TopMPI only reselect primary precursor for multiplexed spectra. Default value: 0.2
+```
+-b [ --beta ] <a number between 0 and 1>
+```
+The percentage of shared matched experimental peaks required for the identifications of the two precursors to be treated as inconsistent. Default value: 0.9
+```
+-d [ --delta ] <an integer>
+```
+The offset to calculate the number of normalized matched fragment masses (NMFMs) based on number of unknown mass shifts. Default value: 5
+```
+-g [ --gamma ] <an integer>
+```
+The number of normalized matched fragment masses (NMFMs) difference required to switch to the second precursor Default value: 4
 
-Set the fragmentation method(s) of MS/MS spectra. When "FILE" is selected, the fragmentation methods of spectra are given in the input spectrum data file. Default value: FILE.
-
-
-
-Examples
-Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file spectra_ms2.feature (reported by TopFD). The user does not need to specify the feature file name. TopPIC will automatically obtain the feature file name from the spectrum file name spectra_ms2.msalign.
-
-toppic proteins.fasta spectra_ms2.msalign
-
-Search two deconvoluted MS/MS spectrum files spectra1_ms2.msalign and spectra2_ms2.msalign against a protein database file proteins.fasta with feature files. In addition, all identifications are combined and reported using a file name "combined."
-
-toppic -c combined proteins.fasta spectra1_ms2.msalign spectra2_ms2.msalign
-
-Search all deconvoluted MS/MS spectrum files in the current folder against a protein database file proteins.fasta with feature files.
-
-toppic proteins.fasta *_ms2.msalign
-
+#### Examples
+Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta using an TopPIC executable toppic with a feature file spectra_ms2.feassture (reported by TopFD). The user does not need to specify the feature file name. Like TopPIC, TopMPI will automatically obtain the feature file name from the spectrum file name spectra_ms2.msalign.
+```
+TopMPI.sh toppic proteins.fasta spectra_ms2.msalign
+```
 Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta without feature files.
 
-toppic -x proteins.fasta spectra_ms2.msalign
+```
+TopMPI.sh toppic proteins.fasta spectra_ms2.msalign --TopPIC-flags="-x"
+```
 
-Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file and a fixed modification: carbamidomethylation on cysteine.
+Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file and the NMFMs offset set to 4
+```
+TopMPI.sh toppic proteins.fasta spectra_ms2.msalign --TopMPI-flags="-d 4"
+```
+Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. In an identified proteoform, at most 2 mass shifts are allowed and the maximum allowed mass shift value is 10,000 Dalton. Furthermore, the NMFM difference required to switch precursor is set to 5. 
+```
+TopMPI.sh toppic proteins.fasta spectra_ms2.msalign --TopPIC-flags="-s 2 -M 10000" --TopMPI-flags="-g 5"
+```
 
-toppic -f C57 proteins.fasta spectra_ms2.msalign
-
-Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. In an identified proteoform, at most 2 mass shifts are allowed and the maximum allowed mass shift value is 10,000 Dalton.
-
-toppic -s 2 -M 10000 proteins.fasta spectra_ms2.msalign
-
-Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. Two variable PTMs: oxidation on M and methylation on K are used. The modification file two_var_mods.txt can be found here.
-
-toppic -b two_var_mods.txt proteins.fasta spectra_ms2.msalign
-
-Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. The error tolerance for precursor and fragment masses is 5 ppm.
+<!-- Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. The error tolerance for precursor and fragment masses is 5 ppm.
 
 toppic -e 5 proteins.fasta spectra_ms2.msalign
 
@@ -83,4 +156,4 @@ toppic -B common_mods.txt -H 0.1 proteins.fasta spectra_ms2.msalign
 
 Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file.Use 6 CPU threads to speed up the computation.
 
-toppic -u 6 proteins.fasta spectra_ms2.msalign
+toppic -u 6 proteins.fasta spectra_ms2.msalign -->
