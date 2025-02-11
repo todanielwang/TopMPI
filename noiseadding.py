@@ -1,173 +1,10 @@
 import read_msalign
 import pandas as pd
-import numpy as np
 import sys
-import re
 import random
 import math
 import copy
-
-def gene_theo_ions(prot_seq):
-    left_ions = []
-    right_ions = []
-
-    prot_seq = prot_seq.split(".", 1)[1]
-    prot_seq = prot_seq.rsplit(".", 1)[0]
-  
-    acetylation = False
-
-    if "[Acetyl]-" in prot_seq:
-        acetylation = True
-        prot_seq = prot_seq.replace('[Acetyl]-', '')
-
-    if "(C)[Carbamidomethylation]" in prot_seq:
-        prot_seq = prot_seq.replace("(C)[Carbamidomethylation]", "X")
-
-
-    acetylation_weight = 42.0106
-    # c57_weight = 57.021464
-
-    weights = {'A': 71.03711, 'C': 103.00919, 'D': 115.02694, 'E': 129.04259, 'F': 147.06841, 'G': 57.02146, 
-            'H': 137.05891, 'I': 113.08406, 'K': 128.09496, 'L': 113.08406, 'M': 131.04049, 'N': 114.04293,
-            'P': 97.05276, 'Q': 128.05858, 'R': 156.10111, 'S': 87.03203, 'T': 101.04768, 'V': 99.06841,
-            'W': 186.07931, 'Y': 163.06333, "X": 160.030654}
-
-
-    if acetylation: 
-        left_ions.append(acetylation_weight) 
-
-    idx = 0
-    previousweight = 0
-    while idx < len(prot_seq):
-        if (prot_seq[idx] == "("):
-            startidx = idx
-            endidx = prot_seq[idx:].find(")") + idx
-            modS = endidx + 1
-            modE = prot_seq[modS:].find("]") + modS
-            weight = float(prot_seq[modS + 1:modE])
-            frags = prot_seq[startidx + 1:endidx]
-            for fragIdx in range(0, len(frags)):
-                baseweight = previousweight
-                left_ions.append(baseweight + weights[frags[fragIdx]] + weight)
-                if fragIdx != len(frags) - 1:
-                    left_ions.append(baseweight + weights[frags[fragIdx]])
-                previousweight = left_ions[-1]
-            idx = modE + 1
-        else:
-            left_ions.append(previousweight + weights[prot_seq[idx]])
-            previousweight = left_ions[-1]
-            idx += 1
-
-    idx = len(prot_seq) - 1
-    previousweight = 0
-    while idx >= 0:
-        if (prot_seq[idx] == "]"):
-            startidx = prot_seq[:idx].rfind("(")
-            endidx = prot_seq[:idx].rfind(")")
-            modS = endidx + 1
-            modE = idx
-            weight = float(prot_seq[modS + 1:modE])
-            frags = prot_seq[startidx + 1:endidx]
-            for fragIdx in range(0, len(frags)):
-                baseweight = previousweight
-                right_ions.append(baseweight + weights[frags[len(frags) - fragIdx - 1]] + weight)
-                if fragIdx != len(frags) - 1:
-                    right_ions.append(baseweight + weights[frags[len(frags) - fragIdx - 1]])
-                previousweight = right_ions[-1]
-            idx = startidx - 1
-        else:
-            right_ions.append(previousweight + weights[prot_seq[idx]])
-            previousweight = right_ions[-1]
-            idx -= 1
-
-    return left_ions, right_ions
-
-def get_modified_fragments(mass_list, shift):
-    mod_mass_list = [x + shift for x in mass_list]
-    return mod_mass_list
-
-def remove(peak_list, mass_list, shift):
-    frags = get_modified_fragments(mass_list, shift)
-    count = 0
-    for idx, peak in reversed(list(enumerate(peak_list))):
-        peak_mass = peak.mass
-        for j in range(len(frags)):
-            frag_mass = frags[j]
-            tol = (10 * frag_mass) / 1e6
-            if (tol < 0.01):
-                tol = 0.01
-            if (abs(peak_mass - frag_mass) <= tol):
-                del peak_list[idx]
-                count += 1
-                break
-    return count
-
-
-def removePeaks(peak_list, prot_sequence):
-    bions, yions = gene_theo_ions(prot_sequence)
-    Proton = 1.00727647
-    H = 1.007825035
-    O = 15.99491463
-    CO = 12.0000 + O
-    NH3 = 14.003074 + H + H + H
-    H2O = H + H + O
-    
-    count = 0
-    # b -ion
-    count += remove(peak_list, bions, 0.0)
-    # y -ion
-    count += remove(peak_list, yions, 19.0184-Proton)
-    # # b - 1
-    # count += remove(peak_list, bions, -Proton)
-    # # y - 1
-    # count += remove(peak_list, yions, 19.0184-Proton-Proton)
-    # # b + 1
-    # count += remove(peak_list, bions, Proton)
-    # # y + 1
-    # count += remove(peak_list, yions, 19.0184)
-
-    # if (count > 0):
-    #     print(str(count) + " peaks was removed from this spectra")
-
-    return peak_list
-
-def numericalSort(value):
-    numbers = re.compile(r'(\d+)')
-    parts = numbers.split(value)
-    parts[1:2] = map(int, parts[1::2])
-    return parts
-
-""" def main():
-    args = sys.argv[1:]
-    if (len(args) != 2):
-        raise Exception(
-            "Please pass in the ms.align file and the prsm_single.tsv")
-    
-    random.seed(0)
-    
-    raw_spec_list = read_msalign.read_spec_file(args[0])
-
-    prsm_df = pd.read_csv(args[1], delimiter="\t")
-
-    scan_list = prsm_df["Scan(s)"].tolist()
-
-    spec_list = []
-
-    for spec in raw_spec_list:
-        if int(spec.header.spec_scan) in scan_list:
-            spec_list.append(spec)
-
-    for spec in spec_list:
-        for counter in range(0, math.ceil(len(spec.peak_list)*1.0)):
-            peaklist = spec_list[random.randint(0, len(spec_list) - 1)].peak_list
-            peak = peaklist[random.randint(0, len(peaklist) - 1)]
-            while (peak in spec.peak_list):
-                peaklist = spec_list[random.randint(0, len(spec_list) - 1)].peak_list
-                peak = peaklist[random.randint(0, len(peaklist) - 1)]
-            spec.peak_list.append(peak)
-
-    read_msalign.write_spec_file(args[0], spec_list) """
-
+import util
 
 def main():
     args = sys.argv[1:]
@@ -220,7 +57,7 @@ def main():
         diff = 20
         possibleList = [x for x in nonmulti_dict.keys() if (x != scan) and (abs(float(nonmulti_dict[x].header.pre_mz_list[0]) - float(spec.header.pre_mz_list[0])) < diff)
                         and (len(nonmulti_dict[x].peak_list) > math.ceil(length * topnoise)) and (prsm_df[prsm_df["Scan(s)"] == int(x)].iloc[0]["Protein accession"] != protein) 
-                        and (len(removePeaks(copy.deepcopy(nonmulti_dict[x].peak_list), proteoform)) > length * topnoise)]
+                        and (len(util.removePeaks(copy.deepcopy(nonmulti_dict[x].peak_list), proteoform)) > length * topnoise)]
         # and (float(nonmulti_dict[x].header.pre_mz_list[0]) - float(spec.header.pre_mz_list[0]) < diff)
 
         if (len(possibleList) == 0):
@@ -260,7 +97,7 @@ def main():
 
         noise_peak_list = copy.deepcopy(spec0.peak_list)
 
-        new_noise_peak_list= removePeaks(noise_peak_list, proteoform)
+        new_noise_peak_list= util.removePeaks(noise_peak_list, proteoform)
 
         outputspec = copy.deepcopy(spec)
 
@@ -300,7 +137,7 @@ def main():
 
         noise_peak_list = copy.deepcopy(spec1.peak_list)
 
-        new_noise_peak_list= removePeaks(noise_peak_list, proteoform)
+        new_noise_peak_list= util.removePeaks(noise_peak_list, proteoform)
 
         outputspec = copy.deepcopy(spec)
 

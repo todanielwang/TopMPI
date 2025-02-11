@@ -2,60 +2,7 @@ import sys
 import pandas as pd
 import json
 import read_msalign
-import copy
-
-def calculate_q_values(df):
-    """
-    Calculates q-values for a target-decoy search.
-    
-    Parameters:
-    df (pd.DataFrame): Input DataFrame containing protein accession and score columns.
-    protein_column (str): The name of the column containing protein accession data (default: 'Protein accession').
-    score_column (str): The name of the column containing identification scores (default: 'Score').
-    decoy_identifier (str): The string that identifies decoy entries in the protein accession column (default: 'DECOY').
-    
-    Returns:
-    pd.DataFrame: DataFrame with additional columns for cumulative decoy/target counts, FDR, and q-values.
-    """
-    # Copy the input DataFrame to avoid modifying the original data
-    df = df.copy()
-
-    # Add a column to indicate if the protein is a decoy
-    df['IsDecoy'] = df["Protein accession"].str.contains("DECOY")
-
-    # Sort by score (assuming higher score means better identification)
-    df = df.sort_values(by="E-value")
-
-    # Initialize counters for decoy and target counts
-    df['Cumulative_Decoy'] = df['IsDecoy'].cumsum()
-    df['Cumulative_Target'] = (~df['IsDecoy']).cumsum()
-
-    # Calculate FDR: FDR = (# decoys / # total)
-    df['FDR'] = df['Cumulative_Decoy'] / (df['Cumulative_Decoy'] + df['Cumulative_Target'])
-
-    # Calculate q-value: the minimum FDR at or above this score
-    df['q-value'] = df['FDR'][::-1].cummin()[::-1]  # Reverse cummin to get the minimum FDR for each score
-
-    df.sort_index()
-
-    return df["q-value"]
-
-def getMatchedPeaks(prsmID, dir, spec):
-    with open(dir + "prsm" + str(prsmID) + ".js") as file:
-        file.readline()
-        toppic = json.loads(file.read())
-        peak_list = toppic["prsm"]["ms"]["peaks"]["peak"]
-        matched_list = []
-        nonmatched_list = []
-        if len(spec.peak_list) == 1:
-            matched_list.append(copy.deepcopy(spec.peak_list[0]))
-        else:
-            for idx in range(0, len(peak_list)):
-                if "matched_ions" in peak_list[idx]:
-                    matched_list.append(copy.deepcopy(spec.peak_list[idx]))
-                else:
-                    nonmatched_list.append(copy.deepcopy(spec.peak_list[idx]))
-        return matched_list, nonmatched_list
+import util
 
 def main():
     args = sys.argv[1:]
@@ -85,8 +32,8 @@ def main():
     for spec in spectra:
         scan = int(spec.header.spec_scan)
         if scan not in sameproteinscans and scan in bothscanlist:
-            matchedListA, nonMatchedList = getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_x"], dirA, spec_dict[str(scan)])
-            matchedListB, nonMatchedList = getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_y"], dirB, spec_dict[str(scan)])
+            matchedListA, nonMatchedList = util.getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_x"], dirA, spec_dict[str(scan)])
+            matchedListB, nonMatchedList = util.getMatchedPeaks(merge[merge["Scan(s)"] == int(scan)].iloc[0]["Prsm ID_y"], dirB, spec_dict[str(scan)])
             setA = set(matchedListA)
             setB = set(matchedListB)
             if (len(setA.intersection(setB)) / min(int(len(setA)), int(len(setB))) > 0.9):
@@ -149,7 +96,7 @@ def main():
 
     result = pd.concat([filteredA, filteredB], ignore_index=True).sort_values(by="Scan(s)")
 
-    result["Spectrum-level Q-value"] = calculate_q_values(result)
+    result["Spectrum-level Q-value"] = util.calculate_q_values(result)
 
     outputresult = result[result["Spectrum-level Q-value"] < 0.01]
 
@@ -191,7 +138,7 @@ def main():
     # Apply the function to groups defined by 'ColumnA'
     proteoformresult = proteoformoutput.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
 
-    proteoformresult["Proteoform-level Q-value"] = calculate_q_values(proteoformresult)
+    proteoformresult["Proteoform-level Q-value"] = util.calculate_q_values(proteoformresult)
 
     # proteoformresult = proteoformresult[~proteoformresult['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
 

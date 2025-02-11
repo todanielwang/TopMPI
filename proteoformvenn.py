@@ -1,20 +1,17 @@
 import sys
 import pandas as pd
 from matplotlib_venn import venn2
-import numpy as np
-import csv
 import matplotlib.pyplot as plt
-
+import util
 
 def main():
-
     args = sys.argv[1:]
     if (len(args) != 2):
         raise Exception(
             "Please pass in proteoform single files")
     
-    r1 = pd.read_csv(args[0], sep="\t")
-    r2 = pd.read_csv(args[1], sep="\t")
+    r1 = util.read_tsv(args[0])
+    r2 = util.read_tsv(args[1])
 
     # r1 = r1[~(r1["Protein accession"].str.contains("DECOY"))]
     # r1 = r1[r1["E-value"] < 0.01]
@@ -62,9 +59,21 @@ def main():
 
     # resultlist[(resultlist["1"] == False) & (resultlist["2"] == True)].to_csv("newproteoforms.tsv", sep="\t")
 
-    # Plot the Venn diagram
-    venn2(subsets=(only_set1, only_set2, intersection), set_labels=('Replicate 1', 'Replicate 3'))
-    plt.savefig(args[0].rsplit("/", maxsplit=1)[0] + "/newproteoforms2.png", dpi=200)
+    plt.rcParams.update({'font.size': 18})
+
+    venn = venn2(subsets=(only_set1, only_set2, intersection), set_labels=('Replicate 1', 'Replicate 3'))
+
+    # Get the set labels (titles) and manually align them
+    set_labels = venn.set_labels
+
+    if set_labels[0]:  # Set A label
+        set_labels[0].set_position((-0.3, -0.6))  # Adjust manually for alignment
+
+    if set_labels[1]:  # Set B label
+        set_labels[1].set_position((0.3, -0.6)) 
+
+    plt.tight_layout()
+    plt.savefig("./venndiagram.svg", format='svg', dpi=800)
 
 if __name__ == "__main__":
     main()

@@ -1,18 +1,13 @@
 import sys
 import pandas as pd
-import numpy as np
-import csv
-
+import util
 
 def main():
     args = sys.argv[1:]
     
 
-    r1 = pd.read_csv(args[0], sep="\t")
-    r2 = pd.read_csv(args[1], sep="\t", skiprows=26)
-
-    r1 = r1[~r1['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-    r2 = r2[~r2['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+    r1 = util.read_tsv(args[0])
+    r2 = util.read_tsv(args[1])
 
     # Concatenate two proteoform files
     combined_df = pd.concat([r1, r2], ignore_index=True)
@@ -51,7 +46,13 @@ def main():
 
     result_df = result_df.reset_index(drop=True)
 
-    result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + str(args[2]), sep='\t', index=False)
+    result_df["Proteoform-level Q-value"] = util.calculate_q_values(result_df)
+
+    result_df = result_df[result_df["Proteoform-level Q-value"] < 0.01].reset_index(drop=True)
+
+    result_df = result_df[~result_df['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+
+    result_df.to_csv(args[0].rsplit("/", maxsplit=1)[0] + '/total_proteoforms.tsv', sep='\t', index=False)
         
 
 

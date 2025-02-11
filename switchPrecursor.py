@@ -2,7 +2,6 @@
 
 import read_msalign
 import sys
-import re
 
 def main():
     args = sys.argv[1:]
