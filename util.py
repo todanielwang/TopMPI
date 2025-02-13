@@ -2,6 +2,7 @@ import pandas as pd
 import json
 import copy
 import re
+import os
 
 
 def calculate_q_values(df):
@@ -59,7 +60,7 @@ def read_tsv(file_path):
     return pd.read_csv(file_path, sep='\t', skiprows=skip_rows)
 
 def getMatchedPeaks(prsmID, dir, spec):
-    with open(dir + "prsm" + str(prsmID) + ".js") as file:
+    with open(os.path.join(dir, "prsm" + str(prsmID) + ".js")) as file:
         file.readline()
         toppic = json.loads(file.read())
         peak_list = toppic["prsm"]["ms"]["peaks"]["peak"]
@@ -207,9 +208,11 @@ def removePeaks(peak_list, prot_sequence):
 
     return peak_list
 
-def getProteoforms(combined_df, threshold=1.2):
+def getProteoforms(inputdf, threshold=1.2, filterbyfeature = True):
+    combined_df = inputdf.copy(deep=True)
     # Drop duplicates using feature IDs and keeping the one with the lowest E-value
-    combined_df = combined_df.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first').reset_index(drop=True)
+    if filterbyfeature:
+      combined_df = combined_df.sort_values(by='E-value').drop_duplicates(subset='Feature ID', keep='first').reset_index(drop=True)
 
     # Function to find duplicates based on the condition
     def drop_custom_duplicates(group):
@@ -237,6 +240,6 @@ def getProteoforms(combined_df, threshold=1.2):
     # Apply the function to groups defined by 'ColumnA'
     result_df = combined_df.groupby('Protein accession', group_keys=False).apply(drop_custom_duplicates)
 
-    result_df = result_df.sort_values(by="E-value").reset_index(drop=True)
+    result_df = result_df.sort_values(by="Scan(s)").reset_index(drop=True)
 
     return result_df

@@ -1,7 +1,7 @@
 # TopMPI
 A computational tool specifically designed for the identification of multiplexed TD-MS/MS spectra
 ## System Requirements
-- **Python** (version 3.7 or later)  
+- **Python** (version 3.12 or later)  
   - Download from [python.org](https://www.python.org/downloads/)
 - **pip** (Python package manager)  
   - It comes with Python by default. If not, install it using:
@@ -87,8 +87,8 @@ For example, when the input data file to TopMPI is spectra_ms2.msalign, the outp
 * **spectra_TopMPI/Primary_ms2_toppic_proteoform_single.tsv**: a TSV file containing identified proteoforms selected by TopMPI from output of First_ms2.msalign and Second_ms2.msalign with an E-value or proteoform-level FDR cutoff. When an identified proteoform is shared by multiple proteins, only one protein is reported.
 * **spectra_TopMPI/Secondary_ms2_toppic_prsm_single.tsv**: a TSV file containing identified proteoform spectrum-matches (PrSMs) selected by TopMPI from secondary spectra and their primary matched peaks removed with an E-value or spectrum-level FDR cutoff. When an identified proteoform is shared by multiple proteins, only one protein is reported.
 * **spectra_TopMPI/Secondary_ms2_toppic_proteoform_single.tsv**: a TSV file containing identified proteoforms selected by TopMPI from from secondary spectra and their primary matched peaks removed with an E-value or proteoform-level FDR cutoff. When an identified proteoform is shared by multiple proteins, only one protein is reported.
-* **spectra_TopMPI/Total_PrSMs.tsv**: a TSV file containing the combined list of primary PrSMs and secondary PrSMs filtered using an E-value or spectrum-level FDR cutoff.
-* **spectra_TopMPI/Total_Proteoforms.tsv**: a TSV file containing the combined list of primary proteoforms and secondary proteoforms, refiltered using TopFD features and an E-value or proteoform-level FDR cutoff. 
+* **spectra_TopMPI/TotalPrSMs.tsv**: a TSV file containing the combined list of primary PrSMs and secondary PrSMs filtered using an E-value or spectrum-level FDR cutoff.
+* **spectra_TopMPI/TotalProteoforms.tsv**: a TSV file containing the combined list of primary proteoforms and secondary proteoforms, refiltered using TopFD features and an E-value or proteoform-level FDR cutoff. 
 
 To browse identified proteins, proteoforms, and PrSMs in e.g. First_ms2.msalign, use a chrome browser to open the file spectra_TopMPI/First_html/topmsv/index.html. **Google Chrome** is recommended (Firefox and Edge are not recommended).
 

@@ -3,8 +3,9 @@ import read_msalign
 import json
 import argparse
 import util
+import os
 
-def main():
+def main(args_list=None):
     # Create the argument parser
     parser = argparse.ArgumentParser(description="The main body of TopMPI, use -h to see manual")
 
@@ -18,14 +19,14 @@ def main():
     parser.add_argument("-g", "--gamma", type=int, default=4, help="The number of matched peaks difference required to switch to the second precursor")
 
     # Parse the arguments
-    args = parser.parse_args()
+    args = parser.parse_args(args_list)
 
     print("Starting TopMPI precursor selection process")
 
-    A = util.read_tsv(args.directory + "/First_ms2_toppic_prsm_single.tsv")
-    B = util.read_tsv(args.directory + "/Second_ms2_toppic_prsm_single.tsv")
+    A = util.read_tsv(os.path.join(args.directory, "First_ms2_toppic_prsm_single.tsv"))
+    B = util.read_tsv(os.path.join(args.directory, "Second_ms2_toppic_prsm_single.tsv"))
 
-    spectra = read_msalign.read_spec_file(args.directory + "/First_ms2.msalign")
+    spectra = read_msalign.read_spec_file(os.path.join(args.directory, "First_ms2.msalign"))
 
     spec_dict = {}
     for spec in spectra:
@@ -35,8 +36,9 @@ def main():
 
     print("We have " + str(len(multiplexedspectra)) + " multiplexed spectra out of total of " + str(len(spectra)) + " spectra")
 
-    dirA = args.directory + "/First_html/toppic_prsm_cutoff/data_js/prsms/"
-    dirB = args.directory + "/Second_html/toppic_prsm_cutoff/data_js/prsms/"
+
+    dirA = os.path.join(args.directory, "First_html", "toppic_prsm_cutoff", "data_js", "prsms")
+    dirB = os.path.join(args.directory, "Second_html", "toppic_prsm_cutoff", "data_js", "prsms")
 
     multiplexA = A[A["Scan(s)"].isin(multiplexedspectra)]
     multiplexB = B[B["Scan(s)"].isin(multiplexedspectra)]
@@ -104,7 +106,7 @@ def main():
             spec.header.pre_inte_list = pre_inte_list
             spec.header.pre_id_list = pre_id_list
 
-    read_msalign.write_spec_file(args.directory + "/Primary_ms2.msalign", spectra)
+    read_msalign.write_spec_file(os.path.join(args.directory, "Primary_ms2.msalign"), spectra)
 
     prsm = A
     prsmother = B
@@ -115,7 +117,7 @@ def main():
 
     result = pd.concat([filteredA, filteredB], ignore_index=True).sort_values(by="Scan(s)")
 
-    result.to_csv(args.directory + "/Primary_ms2_temp_prsm.tsv", sep="\t", index=False)
+    result.to_csv(os.path.join(args.directory, "Primary_ms2_temp_prsm.tsv"), sep="\t", index=False)
 
     for spec in spectra:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]
@@ -124,12 +126,13 @@ def main():
         spec.header.pre_inte_list = spec.header.pre_inte_list[1:]
         spec.header.pre_id_list = spec.header.pre_id_list[1:]
 
-    dirend = "_html/toppic_prsm_cutoff/data_js/prsms/"
+
+    dirend = os.path.join("_html", "toppic_prsm_cutoff", "data_js", "prsms")
     count = 0
-    for index, row in result.iterrows():
-        dirmid = row["Data file name"].rsplit('/', 1)[-1].split('_')[0]
+    for _, row in result.iterrows():
+        dirmid = os.path.basename(row["Data file name"]).split('_')[0]
         prsmid = row["Prsm ID"]
-        filename = args.directory + "/" + str(dirmid) + dirend + "prsm" + str(prsmid) + ".js"
+        filename = os.path.join(args.directory, str(dirmid) + dirend, f"prsm{prsmid}.js")
         with open(filename) as file:
             file.readline()
             toppic = json.loads(file.read())
@@ -142,8 +145,7 @@ def main():
     
     print("Number of scans with peaks removed is {}".format(count))
 
-
-    read_msalign.write_spec_file(args.directory + "/Secondary_ms2.msalign", spectra)
+    read_msalign.write_spec_file(os.path.join(args.directory, "Secondary_ms2.msalign"), spectra)
 
     print("Finished generating Primary_ms2.msalign and Secondary_ms2.msalign files")
 

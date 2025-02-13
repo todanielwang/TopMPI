@@ -3,6 +3,12 @@ import shutil
 import subprocess
 import argparse
 import shlex
+import glob
+import switchPrecursor
+import checkAndRemovePeaks
+import merge
+import combine
+import removeTemp
 
 def copy_and_rename(src, dst):
     """Copy and rename files if they exist."""
@@ -18,9 +24,9 @@ import argparse
 def main():
     parser = argparse.ArgumentParser(description="Python driver for TopMPI.")
     
-    parser.add_argument("TopPIC", help="Path to TopPIC executable")
-    parser.add_argument("database", help="Path to the FASTA database")
-    parser.add_argument("input_file", help="Path to the ms2.msalign file")
+    parser.add_argument("TopPIC", help="A TopPIC executable")
+    parser.add_argument("database", help="A protein database file in the FASTA format")
+    parser.add_argument("input_files", nargs="+", help="A mass spectrum data file in the msalign format (wildcard '*' can be used).")
     parser.add_argument("-a", "--activation", choices=["CID", "HCD", "ETD", "UVPD", "FILE"], default="FILE", help="Set the fragmentation method(s) of MS/MS spectra.")
     parser.add_argument("-f", "--fixed-mod", help="Set fixed modifications: C57, C58, or a file containing modifications.")
     parser.add_argument("-n", "--n-terminal-form", default="NONE,M_ACETYLATION,NME,NME_ACETYLATION", help="Set N-terminal forms of proteins.")
@@ -61,65 +67,88 @@ def main():
         print("Proteoform-level cutoff type FDR error! FDR cutoff cannot be used when no decoy database is used! Please add argument '-d' in the command.")
         exit(1)
 
-    base_dir = os.path.dirname(args.input_file)
-    common_prefix = os.path.basename(args.input_file).rsplit('_', 1)[0]
-    new_sub_dir = os.path.join(base_dir, f"{common_prefix}_TopMPI")
-    
-    os.makedirs(new_sub_dir, exist_ok=True)
+    input_files = []
+    for file_pattern in args.input_files:
+        matched_files = glob.glob(file_pattern)  # Expands '*' to matching files
+        if matched_files:
+            input_files.extend(matched_files)
+        else:
+            input_files.append(file_pattern)  # Keep original if no match found
 
-    copy_and_rename(os.path.join(base_dir, f"{common_prefix}_ms2.msalign"), os.path.join(new_sub_dir, "First_ms2.msalign"))
+    for input_file in input_files:
+        base_dir = os.path.dirname(input_file)
+        common_prefix = os.path.basename(input_file).rsplit('_', 1)[0]
+        new_sub_dir = os.path.join(base_dir, f"{common_prefix}_TopMPI")
+        
+        os.makedirs(new_sub_dir, exist_ok=True)
 
-    if not args.no_topfd_feature:
-        for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
-            copy_and_rename(os.path.join(base_dir, f"{common_prefix}_{ext}"), os.path.join(new_sub_dir, f"First_{ext}"))
+        copy_and_rename(os.path.join(base_dir, f"{common_prefix}_ms2.msalign"), os.path.join(new_sub_dir, "First_ms2.msalign"))
 
-    subprocess.run(["python3", "switchPrecursor.py", os.path.join(new_sub_dir, "First_ms2.msalign")], check=True)
-    os.rename(os.path.join(new_sub_dir, "First_ms2_modified.msalign"), os.path.join(new_sub_dir, "Second_ms2.msalign"))
+        if not args.no_topfd_feature:
+            for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
+                copy_and_rename(os.path.join(base_dir, f"{common_prefix}_{ext}"), os.path.join(new_sub_dir, f"First_{ext}"))
 
-    if not args.no_topfd_feature:
-        for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
-            copy_and_rename(os.path.join(new_sub_dir, f"First_{ext}"), os.path.join(new_sub_dir, f"Second_{ext}"))
+        switchPrecursor.main([os.path.join(new_sub_dir, "First_ms2.msalign")])
 
-    #split flags
-    TopPIC_args = {k: v for k, v in vars(args).items() if k not in ["alpha", "beta", "delta", "gamma", "spectrum_cutoff_type", "spectrum_cutoff_value", "proteoform_cutoff_type", "proteoform_cutoff_value", "TopPIC", "database", "input_file"]}
-    # extra_args = {k: v for k, v in vars(args).items() if k in ["alpha", "beta", "delta", "gamma", "spectrum_cutoff_type", "spectrum_cutoff_value", "proteoform_cutoff_type", "proteoform_cutoff_value"]}
-    
-    TopPIC_flags = []
-    for k, v in TopPIC_args.items():
-        formatted_key = k.replace("_", "-")
-        if isinstance(v, bool) and v:
-            TopPIC_flags.append(f"--{formatted_key}")
-        elif v not in [None, False]:
-            TopPIC_flags.extend(shlex.split(f"--{formatted_key} {v}"))
+        os.rename(os.path.join(new_sub_dir, "First_ms2_modified.msalign"), os.path.join(new_sub_dir, "Second_ms2.msalign"))
 
-    if args.decoy and "--keep-decoy-ids" not in TopPIC_flags:
-        TopPIC_flags.append("--keep-decoy-ids")
+        if not args.no_topfd_feature:
+            for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
+                copy_and_rename(os.path.join(new_sub_dir, f"First_{ext}"), os.path.join(new_sub_dir, f"Second_{ext}"))
 
-    # extra_flags = [f"--{k}" if isinstance(v, bool) and v else f"--{k} {v}" for k, v in extra_args.items() if v is not None]
+        #split flags
+        TopPIC_args = {k: v for k, v in vars(args).items() if k not in ["alpha", "beta", "delta", "gamma", "spectrum_cutoff_type", "spectrum_cutoff_value", "proteoform_cutoff_type", "proteoform_cutoff_value", "TopPIC", "database", "input_files", "combined_file_name"]}
+        # extra_args = {k: v for k, v in vars(args).items() if k in ["alpha", "beta", "delta", "gamma", "spectrum_cutoff_type", "spectrum_cutoff_value", "proteoform_cutoff_type", "proteoform_cutoff_value"]}
+        
+        TopPIC_flags = []
+        for k, v in TopPIC_args.items():
+            formatted_key = k.replace("_", "-")
+            if isinstance(v, bool) and v:
+                TopPIC_flags.append(f"--{formatted_key}")
+            elif v not in [None, False]:
+                TopPIC_flags.extend(shlex.split(f"--{formatted_key} {v}"))
 
-    # print(TopPIC_flags)
-    subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "First_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
-    subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Second_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
+        if args.decoy and "--keep-decoy-ids" not in TopPIC_flags:
+            TopPIC_flags.append("--keep-decoy-ids")
 
-    
-    # print("\nExecuting extra parameters program with:")
-    # print("extra.exe", " ".join(extra_flags))
-    # subprocess.run(["extra.exe"] + extra_flags, check=True)
+        # extra_flags = [f"--{k}" if isinstance(v, bool) and v else f"--{k} {v}" for k, v in extra_args.items() if v is not None]
 
-    subprocess.run(["python3", "checkAndRemovePeaks.py", new_sub_dir, "-a", str(args.alpha), "-b", str(args.beta), "-d", str(args.delta), "-g", str(args.gamma)], check=True)
+        # print(TopPIC_flags)
+        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "First_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
+        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Second_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
 
-    os.rename(os.path.join(new_sub_dir, "Primary_ms2_modified.msalign"), os.path.join(new_sub_dir, "Primary_ms2.msalign"))
-    os.rename(os.path.join(new_sub_dir, "Secondary_ms2_modified.msalign"), os.path.join(new_sub_dir, "Secondary_ms2.msalign"))
+        
+        # print("\nExecuting extra parameters program with:")
+        # print("extra.exe", " ".join(extra_flags))
+        # subprocess.run(["extra.exe"] + extra_flags, check=True)
 
-    if not args.no_topfd_feature:
-        for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
-            copy_and_rename(os.path.join(new_sub_dir, f"First_{ext}"), os.path.join(new_sub_dir, f"Secondary_{ext}"))
+        checkAndRemovePeaks.main([new_sub_dir, "-a", str(args.alpha), "-b", str(args.beta), "-d", str(args.delta), "-g", str(args.gamma)])
 
-    subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Secondary_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
+        os.rename(os.path.join(new_sub_dir, "Primary_ms2_modified.msalign"), os.path.join(new_sub_dir, "Primary_ms2.msalign"))
+        os.rename(os.path.join(new_sub_dir, "Secondary_ms2_modified.msalign"), os.path.join(new_sub_dir, "Secondary_ms2.msalign"))
 
-    # Merge results
-    subprocess.run(["python3", "postprocess.py", new_sub_dir, "-t", args.spectrum_cutoff_type, "-v", str(args.spectrum_cutoff_value), "-T", args.proteoform_cutoff_type, "-V", str(args.proteoform_cutoff_value)], check=True)
-    
+        if not args.no_topfd_feature:
+            for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
+                copy_and_rename(os.path.join(new_sub_dir, f"First_{ext}"), os.path.join(new_sub_dir, f"Secondary_{ext}"))
+
+        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Secondary_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
+
+        # Merge results
+        filterbyFeature = str(not args.no_topfd_feature)
+
+        merge.main([new_sub_dir, filterbyFeature, "-t", args.spectrum_cutoff_type, "-v", str(args.spectrum_cutoff_value), "-T", args.proteoform_cutoff_type, "-V", str(args.proteoform_cutoff_value)])
+
+
+    if args.combined_file_name:
+        combine.main([args.combined_file_name, input_files, "-t", args.spectrum_cutoff_type, "-v", str(args.spectrum_cutoff_value), "-T", args.proteoform_cutoff_type, "-V", str(args.proteoform_cutoff_value)])
+
+    for input_file in input_files:
+        if not args.keep_temp_files:
+            base_dir = os.path.dirname(input_file)
+            common_prefix = os.path.basename(input_file).rsplit('_', 1)[0]
+            new_sub_dir = os.path.join(base_dir, f"{common_prefix}_TopMPI")
+            removeTemp.main([new_sub_dir])
+
 
 if __name__ == "__main__":
     main()

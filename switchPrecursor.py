@@ -3,8 +3,8 @@
 import read_msalign
 import sys
 
-def main():
-    args = sys.argv[1:]
+def main(args_list=None):
+    args = args_list
     if (len(args) != 1):
         raise Exception(
             "Please pass in the ms.align file")
