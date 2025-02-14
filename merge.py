@@ -18,23 +18,24 @@ def main(args_list=None):
     parser.add_argument("-v", "--spectrum-cutoff-value", type=float, default=0.01, help="Spectrum-level cutoff value.")
     parser.add_argument("-T", "--proteoform-cutoff-type", choices=["EVALUE", "FDR"], default="EVALUE", help="Proteoform-level cutoff type.")
     parser.add_argument("-V", "--proteoform-cutoff-value", type=float, default=0.01, help="Proteoform-level cutoff value.")
+    parser.add_argument("-p", "--proteoform-error-tolerance", type=float, default=1.2, help="Error tolerance for PrSM clusters in Dalton.")
 
     # Parse the arguments
     args = parser.parse_args(args_list)
 
     primary_prsm_full = util.read_tsv(os.path.join(args.directory, "Primary_ms2_temp_prsm.tsv"))
 
-    primary_proteoform_full = util.getProteoforms(primary_prsm_full, filterbyfeature=args.filterbyFeature)
+    primary_proteoform_full = util.getProteoforms(primary_prsm_full, threshold=args.proteoform_error_tolerance, filterbyfeature=args.filterbyFeature)
 
     secondary_prsm_full = util.read_tsv(os.path.join(args.directory, "Secondary_ms2_toppic_prsm_single.tsv"))
 
     secondary_prsm_full.to_csv(os.path.join(args.directory, "Secondary_ms2_temp_prsm.tsv"))
 
-    secondary_proteoform_full = util.getProteoforms(secondary_prsm_full)
+    secondary_proteoform_full = util.getProteoforms(secondary_prsm_full, threshold=args.proteoform_error_tolerance, filterbyfeature=args.filterbyFeature)
 
     combined_prsm_full = pd.concat([primary_prsm_full, secondary_prsm_full]).reset_index(drop=True)
 
-    combined_proteoform_full = util.getProteoforms(combined_prsm_full)
+    combined_proteoform_full = util.getProteoforms(combined_prsm_full, threshold=args.proteoform_error_tolerance, filterbyfeature=args.filterbyFeature)
 
     #Removes all files in the specified directory that contain both 'Secondary' and 'toppic' in the filename.
     for file in os.listdir(args.directory):
@@ -95,13 +96,13 @@ def main(args_list=None):
         combined_proteoform_full["Proteoform-level Q-value"] = util.calculate_q_values(combined_proteoform_full)
 
         if not args.keepDecoys:
-            primary_proteoform = primary_proteoform_full[~primary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-            secondary_proteoform = secondary_proteoform_full[~secondary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-            combined_proteoform = combined_proteoform_full[~combined_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            primary_proteoform_full = primary_proteoform_full[~primary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            secondary_proteoform_full = secondary_proteoform_full[~secondary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            combined_proteoform_full = combined_proteoform_full[~combined_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
 
-        primary_proteoform_output = primary_proteoform[primary_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
-        secondary_proteoform_output = secondary_proteoform[secondary_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
-        combined_proteoform_output = combined_proteoform[combined_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
+        primary_proteoform_output = primary_proteoform_full[primary_proteoform_full["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
+        secondary_proteoform_output = secondary_proteoform_full[secondary_proteoform_full["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
+        combined_proteoform_output = combined_proteoform_full[combined_proteoform_full["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
 
         primary_proteoform_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)
         secondary_proteoform_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)

@@ -209,7 +209,7 @@ def removePeaks(peak_list, prot_sequence):
 
     return peak_list
 
-def getProteoforms(inputdf, threshold=1.2, filterbyfeature = True):
+def getProteoforms(inputdf, threshold=1.2, filterbyfeature=True):
     combined_df = inputdf.copy(deep=True)
     # Drop duplicates using feature IDs and keeping the one with the lowest E-value
     if filterbyfeature:

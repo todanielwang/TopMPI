@@ -1,7 +1,8 @@
 import pandas as pd
 import util
 import os
-def combine(combined_name, input_files, filterbyFeature, keepDecoys, spectrumcutofftype, spectrumcutoffvalue, proteoformcutofftype, proteoformcutoffvalue):
+def combine(combined_name, input_files, filterbyFeature, keepDecoys, spectrumcutofftype, spectrumcutoffvalue, 
+            proteoformcutofftype, proteoformcutoffvalue, proteoformerrortol):
     outputdir = combined_name + "_TopMPI"
     
     os.makedirs(outputdir, exist_ok=True)
@@ -30,7 +31,7 @@ def combine(combined_name, input_files, filterbyFeature, keepDecoys, spectrumcut
 
     totalprsm = pd.concat(totalprsm_list, ignore_index=True)
 
-    totalproteoform = util.getProteoforms(totalprsm, filterbyfeature=filterbyFeature)
+    totalproteoform = util.getProteoforms(totalprsm, threshold=proteoformerrortol, filterbyfeature=filterbyFeature)
 
     if spectrumcutofftype == "EVALUE":
         if not keepDecoys:
