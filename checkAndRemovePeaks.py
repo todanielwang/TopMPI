@@ -21,7 +21,7 @@ def main(args_list=None):
     # Parse the arguments
     args = parser.parse_args(args_list)
 
-    print("Starting TopMPI precursor selection process")
+    print("Starting TopMPI precursor selection process with alpha " + str(args.alpha) + ", beta " + str(args.beta) + ", delta " + str(args.delta) + ", and gamma " + str(args.gamma))
 
     A = util.read_tsv(os.path.join(args.directory, "First_ms2_toppic_prsm_single.tsv"))
     B = util.read_tsv(os.path.join(args.directory, "Second_ms2_toppic_prsm_single.tsv"))

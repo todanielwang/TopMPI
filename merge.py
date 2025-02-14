@@ -11,6 +11,7 @@ def main(args_list=None):
     # Add the positional argument
     parser.add_argument("directory", help="The directory to the TopMPI folder")
     parser.add_argument("filterbyFeature", type=util.str_to_bool, help="Proteoform filter by feature or not")
+    parser.add_argument("keepDecoys", type=util.str_to_bool, help="Keep decoy ids or not")
 
     # Add the optional flags
     parser.add_argument("-t", "--spectrum-cutoff-type", choices=["EVALUE", "FDR"], default="EVALUE", help="Spectrum-level cutoff type.")
@@ -43,59 +44,67 @@ def main(args_list=None):
             os.remove(file_path)
     
     if args.spectrum_cutoff_type == "EVALUE":
-        primary_prsm = primary_prsm_full[~primary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        primary_prsm_output = primary_prsm[primary_prsm["E-value"] < args.spectrum_cutoff_value]
+        if not args.keepDecoys:
+            primary_prsm_full = primary_prsm_full[~primary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            secondary_prsm_full = secondary_prsm_full[~secondary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            combined_prsm_full = combined_prsm_full[~combined_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+        
+        primary_prsm_output = primary_prsm_full[primary_prsm_full["E-value"] < args.spectrum_cutoff_value].reset_index(drop=True)
+        secondary_prsm_output = secondary_prsm_full[secondary_prsm_full["E-value"] < args.spectrum_cutoff_value]
+        combined_prsm_output = combined_prsm_full[combined_prsm_full["E-value"] < args.spectrum_cutoff_value]
+
         primary_prsm_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
-
-        secondary_prsm = secondary_prsm_full[~secondary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        secondary_prsm_output = secondary_prsm[secondary_prsm["E-value"] < args.spectrum_cutoff_value]
         secondary_prsm_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
-
-        combined_prsm = combined_prsm_full[~combined_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        combined_prsm_output = combined_prsm[combined_prsm["E-value"] < args.spectrum_cutoff_value]
         combined_prsm_output.to_csv(os.path.join(args.directory, "TotalPrSM.tsv"), sep="\t", index=False)
+
     else:
         primary_prsm_full["Spectrum-level Q-value"] = util.calculate_q_values(primary_prsm_full)
-        primary_prsm = primary_prsm_full[~primary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        primary_prsm_output = primary_prsm[primary_prsm["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
-        primary_prsm_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
-
         secondary_prsm_full["Spectrum-level Q-value"] = util.calculate_q_values(secondary_prsm_full)
-        secondary_prsm = secondary_prsm_full[~secondary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        secondary_prsm_output = secondary_prsm[secondary_prsm["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
-        secondary_prsm_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
-
         combined_prsm_full["Spectrum-level Q-value"] = util.calculate_q_values(combined_prsm_full)
-        combined_prsm = combined_prsm_full[~combined_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        combined_prsm_output = combined_prsm[combined_prsm["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
+
+        if not args.keepDecoys:
+            primary_prsm_full = primary_prsm_full[~primary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            secondary_prsm_full = secondary_prsm_full[~secondary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            combined_prsm_full = combined_prsm_full[~combined_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+
+        primary_prsm_output = primary_prsm_full[primary_prsm_full["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
+        secondary_prsm_output = secondary_prsm_full[secondary_prsm_full["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
+        combined_prsm_output = combined_prsm_full[combined_prsm_full["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
+
+        primary_prsm_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
+        secondary_prsm_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
         combined_prsm_output.to_csv(os.path.join(args.directory, "TotalPrSM.tsv"), sep="\t", index=False)
 
     if args.proteoform_cutoff_type == "EVALUE":
-        primary_proteoform = primary_proteoform_full[~primary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        primary_proteoform_output = primary_proteoform[primary_proteoform["E-value"] < args.proteoform_cutoff_value]
+        if not args.keepDecoys:
+            primary_proteoform_full = primary_proteoform_full[~primary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            secondary_proteoform_full = secondary_proteoform_full[~secondary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            combined_proteoform_full = combined_proteoform_full[~combined_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+
+        primary_proteoform_output = primary_proteoform_full[primary_proteoform_full["E-value"] < args.proteoform_cutoff_value]
+        secondary_proteoform_output = secondary_proteoform_full[secondary_proteoform_full["E-value"] < args.proteoform_cutoff_value]
+        combined_proteoform_output = combined_proteoform_full[combined_proteoform_full["E-value"] < args.proteoform_cutoff_value]
+
         primary_proteoform_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)
-
-        secondary_proteoform = secondary_proteoform_full[~secondary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        secondary_proteoform_output = secondary_proteoform[secondary_proteoform["E-value"] < args.proteoform_cutoff_value]
         secondary_proteoform_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)
-
-        combined_proteoform = combined_proteoform_full[~combined_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        combined_proteoform_output = combined_proteoform[combined_proteoform["E-value"] < args.proteoform_cutoff_value]
         combined_proteoform_output.to_csv(os.path.join(args.directory, "TotalProteoform.tsv"), sep="\t", index=False)
+
     else:
         primary_proteoform_full["Proteoform-level Q-value"] = util.calculate_q_values(primary_proteoform_full)
-        primary_proteoform = primary_proteoform_full[~primary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        primary_proteoform_output = primary_proteoform[primary_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
-        primary_proteoform_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)
-
         secondary_proteoform_full["Proteoform-level Q-value"] = util.calculate_q_values(secondary_proteoform_full)
-        secondary_proteoform = secondary_proteoform_full[~secondary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-        secondary_proteoform_output = secondary_proteoform[secondary_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
-        secondary_proteoform_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)
-
         combined_proteoform_full["Proteoform-level Q-value"] = util.calculate_q_values(combined_proteoform_full)
-        combined_proteoform = combined_proteoform_full[~combined_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+
+        if not args.keepDecoys:
+            primary_proteoform = primary_proteoform_full[~primary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            secondary_proteoform = secondary_proteoform_full[~secondary_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            combined_proteoform = combined_proteoform_full[~combined_proteoform_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+
+        primary_proteoform_output = primary_proteoform[primary_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
+        secondary_proteoform_output = secondary_proteoform[secondary_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
         combined_proteoform_output = combined_proteoform[combined_proteoform["Proteoform-level Q-value"] < args.proteoform_cutoff_value]
+
+        primary_proteoform_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)
+        secondary_proteoform_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_proteoform_single.tsv"), sep="\t", index=False)
         combined_proteoform_output.to_csv(os.path.join(args.directory, "TotalProteoform.tsv"), sep="\t", index=False)
 
 
