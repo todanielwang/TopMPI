@@ -3,6 +3,7 @@ import json
 import copy
 import re
 import os
+import argparse
 
 
 def calculate_q_values(df):
@@ -243,3 +244,14 @@ def getProteoforms(inputdf, threshold=1.2, filterbyfeature = True):
     result_df = result_df.sort_values(by="Scan(s)").reset_index(drop=True)
 
     return result_df
+
+def str_to_bool(value):
+    """Convert a string to a boolean value."""
+    if isinstance(value, bool):
+        return value
+    if value.lower() in ('true', '1', 'yes', 'y', 't'):
+        return True
+    elif value.lower() in ('false', '0', 'no', 'n', 'f'):
+        return False
+    else:
+        raise argparse.ArgumentTypeError("Boolean value expected (true/false, 1/0, yes/no, y/n).")

@@ -2,6 +2,7 @@ import pandas as pd
 import argparse
 import util
 import os
+import util
 
 def main(args_list=None):
     # Create the argument parser
@@ -9,7 +10,7 @@ def main(args_list=None):
 
     # Add the positional argument
     parser.add_argument("directory", help="The directory to the TopMPI folder")
-    parser.add_argument("filterbyFeature", type=bool, help="Proteoform filter by feature or not")
+    parser.add_argument("filterbyFeature", type=util.str_to_bool, help="Proteoform filter by feature or not")
 
     # Add the optional flags
     parser.add_argument("-t", "--spectrum-cutoff-type", choices=["EVALUE", "FDR"], default="EVALUE", help="Spectrum-level cutoff type.")

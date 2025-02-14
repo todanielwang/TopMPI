@@ -111,16 +111,10 @@ def main():
         if args.decoy and "--keep-decoy-ids" not in TopPIC_flags:
             TopPIC_flags.append("--keep-decoy-ids")
 
-        # extra_flags = [f"--{k}" if isinstance(v, bool) and v else f"--{k} {v}" for k, v in extra_args.items() if v is not None]
 
         # print(TopPIC_flags)
         subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "First_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
         subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Second_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
-
-        
-        # print("\nExecuting extra parameters program with:")
-        # print("extra.exe", " ".join(extra_flags))
-        # subprocess.run(["extra.exe"] + extra_flags, check=True)
 
         checkAndRemovePeaks.main([new_sub_dir, "-a", str(args.alpha), "-b", str(args.beta), "-d", str(args.delta), "-g", str(args.gamma)])
 
@@ -140,7 +134,7 @@ def main():
 
 
     if args.combined_file_name:
-        combine.main([args.combined_file_name, input_files, "-t", args.spectrum_cutoff_type, "-v", str(args.spectrum_cutoff_value), "-T", args.proteoform_cutoff_type, "-V", str(args.proteoform_cutoff_value)])
+        combine.combine(combined_name=args.combined_file_name, input_files=input_files, spectrumcutofftype=args.spectrum_cutoff_type, spectrumcutoffvalue=args.spectrum_cutoff_value, proteoformcutofftype=args.proteoform_cutoff_type, proteoformcutoffvalue=args.proteoform_cutoff_value)
 
     for input_file in input_files:
         if not args.keep_temp_files:
