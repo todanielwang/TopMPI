@@ -61,16 +61,16 @@ def main():
 
     plt.rcParams.update({'font.size': 18})
 
-    venn = venn2(subsets=(only_set1, only_set2, intersection), set_labels=('Replicate 1', 'Replicate 3'))
+    venn = venn2(subsets=(only_set1, only_set2, intersection), set_labels=('TopPIC', 'TopMPI'))
 
-    # Get the set labels (titles) and manually align them
-    set_labels = venn.set_labels
+    # # Get the set labels (titles) and manually align them
+    # set_labels = venn.set_labels
 
-    if set_labels[0]:  # Set A label
-        set_labels[0].set_position((-0.3, -0.6))  # Adjust manually for alignment
+    # if set_labels[0]:  # Set A label
+    #     set_labels[0].set_position((-0.3, -0.6))  # Adjust manually for alignment
 
-    if set_labels[1]:  # Set B label
-        set_labels[1].set_position((0.3, -0.6)) 
+    # if set_labels[1]:  # Set B label
+    #     set_labels[1].set_position((0.3, -0.6)) 
 
     plt.tight_layout()
     plt.savefig("./venndiagram.svg", format='svg', dpi=800)

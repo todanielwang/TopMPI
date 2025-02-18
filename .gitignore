@@ -2,4 +2,6 @@
 .vscode/*
 Results/*
 Figures/*
-__pycache__/*
+TopMPI/__pycache__/*
+build/*
+*.spec

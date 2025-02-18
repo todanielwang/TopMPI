@@ -140,7 +140,8 @@ def main():
     if args.combined_file_name:
         filterbyFeature = str(not args.no_topfd_feature)
         keepDecoys = str(args.keep_decoy_ids)
-        combine.combine(combined_name=args.combined_file_name, input_files=input_files, filterbyFeature=filterbyFeature, keepDecoys=keepDecoys, 
+        combined_filename = os.path.join(os.path.dirname(input_files[0]), args.combined_file_name)
+        combine.combine(combined_name=combined_filename, input_files=input_files, filterbyFeature=filterbyFeature, keepDecoys=keepDecoys, 
                         spectrumcutofftype=args.spectrum_cutoff_type, spectrumcutoffvalue=args.spectrum_cutoff_value, proteoformcutofftype=args.proteoform_cutoff_type, 
                         proteoformcutoffvalue=args.proteoform_cutoff_value, proteoformerrortol=args.proteoform_error_tolerance)
 
