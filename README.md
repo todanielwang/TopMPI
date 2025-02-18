@@ -66,7 +66,7 @@ The output executable should be in `build/dist`
 
 ## Uninstallation
 
-To remove the virtual environment, and dependencies, simply delete the `venv` folder:
+To remove the virtual environment and dependencies, simply delete the `venv` folder:
 
 ```sh
 rm -rf venv  # Mac/Linux
