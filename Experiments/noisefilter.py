@@ -9,17 +9,17 @@ def main():
     if (len(args) != 3):
         raise Exception(
             "Please pass in the directory, delta, and gamma")
-    A = pd.read_csv(args[0] + "/A_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
-    B = pd.read_csv(args[0] + "/B_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
+    A = pd.read_csv(args[0] + "/First_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
+    B = pd.read_csv(args[0] + "/Second_ms2_toppic_prsm_single.tsv", sep="\t", skiprows=29)
 
-    spectra = read_msalign.read_spec_file(args[0] + "/A_ms2.msalign")
+    spectra = read_msalign.read_spec_file(args[0] + "/First_ms2.msalign")
 
     spec_dict = {}
     for spec in spectra:
         spec_dict[str(spec.header.spec_scan)] = spec
 
-    dirA = args[0] + "/A_html/toppic_prsm_cutoff/data_js/prsms/"
-    dirB = args[0] + "/B_html/toppic_prsm_cutoff/data_js/prsms/"
+    dirA = args[0] + "/First_html/toppic_prsm_cutoff/data_js/prsms/"
+    dirB = args[0] + "/Second_html/toppic_prsm_cutoff/data_js/prsms/"
 
     merge = A.merge(B, on="Scan(s)", how="inner")
 
@@ -96,13 +96,13 @@ def main():
 
     result = pd.concat([filteredA, filteredB], ignore_index=True).sort_values(by="Scan(s)")
 
-    result["Spectrum-level Q-value"] = util.calculate_q_values(result)
+    # result["Spectrum-level Q-value"] = util.calculate_q_values(result)
 
-    outputresult = result[result["Spectrum-level Q-value"] < 0.01]
+    # outputresult = result[result["Spectrum-level Q-value"] < 0.01]
 
     # outputresult = outputresult[~outputresult["Protein accession"].str.contains("DECOY")]
 
-    outputresult.to_csv(args[0] + "FirstPrSM_toppic_prsm_single.tsv", sep="\t", index=False)
+    result.to_csv(args[0] + "FirstPrSM_full.tsv", sep="\t", index=False)
 
     proteoformoutput = result
 
@@ -140,9 +140,9 @@ def main():
 
     proteoformresult["Proteoform-level Q-value"] = util.calculate_q_values(proteoformresult)
 
-    # proteoformresult = proteoformresult[~proteoformresult['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+    proteoformresult = proteoformresult[~proteoformresult['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
 
-    proteoformresult[proteoformresult["Proteoform-level Q-value"] < 0.01].to_csv(args[0] + "FirstPrSM_toppic_proteoform_single.tsv", sep="\t", index=False)
+    # proteoformresult[proteoformresult["Proteoform-level Q-value"] < 0.01].to_csv(args[0] + "FirstPrSM_toppic_proteoform_single.tsv", sep="\t", index=False)
 
     for spec in spectra:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]

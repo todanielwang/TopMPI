@@ -16,7 +16,11 @@ def main():
     
     raw_spec_list = read_msalign.read_spec_file(args[0])
 
-    prsm_df = pd.read_csv(args[1], delimiter="\t")
+    prsm_df = util.read_tsv(args[1])
+
+    prsm_df = prsm_df[prsm_df["E-value"] < 0.01]
+
+    prsm_df = prsm_df[~prsm_df['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
 
     scan_list = prsm_df["Scan(s)"].tolist()
 

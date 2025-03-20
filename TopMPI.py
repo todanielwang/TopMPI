@@ -9,6 +9,7 @@ import checkAndRemovePeaks
 import merge
 import combine
 import removeTemp
+import preprocess
 
 def copy_and_rename(src, dst):
     """Copy and rename files if they exist."""
@@ -57,6 +58,7 @@ def main():
     parser.add_argument("--beta", type=float, default=0.9, help="The percentage of shared matched experimental peaks required for identifications of two precursors to be treated as inconsistent.")
     parser.add_argument("--delta", type=int, default=5, help="The offset to calculate the number of normalized matched fragment masses (NMFMs) based on number of unknown mass shifts.")
     parser.add_argument("--gamma", type=int, default=4, help="The number of normalized matched fragment masses (NMFMs) difference required to switch to the second precursor.")
+    parser.add_argument("--ecscore-cutoff", type=float, default=0.5, help="Set the ECScore cutoff value for proteoform features.")
     
     args = parser.parse_args()
 
@@ -85,7 +87,7 @@ def main():
         
         os.makedirs(new_sub_dir, exist_ok=True)
 
-        copy_and_rename(os.path.join(base_dir, f"{common_prefix}_ms2.msalign"), os.path.join(new_sub_dir, "First_ms2.msalign"))
+        preprocess.preprocess(base_dir, common_prefix, new_sub_dir, args.ecscore_cutoff, not args.no_topfd_feature)
 
         if not args.no_topfd_feature:
             for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:

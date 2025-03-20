@@ -29,7 +29,7 @@ def main(args_list=None):
 
     secondary_prsm_full = util.read_tsv(os.path.join(args.directory, "Secondary_ms2_toppic_prsm_single.tsv"))
 
-    secondary_prsm_full.to_csv(os.path.join(args.directory, "Secondary_ms2_temp_prsm.tsv"))
+    secondary_prsm_full.to_csv(os.path.join(args.directory, "Secondary_ms2_temp_prsm.tsv"), sep="\t", index=False)
 
     secondary_proteoform_full = util.getProteoforms(secondary_prsm_full, threshold=args.proteoform_error_tolerance, filterbyfeature=args.filterbyFeature)
 
@@ -61,16 +61,17 @@ def main(args_list=None):
     else:
         primary_prsm_full["Spectrum-level Q-value"] = util.calculate_q_values(primary_prsm_full)
         secondary_prsm_full["Spectrum-level Q-value"] = util.calculate_q_values(secondary_prsm_full)
-        combined_prsm_full["Spectrum-level Q-value"] = util.calculate_q_values(combined_prsm_full)
+        # combined_prsm_full["Spectrum-level Q-value"] = util.calculate_q_values(combined_prsm_full)
 
         if not args.keepDecoys:
             primary_prsm_full = primary_prsm_full[~primary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
             secondary_prsm_full = secondary_prsm_full[~secondary_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
-            combined_prsm_full = combined_prsm_full[~combined_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
+            # combined_prsm_full = combined_prsm_full[~combined_prsm_full['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
 
         primary_prsm_output = primary_prsm_full[primary_prsm_full["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
         secondary_prsm_output = secondary_prsm_full[secondary_prsm_full["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
-        combined_prsm_output = combined_prsm_full[combined_prsm_full["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
+        # combined_prsm_output = combined_prsm_full[combined_prsm_full["Spectrum-level Q-value"] < args.spectrum_cutoff_value]
+        combined_prsm_output = pd.concat([primary_prsm_output, secondary_prsm_output]).reset_index(drop=True)
 
         primary_prsm_output.to_csv(os.path.join(args.directory, "Primary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
         secondary_prsm_output.to_csv(os.path.join(args.directory, "Secondary_ms2_toppic_prsm_single.tsv"), sep="\t", index=False)
