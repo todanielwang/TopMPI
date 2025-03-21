@@ -32,6 +32,7 @@ def preprocess(basedir, commonprefix, outputdir, featurecutoff=0.5, isFeature=Tr
         # Assign only the valid objects back
         spectra.extend(filtered_spectra)
 
+    spectra = [spec for spec in spectra if len(spec.header.pre_mz_list) > 0]
 
     for spec in spectra:
         while len(spec.header.pre_mz_list) > 1:
