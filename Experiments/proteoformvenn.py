@@ -61,7 +61,7 @@ def main():
 
     plt.rcParams.update({'font.size': 18})
 
-    venn = venn2(subsets=(only_set1, only_set2, intersection), set_labels=('TopPIC', 'TopMPI'))
+    venn = venn2(subsets=(only_set1, only_set2, intersection), set_labels=('No Charge Condition', 'With Charge Condition'))
 
     # # Get the set labels (titles) and manually align them
     # set_labels = venn.set_labels

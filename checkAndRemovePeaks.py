@@ -106,6 +106,17 @@ def main(args_list=None):
             spec.header.pre_inte_list = pre_inte_list
             spec.header.pre_id_list = pre_id_list
 
+    for spec in spectra:
+        while len(spec.header.pre_mz_list) > 1:
+            if int(spec.header.pre_charge_list[0]) == int(spec.header.pre_charge_list[1]):
+                del spec.header.pre_mz_list[1]
+                del spec.header.pre_charge_list[1]
+                del spec.header.pre_mass_list[1]
+                del spec.header.pre_inte_list[1]
+                del spec.header.pre_id_list[1]
+            else:
+                break
+
     read_msalign.write_spec_file(os.path.join(args.directory, "Primary_ms2.msalign"), spectra)
 
     prsm = A

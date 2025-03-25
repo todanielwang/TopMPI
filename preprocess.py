@@ -13,7 +13,10 @@ def preprocess(basedir, commonprefix, outputdir, featurecutoff=0.5, isFeature=Tr
         filtered_spectra = []
 
         for spec in spectra[:]:  
-            valid_indices = [i for i, pre_id in enumerate(spec.header.pre_id_list) if int(pre_id) in goodfeatures]
+            valid_indices = [
+                i for i, pre_id in enumerate(spec.header.pre_id_list) 
+                if pre_id.strip().isdigit() and int(pre_id) in goodfeatures
+            ]
 
             if valid_indices:
                 spec.header.pre_mz_list = [spec.header.pre_mz_list[i] for i in valid_indices]
@@ -21,10 +24,14 @@ def preprocess(basedir, commonprefix, outputdir, featurecutoff=0.5, isFeature=Tr
                 spec.header.pre_mass_list = [spec.header.pre_mass_list[i] for i in valid_indices]
                 spec.header.pre_inte_list = [spec.header.pre_inte_list[i] for i in valid_indices]
                 spec.header.pre_id_list = [spec.header.pre_id_list[i] for i in valid_indices]
-
-                filtered_spectra.append(spec)  # Keep valid objects
             else:
-                del spec  # Explicitly delete invalid objects
+                spec.header.pre_mz_list = ""
+                spec.header.pre_charge_list = ""
+                spec.header.pre_mass_list = ""
+                spec.header.pre_inte_list = ""
+                spec.header.pre_id_list = ""
+                
+            filtered_spectra.append(spec)  # Keep valid objects
 
         # Remove all references from spectra
         spectra.clear()  
@@ -32,19 +39,8 @@ def preprocess(basedir, commonprefix, outputdir, featurecutoff=0.5, isFeature=Tr
         # Assign only the valid objects back
         spectra.extend(filtered_spectra)
 
-    spectra = [spec for spec in spectra if len(spec.header.pre_mz_list) > 0]
-
-    for spec in spectra:
-        while len(spec.header.pre_mz_list) > 1:
-            if not int(spec.header.pre_charge_list[0]) == int(spec.header.pre_charge_list[1]):
-                del spec.header.pre_mz_list[1]
-                del spec.header.pre_charge_list[1]
-                del spec.header.pre_mass_list[1]
-                del spec.header.pre_inte_list[1]
-                del spec.header.pre_id_list[1]
-
-    read_msalign.write_spec_file(os.path.join(outputdir, "First_ms2.msalign"))
+    read_msalign.write_spec_file(os.path.join(outputdir, "First_ms2.msalign"), spectra)
 
     os.rename(os.path.join(outputdir, "First_ms2_modified.msalign"), os.path.join(outputdir, "First_ms2.msalign"))
 
-
+    print("Preprocessing finished.")

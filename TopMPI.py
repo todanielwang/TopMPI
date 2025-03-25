@@ -97,12 +97,14 @@ def main():
 
         os.rename(os.path.join(new_sub_dir, "First_ms2_modified.msalign"), os.path.join(new_sub_dir, "Second_ms2.msalign"))
 
+        exit(0)
+
         if not args.no_topfd_feature:
             for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
                 copy_and_rename(os.path.join(new_sub_dir, f"First_{ext}"), os.path.join(new_sub_dir, f"Second_{ext}"))
 
         #split flags
-        TopPIC_args = {k: v for k, v in vars(args).items() if k not in ["alpha", "beta", "delta", "gamma", "spectrum_cutoff_type", "spectrum_cutoff_value", "proteoform_cutoff_type", "proteoform_cutoff_value", "TopPIC", "database", "input_files", "combined_file_name"]}
+        TopPIC_args = {k: v for k, v in vars(args).items() if k not in ["alpha", "beta", "delta", "gamma", "ecscore_cutoff", "spectrum_cutoff_type", "spectrum_cutoff_value", "proteoform_cutoff_type", "proteoform_cutoff_value", "TopPIC", "database", "input_files", "combined_file_name"]}
         # extra_args = {k: v for k, v in vars(args).items() if k in ["alpha", "beta", "delta", "gamma", "spectrum_cutoff_type", "spectrum_cutoff_value", "proteoform_cutoff_type", "proteoform_cutoff_value"]}
         
         TopPIC_flags = []
@@ -118,8 +120,8 @@ def main():
 
 
         # print(TopPIC_flags)
-        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "First_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
-        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Second_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
+        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "First_ms2.msalign"), "-v", "10000", "-V", "10000"] + TopPIC_flags, check=True)
+        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Second_ms2.msalign"), "-v", "10000", "-V", "10000"] + TopPIC_flags, check=True)
 
         checkAndRemovePeaks.main([new_sub_dir, "-a", str(args.alpha), "-b", str(args.beta), "-d", str(args.delta), "-g", str(args.gamma)])
 
@@ -130,7 +132,7 @@ def main():
             for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
                 copy_and_rename(os.path.join(new_sub_dir, f"First_{ext}"), os.path.join(new_sub_dir, f"Secondary_{ext}"))
 
-        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Secondary_ms2.msalign"), "-v", "100000", "-V", "100000"] + TopPIC_flags, check=True)
+        subprocess.run([args.TopPIC, args.database, os.path.join(new_sub_dir, "Secondary_ms2.msalign"), "-v", "10000", "-V", "10000"] + TopPIC_flags, check=True)
 
         # Merge results
         filterbyFeature = str(not args.no_topfd_feature)

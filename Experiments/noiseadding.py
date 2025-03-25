@@ -18,6 +18,8 @@ def main():
 
     prsm_df = util.read_tsv(args[1])
 
+    print(prsm_df)
+
     prsm_df = prsm_df[prsm_df["E-value"] < 0.01]
 
     prsm_df = prsm_df[~prsm_df['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
@@ -60,6 +62,7 @@ def main():
         length = len(spec.peak_list)
         diff = 20
         possibleList = [x for x in nonmulti_dict.keys() if (x != scan) and (abs(float(nonmulti_dict[x].header.pre_mz_list[0]) - float(spec.header.pre_mz_list[0])) < diff)
+                        and (not int(nonmulti_dict[x].header.pre_charge_list[0]) == int(spec.header.pre_charge_list[0]))
                         and (len(nonmulti_dict[x].peak_list) > math.ceil(length * topnoise)) and (prsm_df[prsm_df["Scan(s)"] == int(x)].iloc[0]["Protein accession"] != protein) 
                         and (len(util.removePeaks(copy.deepcopy(nonmulti_dict[x].peak_list), proteoform)) > length * topnoise)]
         # and (float(nonmulti_dict[x].header.pre_mz_list[0]) - float(spec.header.pre_mz_list[0]) < diff)

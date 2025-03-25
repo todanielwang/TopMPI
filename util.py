@@ -26,7 +26,7 @@ def calculate_q_values(df):
     df['IsDecoy'] = df["Protein accession"].str.contains("DECOY")
 
     # Sort by score (assuming higher score means better identification)
-    df = df.sort_values(by="E-value")
+    df = df.sort_values(by="E-value").reset_index(drop=True)
 
     # Initialize counters for decoy and target counts
     df['Cumulative_Decoy'] = df['IsDecoy'].cumsum()
@@ -38,7 +38,7 @@ def calculate_q_values(df):
     # Calculate q-value: the minimum FDR at or above this score
     df['q-value'] = df['FDR'][::-1].cummin()[::-1]  # Reverse cummin to get the minimum FDR for each score
 
-    df.sort_index()
+    df = df.sort_values(by="Scan(s)").reset_index(drop=True)
 
     return df["q-value"]
 
