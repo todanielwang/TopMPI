@@ -106,9 +106,14 @@ def main(args_list=None):
             spec.header.pre_inte_list = pre_inte_list
             spec.header.pre_id_list = pre_id_list
 
+    chargecount = 0 
     for spec in spectra:
+        trigger = 0
         while len(spec.header.pre_mz_list) > 1:
             if int(spec.header.pre_charge_list[0]) == int(spec.header.pre_charge_list[1]):
+                if trigger == 0:
+                    chargecount += 1
+                    trigger = 1
                 del spec.header.pre_mz_list[1]
                 del spec.header.pre_charge_list[1]
                 del spec.header.pre_mass_list[1]
@@ -116,6 +121,7 @@ def main(args_list=None):
                 del spec.header.pre_id_list[1]
             else:
                 break
+    print("We changed precursor of " + str(chargecount) + " spectra due to the same charge condition")
 
     read_msalign.write_spec_file(os.path.join(args.directory, "Primary_ms2.msalign"), spectra)
 

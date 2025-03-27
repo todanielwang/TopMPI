@@ -48,6 +48,9 @@ def main():
     only_set2 = resultlist[(resultlist["1"] == False) & (resultlist["2"] == True)]
     intersection = resultlist[(resultlist["1"] == True) & (resultlist["2"] == True)]
 
+    only_set1.to_csv("Lost.tsv", sep="\t", index=False)
+    only_set2.to_csv("New.tsv", sep="\t", index=False)
+
     # interestset = pd.concat([only_set1, intersection], ignore_index=True)
 
     # interestset.to_csv("largeoverlap.tsv", sep="\t", index=False)

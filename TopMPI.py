@@ -97,8 +97,6 @@ def main():
 
         os.rename(os.path.join(new_sub_dir, "First_ms2_modified.msalign"), os.path.join(new_sub_dir, "Second_ms2.msalign"))
 
-        exit(0)
-
         if not args.no_topfd_feature:
             for ext in ["feature.xml", "ms1.feature", "ms1.msalign", "ms2.feature"]:
                 copy_and_rename(os.path.join(new_sub_dir, f"First_{ext}"), os.path.join(new_sub_dir, f"Second_{ext}"))

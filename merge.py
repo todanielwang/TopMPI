@@ -25,11 +25,31 @@ def main(args_list=None):
 
     primary_prsm_full = util.read_tsv(os.path.join(args.directory, "Primary_ms2_temp_prsm.tsv"))
 
-    primary_proteoform_full = util.getProteoforms(primary_prsm_full, threshold=args.proteoform_error_tolerance, filterbyfeature=args.filterbyFeature)
-
     secondary_prsm_full = util.read_tsv(os.path.join(args.directory, "Secondary_ms2_toppic_prsm_single.tsv"))
 
+    merged = pd.merge(primary_prsm_full, secondary_prsm_full, on="Scan(s)")
+
+    diff_accession = merged[merged["Protein accession_x"] != merged["Protein accession_y"]]
+
+    drop_from_df1 = diff_accession[
+        diff_accession["E-value_x"] > diff_accession["E-value_y"]
+    ]["Scan(s)"]
+
+    print("We remvoed " + str(drop_from_df1.shape[0]) + " PrSMs from primary due to same protein condition.")
+
+    drop_from_df2 = diff_accession[
+        diff_accession["E-value_y"] > diff_accession["E-value_x"]
+    ]["Scan(s)"]
+
+    print("We removed " + str(drop_from_df2.shape[0]) + " PrSMs from secondary due to the same protein condition.")
+
+    # Remove from df1 and df2 accordingly
+    primary_prsm_full = primary_prsm_full[~primary_prsm_full["Scan(s)"].isin(drop_from_df1)].reset_index(drop=True)
+    secondary_prsm_full = secondary_prsm_full[~secondary_prsm_full["Scan(s)"].isin(drop_from_df2)].reset_index(drop=True)
+
     secondary_prsm_full.to_csv(os.path.join(args.directory, "Secondary_ms2_temp_prsm.tsv"), sep="\t", index=False)
+
+    primary_proteoform_full = util.getProteoforms(primary_prsm_full, threshold=args.proteoform_error_tolerance, filterbyfeature=args.filterbyFeature)
 
     secondary_proteoform_full = util.getProteoforms(secondary_prsm_full, threshold=args.proteoform_error_tolerance, filterbyfeature=args.filterbyFeature)
 
@@ -119,7 +139,6 @@ def main(args_list=None):
     print("Outputing " + str(primary_proteoform_output.shape[0]) + " primary proteoforms")
     print("Outputing " + str(secondary_proteoform_output.shape[0]) + " secondary proteoforms")
     print("Outputing " + str(combined_proteoform_output.shape[0]) + " total proteoforms")
-
 
 
 if __name__ == "__main__":
