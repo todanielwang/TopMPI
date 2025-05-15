@@ -29,7 +29,7 @@ def main(args_list=None):
 
     merged = pd.merge(primary_prsm_full, secondary_prsm_full, on="Scan(s)")
 
-    diff_accession = merged[merged["Protein accession_x"] != merged["Protein accession_y"]]
+    diff_accession = merged[merged["Protein accession_x"] == merged["Protein accession_y"]]
 
     drop_from_df1 = diff_accession[
         diff_accession["E-value_x"] > diff_accession["E-value_y"]

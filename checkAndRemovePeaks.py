@@ -14,7 +14,7 @@ def main(args_list=None):
 
     # Add the optional flags
     parser.add_argument("-a", "--alpha", type=float, default=0.2, help="The intensity ratio between the first and second precursor required for a spectrum to treated as multiplexed")
-    parser.add_argument("-b", "--beta", type=float, default=0.9, help="The percentage of shared matched peaks required for the identifications of the 2 precursors to be treated as inconsistent")
+    parser.add_argument("-b", "--beta", type=float, default=0.7, help="The percentage of shared matched peaks required for the identifications of the 2 precursors to be treated as inconsistent")
     parser.add_argument("-d", "--delta", type=int, default=5, help="The offset to the # of matched peaks condition based on number of unexpected mass shifts")
     parser.add_argument("-g", "--gamma", type=int, default=4, help="The number of matched peaks difference required to switch to the second precursor")
 
@@ -106,23 +106,6 @@ def main(args_list=None):
             spec.header.pre_inte_list = pre_inte_list
             spec.header.pre_id_list = pre_id_list
 
-    chargecount = 0 
-    for spec in spectra:
-        trigger = 0
-        while len(spec.header.pre_mz_list) > 1:
-            if int(spec.header.pre_charge_list[0]) == int(spec.header.pre_charge_list[1]):
-                if trigger == 0:
-                    chargecount += 1
-                    trigger = 1
-                del spec.header.pre_mz_list[1]
-                del spec.header.pre_charge_list[1]
-                del spec.header.pre_mass_list[1]
-                del spec.header.pre_inte_list[1]
-                del spec.header.pre_id_list[1]
-            else:
-                break
-    print("We changed precursor of " + str(chargecount) + " spectra due to the same charge condition")
-
     read_msalign.write_spec_file(os.path.join(args.directory, "Primary_ms2.msalign"), spectra)
 
     prsm = A
@@ -135,6 +118,8 @@ def main(args_list=None):
     result = pd.concat([filteredA, filteredB], ignore_index=True).sort_values(by="Scan(s)")
 
     result.to_csv(os.path.join(args.directory, "Primary_ms2_temp_prsm.tsv"), sep="\t", index=False)
+
+    spectra = [spec for spec in spectra if int(spec.header.spec_scan) in multiplexedspectra]
 
     for spec in spectra:
         spec.header.pre_mz_list = spec.header.pre_mz_list[1:]

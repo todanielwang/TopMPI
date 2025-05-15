@@ -18,8 +18,6 @@ def main():
 
     prsm_df = util.read_tsv(args[1])
 
-    print(prsm_df)
-
     prsm_df = prsm_df[prsm_df["E-value"] < 0.01]
 
     prsm_df = prsm_df[~prsm_df['Protein accession'].str.contains('DECOY')].reset_index(drop=True)
@@ -41,6 +39,12 @@ def main():
                 toplength = len(spec.peak_list)
 
     print(len(nonmulti_dict))
+    nonmulti_scans = list(nonmulti_dict.keys())
+    
+    nonmulti_prsm = prsm_df[prsm_df["Scan(s)"].isin(nonmulti_scans)]
+
+    print(nonmulti_prsm[nonmulti_prsm["#unexpected modifications"] == 0].shape[0])
+    print(nonmulti_prsm[nonmulti_prsm["#unexpected modifications"] == 1].shape[0])
 
     candidate_dict = {}
     topnoise = 2

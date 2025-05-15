@@ -55,10 +55,10 @@ def main():
     parser.add_argument("-K", "--keep-decoy-ids", action="store_true", help="Keep decoy identifications.")
     # parser.add_argument("-g", "--skip-html-folder", action="store_true", help="Skip HTML folder generation.")
     parser.add_argument("--alpha", type=float, default=0.2, help="The intensity ratio between the first and second precursor required for a spectrum to be treated as multiplexed.")
-    parser.add_argument("--beta", type=float, default=0.9, help="The percentage of shared matched experimental peaks required for identifications of two precursors to be treated as inconsistent.")
+    parser.add_argument("--beta", type=float, default=0.7, help="The percentage of shared matched experimental peaks required for identifications of two precursors to be treated as inconsistent.")
     parser.add_argument("--delta", type=int, default=5, help="The offset to calculate the number of normalized matched fragment masses (NMFMs) based on number of unknown mass shifts.")
     parser.add_argument("--gamma", type=int, default=4, help="The number of normalized matched fragment masses (NMFMs) difference required to switch to the second precursor.")
-    parser.add_argument("--ecscore-cutoff", type=float, default=0.5, help="Set the ECScore cutoff value for proteoform features.")
+    parser.add_argument("--ecscore-cutoff", type=float, default=0.0, help="Set the ECScore cutoff value for proteoform features.")
     
     args = parser.parse_args()
 

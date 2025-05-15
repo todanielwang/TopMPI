@@ -60,34 +60,6 @@ def main():
 
     read_msalign.write_spec_file("A_ms2.msalign", sortedlist)
 
-    for spec in sortedlist:
-        title = int(spec.header.title) % 100000
-        spec.header.title = str(int(spec.header.spec_scan) % 100000)
-        spec.header.spec_scan = title
-
-        pre_mz_list = spec.header.pre_mz_list
-        pre_charge_list = spec.header.pre_charge_list
-        pre_mass_list = spec.header.pre_mass_list
-        pre_inte_list = spec.header.pre_inte_list
-        pre_id_list = spec.header.pre_id_list
-
-        pre_mz_list[0], pre_mz_list[1] = pre_mz_list[1], pre_mz_list[0]
-        pre_charge_list[0], pre_charge_list[1] = pre_charge_list[1], pre_charge_list[0]
-        pre_mass_list[0], pre_mass_list[1] = pre_mass_list[1], pre_mass_list[0]
-        pre_inte_list[0], pre_inte_list[1] = pre_inte_list[1], pre_inte_list[0]
-        pre_id_list[0], pre_id_list[1] = pre_id_list[1], pre_id_list[0]
-
-        spec.header.pre_mz_list = pre_mz_list
-        spec.header.pre_charge_list = pre_charge_list
-        spec.header.pre_mass_list = pre_mass_list
-        spec.header.pre_inte_list = pre_inte_list
-        spec.header.pre_id_list = pre_id_list
-
-    othersortedlist = read_msalign.sortScans(sortedlist)
-
-    read_msalign.write_spec_file("B_ms2.msalign", othersortedlist)
-
-
         
 
 if __name__ == "__main__":
