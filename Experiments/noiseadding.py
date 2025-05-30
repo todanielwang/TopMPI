@@ -214,7 +214,7 @@ def main():
 
     for idx in range(0, 11):
         filenamelist = args[0].rsplit(".", 1)
-        read_msalign.write_spec_file(filenamelist[0] + str(idx * 0.2) + filenamelist[1], read_msalign.sortScans(outputList[idx]))
+        # read_msalign.write_spec_file(filenamelist[0] + str(idx * 0.2) + filenamelist[1], read_msalign.sortScans(outputList[idx]))
     
 
 if __name__ == "__main__":

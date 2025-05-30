@@ -3,7 +3,7 @@ import util
 import os
 import read_msalign
 
-def preprocess(basedir, commonprefix, outputdir, featurecutoff=0.5, isFeature=True):
+def preprocess(basedir, commonprefix, outputdir, featurecutoff=0.0, isFeature=True):
     spectra = read_msalign.read_spec_file(os.path.join(basedir, f"{commonprefix}_ms2.msalign"))
 
     if isFeature:
