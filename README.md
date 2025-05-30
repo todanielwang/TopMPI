@@ -150,11 +150,11 @@ Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein 
 ./TopMPI toppic proteins.fasta spectra_ms2.msalign -x
 ```
 
-Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file and the NMFMs offset set to 4
+Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file and set the unexpected modification penality for NMFM calculations to 4
 ```
 ./TopMPI toppic proteins.fasta spectra_ms2.msalign --delta 4
 ```
-Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. In an identified proteoform, at most 2 mass shifts are allowed and the maximum allowed mass shift value is 10,000 Dalton. Furthermore, the NMFM difference required to switch precursor is set to 5. 
+Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. In an identified proteoform, at most 2 mass shifts are allowed and the maximum allowed mass shift value is 10,000 Dalton. Furthermore, the lower intensity precursor penality for NMFM calculations is set to 5. 
 ```
 ./TopMPI toppic proteins.fasta spectra_ms2.msalign -s 2 -M 10000 --gamma 5
 ```

@@ -70,9 +70,9 @@ def main(args_list=None):
 
     weight = int(args.delta)
 
-    filteredmerge.loc[filteredmerge["#unexpected modifications_x"] > filteredmerge["#unexpected modifications_y"], "balanceddifference"] += weight
-
-    filteredmerge.loc[filteredmerge["#unexpected modifications_x"] < filteredmerge["#unexpected modifications_y"], "balanceddifference"] -= weight
+    filteredmerge["balanceddifference"] += weight * (
+        filteredmerge["#unexpected modifications_x"] - filteredmerge["#unexpected modifications_y"]
+    )
 
     correctedscanlist = filteredmerge[filteredmerge["balanceddifference"] >= 0]["Scan(s)"].tolist()
 
