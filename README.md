@@ -158,6 +158,10 @@ Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein 
 ```
 ./TopMPI toppic proteins.fasta spectra_ms2.msalign -s 2 -M 10000 --gamma 5
 ```
+Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. No unexpected mass shifts are allowed except for variable PTMs from a list of allowed common PTMs specified by var_mods.txt.
+```
+./TopMPI toppic proteins.fasta spectra_ms2.msalign -s 0 -b var_mods.txt
+```
 
 <!-- Search a deconvoluted MS/MS spectrum file spectra_ms2.msalign against a protein database file proteins.fasta with a feature file. The error tolerance for precursor and fragment masses is 5 ppm.
 
